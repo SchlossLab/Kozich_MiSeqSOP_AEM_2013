@@ -3,6 +3,7 @@
 .RData
 data/raw/
 
+*~
 
 mothur*logfile
 
