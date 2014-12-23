@@ -20,8 +20,14 @@ FASTQS = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_
 # The cross product of all runs and fastq files
 ALLFASTQ = $(foreach R, $(RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
 
+
+# Utility function
+print-%:
+	@echo '$*=$($*)'
+
+
 # Let's get the raw data
-get_data : $(ALLFASTQ)
+get.fastqs : $(ALLFASTQ)
 
 data/raw/%.fastq : 
 	wget -N -P $(dir $@) http://www.mothur.org/MiSeqDevelopmentData/$(patsubst data/raw/%/,%, $(dir $@)).tar
@@ -30,6 +36,19 @@ data/raw/%.fastq :
 	rm $(dir $@)*.tar
 
 
-print-%:
-	@echo '$*=$($*)'
 
+# Let's open up all of the fastq files
+fastq.info : get.fastqs $(subst fastq,fasta,$(ALLFASTQ)) $(subst fastq,qual,$(ALLFASTQ))
+
+data/raw/%.fasta : 
+	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))" 
+
+data/raw/%.qual : 
+	mothur "#fastq.info(fastq=$(subst qual,fastq,$@))"
+
+
+
+
+
+
+write.paper: get.fastqs fastq.info
