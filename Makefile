@@ -17,9 +17,6 @@ FASTQS = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_
 	Soil1_S4_L001_R1_001.fastq Soil1_S4_L001_R2_001.fastq Soil2_S5_L001_R1_001.fastq \
 	Soil2_S5_L001_R2_001.fastq Soil3_S6_L001_R1_001.fastq Soil3_S6_L001_R2_001.fastq
 
-# The cross product of all runs and fastq files
-ALLFASTQ = $(foreach R, $(RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
-
 
 # Utility function
 print-%:
@@ -27,9 +24,12 @@ print-%:
 
 
 # Let's get the raw data
-get.fastqs : $(ALLFASTQ)
+# The cross product of all runs and fastq files
+RAWFASTQ = $(foreach R, $(RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
 
-data/raw/%.fastq : 
+get.fastqs : $(RAWFASTQ)
+
+$(RAWFASTQ) :
 	wget -N -P $(dir $@) http://www.mothur.org/MiSeqDevelopmentData/$(patsubst data/raw/%/,%, $(dir $@)).tar
 	tar xvf $(dir $@)*.tar -C $(dir $@); \
 	bunzip2 -f $(dir $@)*bz2; \
@@ -38,17 +38,41 @@ data/raw/%.fastq :
 
 
 # Let's open up all of the fastq files
-fastq.info : get.fastqs $(subst fastq,fasta,$(ALLFASTQ)) $(subst fastq,qual,$(ALLFASTQ))
+RAWFASTA = $(subst fastq,fasta,$(RAWFASTQ))
+RAWQUAL = $(subst fastq,qual,$(RAWFASTQ))
 
-data/raw/%.fasta : 
-	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))" 
+fastq.info : get.fastqs $(RAWFASTA) $(RAWQUAL)
 
-data/raw/%.qual : 
+$(RAWFASTA) :
+	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))"
+
+$(RAWQUAL) :
 	mothur "#fastq.info(fastq=$(subst qual,fastq,$@))"
 
 
 
+# We want to get the error data for the individual sequence reads from each
+# sequencing run
+PROCFASTA = $(subst raw,process,$(RAWFASTA))
+ERRSUMMARY = $(subst fasta,error.summary,$(PROCFASTA))
+ERRMATRIX = $(subst fasta,error.matrix,$(PROCFASTA))
+ERRQUAL = $(subst fasta,error.quality,$(PROCFASTA))
+
+single_read.error : fastq.info $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
+
+$(ERRSUMMARY) :
+	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
+	sh single_read_analysis.sh $FASTA
+$(ERRMATRIX) :
+	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
+	sh single_read_analysis.sh $FASTA
+$(ERRQUAL) :
+	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
+	sh single_read_analysis.sh $FASTA
 
 
 
-write.paper: get.fastqs fastq.info
+
+
+
+write.paper: get.fastqs fastq.info single_read.error

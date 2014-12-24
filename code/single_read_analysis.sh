@@ -6,7 +6,7 @@
 # Here we get the error rates for the individual sequence reads
 #
 # Dependencies...
-# * The 24 *.fastq files for each sequencing run
+# * The *.fasta and *.qual files out of the data/raw/ directory
 #
 # Produces
 # * The error rates for each individual read
@@ -20,28 +20,23 @@
 #
 ################################################################################
 
-FOLDER=$1
-PATH=data/raw/$FOLDER
+FASTA=$1
+QUAL=$(echo $FASTA | sed -e s/fasta/qual/)
 
-mkdir -p $PATH
+#need to get path to this folder
+OUTPUT_PATH=$(echo $FASTA | sed -e s/Mock.*fasta//)
 
-for FASTA in Mock*R1*fasta
-do
-    QUAL=$(echo $FASTA | sed -e s/fasta/qual/)
+mkdir -p $OUTPUT_PATH
 
-    mothur "#setdir(folder=$PATH);
-        align.seqs(fasta=$FASTA, reference=../HMP_MOCK.v35.filter.unique.align, processors=12);
+if [[ $FASTA == "*R1*" ]]; then
+    mothur "#set.dir(output=$OUTPUT_PATH);
+        align.seqs(fasta=$FASTA, reference=../data/references/HMP_MOCK.align, processors=12);
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
-        seq.error(fasta=current, qfile=, reference=);"
-done
-
-for FASTA in Mock*R2*fasta
-do
-    QUAL=$(echo $FASTA | sed -e s/fasta/qual/)
-
-    mothur "#setdir(folder=$PATH);
+        seq.error(fasta=current, qfile=$QUAL, reference=HMP_MOCK.filter.fasta);"
+else
+    mothur "#setdir(folder=$OUTPUT_PATH);
         reverse.seqs(fasta=$FASTA, qfile=$QUAL)
-        align.seqs(fasta=current, reference=../HMP_MOCK.v35.filter.unique.align, processors=12)
+        align.seqs(fasta=current, reference=../data/references/HMP_MOCK.align, processors=12)
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
-        seq.error(fasta=current, qfile=current, reference=);"
-done
+        seq.error(fasta=current, qfile=current, reference=HMP_MOCK.filter.fasta);"
+fi
