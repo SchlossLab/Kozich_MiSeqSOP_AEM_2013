@@ -25,7 +25,7 @@ mothur "#make.contigs(ffastq=$F_FASTQ, rfastq=$R_FASTQ, outputdir=$PROC_DIR, del
 
 TEMP=$(echo $F_FASTQ | sed -e s/raw/process/)
 CONTIG_FASTA=$(echo $TEMP | sed -e s/fastq/trim.contigs.fasta/)
-CONTIG_REPORT=$(echo $TEMP | sed -e s/fastq/trim.contigs.report/)
+CONTIG_REPORT=$(echo $TEMP | sed -e s/fastq/contigs.report/)
 
 mv $CONTIG_FASTA $(echo $CONTIG_FASTA | sed -e s/trim/$DELTA_Q/)
 mv $CONTIG_REPORT $(echo $CONTIG_REPORT | sed -e s/contigs/$DELTA_Q.contigs/)
