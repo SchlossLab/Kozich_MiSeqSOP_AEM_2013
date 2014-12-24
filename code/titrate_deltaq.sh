@@ -23,8 +23,9 @@ PROC_DIR=$(echo $RAW_DIR | sed -e s/raw/process/)
 
 mothur "#make.contigs(ffastq=$F_FASTQ, rfastq=$R_FASTQ, outputdir=$PROC_DIR, deltaq=$DELTA_Q, processors=12)"
 
-CONTIG_FASTA=$(echo $F_FASTQ | sed -e s/fastq/trim.contigs.fasta/)
-CONTIG_REPORT=$(echo $F_FASTQ | sed -e s/fastq/trim.contigs.report/)
+TEMP=$(echo $F_FASTQ | sed -e s/raw/process/)
+CONTIG_FASTA=$(echo $TEMP | sed -e s/fastq/trim.contigs.fasta/)
+CONTIG_REPORT=$(echo $TEMP | sed -e s/fastq/trim.contigs.report/)
 
 mv $CONTIG_FASTA $(echo $CONTIG_FASTA | sed -e s/trim/$DELTA_Q/)
 mv $CONTIG_REPORT $(echo $CONTIG_REPORT | sed -e s/trim/$DELTA_Q/)
@@ -34,4 +35,4 @@ mv $CONTIG_REPORT $(echo $CONTIG_REPORT | sed -e s/trim/$DELTA_Q/)
 #       data/process/121203/Mock1_S1_L001_R1_001.scrap.contigs.fasta
 #
 
-rm $(echo $F_FASTQ | sed -e s/fastq/scrap.contigs.fasta/)
+rm $(echo $TEMP | sed -e s/fastq/scrap.contigs.fasta/)
