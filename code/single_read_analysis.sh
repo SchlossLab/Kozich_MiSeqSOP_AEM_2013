@@ -45,3 +45,22 @@ fi
 rm $(echo $FINAL_FASTA | sed -e s/fasta/align/)
 rm $(echo $FINAL_FASTA | sed -e s/fasta/filter.fasta/)
 rm $(echo $FINAL_FASTA | sed -e s/fasta/align.report/)
+
+
+#seq.error(fasta=current, qfile=current, report=current, reference=data/references/HMP_MOCK.filter.fasta)
+#Using data/process/121203/Mock1_S1_L001_R2_001.rc.filter.fasta as input file for the fasta parameter.
+#Using data/process/121203/Mock1_S1_L001_R2_001.rc.qual as input file for the qfile parameter.
+#[ERROR]: mothur does not save a current file for report
+#Using current as input file for the report parameter.
+#Unable to open data/references/HMP_MOCK.filter.fasta. Trying output directory data/process/121203/HMP_MOCK.filter.fasta
+#Unable to open current. Trying output directory data/process/121203/current
+#Unable to open data/process/121203/current
+#
+#Using 12 processors.
+#if you use either a qual file or a report file, you have to have both.
+#[ERROR]: did not complete seq.error.
+#
+#    mothur > quit()
+#    rm: cannot remove `data/process/121203/Mock1_S1_L001_R2_001.align': No such file or directory
+#    rm: cannot remove `data/process/121203/Mock1_S1_L001_R2_001.filter.fasta': No such file or directory
+#    rm: cannot remove `data/process/121203/Mock1_S1_L001_R2_001.align.report': No such file or directory
