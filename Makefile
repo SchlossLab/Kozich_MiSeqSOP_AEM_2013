@@ -34,7 +34,7 @@ get.references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOC
 
 $(REFS)silva.bacteria.fasta :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
-	tar xvzf $(REFS)Silva.nr_v119.tgz; \
+	tar xvzf $(REFS)Silva.nr_v119.tgz -C $REFS silva.nr_v119.align; \
 	mothur "#get.lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
 	mv $(REFS)silva.nr_v119.pick.align $(REFS)silva.bacteria.align;
 
