@@ -33,16 +33,16 @@ REFS = data/references/
 get.references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 
 $(REFS)silva.bacteria.fasta :
-	wget -N -P data/references/ http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
-	tar xvzf Silva.nr_v119.tgz; \
-	mothur "#get.lineage(fasta=silva.nr_v119.align, taxonomy=silva.nr_v119.tax, taxon=Bacteria)"; \
-	mv silva.nr_v119.pick.align silva.bacteria.align;
+	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
+	tar xvzf $(REFS)Silva.nr_v119.tgz; \
+	mothur "#get.lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
+	mv $(REFS)silva.nr_v119.pick.align $(REFS)silva.bacteria.align;
 
 $(REFS)HMP_MOCK.fasta :
-	wget -N -P data/references http://www.mothur.org/MiSeqDevelopmentData/HMP_MOCK.fasta
+	wget -N -P $(REFS) http://www.mothur.org/MiSeqDevelopmentData/HMP_MOCK.fasta
 
-$(REFS)HMP_MOCK.align : HMP_MOCK.fasta
-	mothur "#align.seqs(fasta=data/references/HMP_MOCK.fasta, reference=data/references/silva.bacteria.align)"
+$(REFS)HMP_MOCK.align : $(REFS)HMP_MOCK.fasta
+	mothur "#align.seqs(fasta=$(REFS)HMP_MOCK.fasta, reference=$(REFS)silva.bacteria.align)"
 
 
 # Let's get the raw data
