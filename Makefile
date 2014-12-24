@@ -37,7 +37,7 @@ get_references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOC
 $(REFS)silva.bacteria.fasta :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
 	tar xvzf $(REFS)Silva.nr_v119.tgz -C $(REFS) silva.nr_v119.align silva.nr_v119.tax; \
-	mothur "#get.lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
+	mothur "#get_lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
 	mv $(REFS)silva.nr_v119.pick.align $(REFS)silva.bacteria.align;
 
 $(REFS)HMP_MOCK.fasta :
@@ -66,7 +66,7 @@ $(ALL_FASTQ) :
 RAW_FASTA = $(subst fastq,fasta,$(ALL_FASTQ))
 RAW_QUAL = $(subst fastq,qual,$(ALL_FASTQ))
 
-run_fastq_info : get.fastqs $(RAW_FASTA) $(RAW_QUAL)
+run_fastq_info : get_fastqs $(RAW_FASTA) $(RAW_QUAL)
 
 $(RAW_FASTA) :
 	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))"
@@ -97,13 +97,13 @@ ERR_QUAL = $(subst fasta,error.quality,$(PROC_MOCK_FA))
 
 single_read_error : $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
 
-$(ERR_SUMMARY) : get.references fastq.info
+$(ERR_SUMMARY) : get_references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERR_MATRIX) : get.references fastq.info
+$(ERR_MATRIX) : get_references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERR_QUAL) : get.references fastq.info
+$(ERR_QUAL) : get_references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
 
@@ -119,19 +119,17 @@ QDIFF_CONTIG_REP = $(addsuffix .contigs.report,$(foreach P, $(PROC_RUNSPATH), $(
 
 build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
 
-TEST = $(basename $(subst .contigs.fasta, , $(subst process,raw,$(QDIFF_CONTIG_FA)))).fastq
-
 #ugly
 $(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))))
-	FFASTQ = $(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq; \
-	RFASTQ = $(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq; \
-	QDEL = $(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@)))); \
+	FFASTQ = $(eval $(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq); \
+	RFASTQ = $(eval $(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq); \
+	QDEL = $(eval $(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))); \
 	sh titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 $(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq)
-	FFASTQ = $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq; \
-	RFASTQ = $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq; \
-	QDEL = $(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@)))); \
+	FFASTQ = $(eval $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq); \
+	RFASTQ = $(eval $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq); \
+	QDEL = $(eval $(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))); \
 	sh titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 
