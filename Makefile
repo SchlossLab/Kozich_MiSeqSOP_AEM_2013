@@ -32,7 +32,7 @@ print-%:
 #Location of reference files
 REFS = data/references/
 
-get.references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
+get_references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 
 $(REFS)silva.bacteria.fasta :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
@@ -52,7 +52,7 @@ $(REFS)HMP_MOCK.align : $(REFS)HMP_MOCK.fasta
 # The cross product of all runs and fastq files
 ALL_FASTQ = $(foreach R, $(RAW_RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
 
-get.fastqs : $(ALL_FASTQ)
+get_fastqs : $(ALL_FASTQ)
 
 $(ALL_FASTQ) :
 	wget -N -P $(dir $@) http://www.mothur.org/MiSeqDevelopmentData/$(patsubst data/raw/%/,%, $(dir $@)).tar
@@ -66,7 +66,7 @@ $(ALL_FASTQ) :
 RAW_FASTA = $(subst fastq,fasta,$(ALL_FASTQ))
 RAW_QUAL = $(subst fastq,qual,$(ALL_FASTQ))
 
-fastq.info : get.fastqs $(RAW_FASTA) $(RAW_QUAL)
+run_fastq_info : get.fastqs $(RAW_FASTA) $(RAW_QUAL)
 
 $(RAW_FASTA) :
 	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))"
@@ -95,7 +95,7 @@ ERR_SUMMARY = $(subst fasta,error.summary,$(PROC_MOCK_FA))
 ERR_MATRIX = $(subst fasta,error.matrix,$(PROC_MOCK_FA))
 ERR_QUAL = $(subst fasta,error.quality,$(PROC_MOCK_FA))
 
-single_read.error : $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
+single_read_error : $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
 
 $(ERR_SUMMARY) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
@@ -114,7 +114,28 @@ FOR_MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock2_S2_L001_R1_001.fastq Mock3_S3_L00
 FILE_STUB = $(subst fastq,,$(FOR_MOCK_FQ))
 
 QDIFF_CONTIG_FA = $(addsuffix .contigs.fasta,$(foreach P, $(PROC_RUNSPATH), $(foreach F, $(FILE_STUB), $(foreach D, $(DIFFS), $(P)/$(F)$(D)))))
+QDIFF_CONTIG_REP = $(addsuffix .contigs.report,$(foreach P, $(PROC_RUNSPATH), $(foreach F, $(FILE_STUB), $(foreach D, $(DIFFS), $(P)/$(F)$(D)))))
+
+
+build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
+
+#ugly
+$(QDIFF_CONTIG_FA) : $(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq)
+	FFASTQ = $(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq; \
+	RFASTQ = $(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq; \
+	QDEL = $(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@)))); \
+	sh titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
+
+$(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq)
+	FFASTQ = $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq; \
+	RFASTQ = $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq; \
+	QDEL = $(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@)))); \
+	sh titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 
 
-write.paper: get.references get.fastqs fastq.info single_read.error
+
+
+
+
+write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs
