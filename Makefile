@@ -27,18 +27,21 @@ print-%:
 
 
 # We need to get our reference files:
-get.references: silva.bacteria.fasta HMP_MOCK.fasta HMP_MOCK.align
+#Location of reference files
+REFS = data/references/
 
-silva.bacteria.fasta :
-	wget -N http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz data/references/; \
+get.references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
+
+$(REFS)silva.bacteria.fasta :
+	wget -N -P data/references/ http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
 	tar xvzf Silva.nr_v119.tgz; \
 	mothur "#get.lineage(fasta=silva.nr_v119.align, taxonomy=silva.nr_v119.tax, taxon=Bacteria)"; \
 	mv silva.nr_v119.pick.align silva.bacteria.align;
 
-HMP_MOCK.fasta :
-	wget -N http://www.mothur.org/MiSeqDevelopmentData/HMP_MOCK.fasta data/references
+$(REFS)HMP_MOCK.fasta :
+	wget -N -P data/references http://www.mothur.org/MiSeqDevelopmentData/HMP_MOCK.fasta
 
-HMP_MOCK.align : HMP_MOCK.fasta
+$(REFS)HMP_MOCK.align : HMP_MOCK.fasta
 	mothur "#align.seqs(fasta=data/references/HMP_MOCK.fasta, reference=data/references/silva.bacteria.align)"
 
 
@@ -94,4 +97,4 @@ $(ERRQUAL) :
 
 
 
-write.paper: get.fastqs fastq.info single_read.error
+write.paper: get.references get.fastqs fastq.info single_read.error
