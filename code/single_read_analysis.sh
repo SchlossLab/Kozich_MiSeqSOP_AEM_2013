@@ -34,7 +34,7 @@ if [[ $FASTA == "*R1*" ]]; then
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
         seq.error(fasta=current, qfile=$QUAL, reference=HMP_MOCK.filter.fasta);"
 else
-    mothur "#setdir(folder=$OUTPUT_PATH);
+    mothur "#set.dir(folder=$OUTPUT_PATH);
         reverse.seqs(fasta=$FASTA, qfile=$QUAL)
         align.seqs(fasta=current, reference=../data/references/HMP_MOCK.align, processors=12)
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
