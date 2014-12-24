@@ -1,13 +1,7 @@
-# Location of raw data directories
-RAWDATA = data/raw/
-
 # Names of Runs - would be nice to automate this with info from the server
 RUNS = 121203 121205 121207 130125 130211 130220 130306 130401 130403 130417 130422
 
-# Location of runs' data on local machine
-RUNSPATH = $(addprefix $(RAWDATA),$(RUNS))
-
-# The 24 fastq files that come with eachh run
+# The 24 fastq files that come with each run
 FASTQS = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_001.fastq \
 	Mock2_S2_L001_R2_001.fastq Mock3_S3_L001_R1_001.fastq Mock3_S3_L001_R2_001.fastq \
 	Human1_S7_L001_R1_001.fastq Human1_S7_L001_R2_001.fastq Human2_S8_L001_R1_001.fastq \
@@ -16,6 +10,14 @@ FASTQS = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_
 	Mouse2_S11_L001_R2_001.fastq Mouse3_S12_L001_R1_001.fastq Mouse3_S12_L001_R2_001.fastq \
 	Soil1_S4_L001_R1_001.fastq Soil1_S4_L001_R2_001.fastq Soil2_S5_L001_R1_001.fastq \
 	Soil2_S5_L001_R2_001.fastq Soil3_S6_L001_R1_001.fastq Soil3_S6_L001_R2_001.fastq
+
+# Location of raw runs' data on local machine
+RAW_DATA = data/raw/
+RAW_RUNSPATH = $(addprefix $(RAW_DATA),$(RUNS))
+
+# Location of processed runs' data on local machine
+PROC_DATA = data/process/
+PROC_RUNSPATH = $(addprefix $(PROC_DATA),$(RUNS))
 
 
 # Utility function
@@ -48,11 +50,11 @@ $(REFS)HMP_MOCK.align : $(REFS)HMP_MOCK.fasta
 
 # Let's get the raw data
 # The cross product of all runs and fastq files
-RAWFASTQ = $(foreach R, $(RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
+ALL_FASTQ = $(foreach R, $(RAW_RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
 
-get.fastqs : $(RAWFASTQ)
+get.fastqs : $(ALL_FASTQ)
 
-$(RAWFASTQ) :
+$(ALL_FASTQ) :
 	wget -N -P $(dir $@) http://www.mothur.org/MiSeqDevelopmentData/$(patsubst data/raw/%/,%, $(dir $@)).tar
 	tar xvf $(dir $@)*.tar -C $(dir $@); \
 	bunzip2 -f $(dir $@)*bz2; \
@@ -61,40 +63,57 @@ $(RAWFASTQ) :
 
 
 # Let's open up all of the fastq files
-RAWFASTA = $(subst fastq,fasta,$(RAWFASTQ))
-RAWQUAL = $(subst fastq,qual,$(RAWFASTQ))
+RAW_FASTA = $(subst fastq,fasta,$(ALL_FASTQ))
+RAW_QUAL = $(subst fastq,qual,$(ALL_FASTQ))
 
-fastq.info : get.fastqs $(RAWFASTA) $(RAWQUAL)
+fastq.info : get.fastqs $(RAW_FASTA) $(RAW_QUAL)
 
-$(RAWFASTA) :
+$(RAW_FASTA) :
 	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))"
 
-$(RAWQUAL) :
+$(RAW_QUAL) :
 	mothur "#fastq.info(fastq=$(subst qual,fastq,$@))"
 
 
 
+# Now we're going to start working with the Mock community data...
+
+# The mock community fastq files
+MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_001.fastq \
+		Mock2_S2_L001_R2_001.fastq Mock3_S3_L001_R1_001.fastq Mock3_S3_L001_R2_001.fastq
+
+# Get the names of the Mock community fastq files
+RAW_MOCK_FQ = $(foreach R, $(RAW_RUNSPATH), $(foreach F, $(MOCK_FQ), $(R)/$(F)))
+RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
+
+
 # We want to get the error data for the individual Mock community sequence reads
 # from each sequencing run
-PROCFASTA = $(subst raw,process,$(RAWFASTA))
-ERRSUMMARY = $(subst fasta,error.summary,$(PROCFASTA))
-ERRMATRIX = $(subst fasta,error.matrix,$(PROCFASTA))
-ERRQUAL = $(subst fasta,error.quality,$(PROCFASTA))
+
+PROC_MOCK_FA = $(subst raw,process,$(RAW_MOCK_FA))
+ERR_SUMMARY = $(subst fasta,error.summary,$(PROC_MOCK_FA))
+ERR_MATRIX = $(subst fasta,error.matrix,$(PROC_MOCK_FA))
+ERR_QUAL = $(subst fasta,error.quality,$(PROC_MOCK_FA))
 
 single_read.error : $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
 
-$(ERRSUMMARY) : get.references fastq.info
+$(ERR_SUMMARY) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERRMATRIX) : get.references fastq.info
+$(ERR_MATRIX) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERRQUAL) : get.references fastq.info
+$(ERR_QUAL) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
 
 
+# We want to build contigs with between 0 and 10 quality score differences
+DIFFS = 1 2 3 4 5 6 7 8 9 10
+FOR_MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock2_S2_L001_R1_001.fastq Mock3_S3_L001_R1_001.fastq
+FILE_STUB = $(subst fastq,,$(FOR_MOCK_FQ))
 
+QDIFF_CONTIG_FA = $(addsuffix .contigs.fasta,$(foreach P, $(PROC_RUNSPATH), $(foreach F, $(FILE_STUB), $(foreach D, $(DIFFS), $(P)/$(F)$(D)))))
 
 
 
