@@ -28,15 +28,15 @@ OUTPUT_PATH=$(echo $FASTA | sed -e s/Mock.*fasta//)
 
 mkdir -p $OUTPUT_PATH
 
-if [[ $FASTA == "*R1*" ]]; then
+if [[ $FASTA == *"R1"* ]]; then
     mothur "#set.dir(output=$OUTPUT_PATH);
         align.seqs(fasta=$FASTA, reference=../data/references/HMP_MOCK.align, processors=12);
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
         seq.error(fasta=current, qfile=$QUAL, reference=HMP_MOCK.filter.fasta);"
 else
-    mothur "#set.dir(folder=$OUTPUT_PATH);
-        reverse.seqs(fasta=$FASTA, qfile=$QUAL)
-        align.seqs(fasta=current, reference=../data/references/HMP_MOCK.align, processors=12)
+    mothur "#set.dir(output=$OUTPUT_PATH);
+        reverse.seqs(fasta=$FASTA, qfile=$QUAL);
+        align.seqs(fasta=current, reference=../data/references/HMP_MOCK.align, processors=12);
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
         seq.error(fasta=current, qfile=current, reference=HMP_MOCK.filter.fasta);"
 fi
