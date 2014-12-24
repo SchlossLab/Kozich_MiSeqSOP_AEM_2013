@@ -119,8 +119,10 @@ QDIFF_CONTIG_REP = $(addsuffix .contigs.report,$(foreach P, $(PROC_RUNSPATH), $(
 
 build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
 
+TEST = $(basename $(subst .contigs.fasta, , $(subst process,raw,$(QDIFF_CONTIG_FA)))).fastq
+
 #ugly
-$(QDIFF_CONTIG_FA) : $(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq)
+$(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))))
 	FFASTQ = $(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq; \
 	RFASTQ = $(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq; \
 	QDEL = $(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@)))); \
