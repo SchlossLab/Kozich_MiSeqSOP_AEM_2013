@@ -24,7 +24,7 @@ FASTA=$1
 QUAL=$(echo $FASTA | sed -e s/fasta/qual/)
 
 #need to get the paths
-RAW_PATH=$(echo $FASTA | sed -e s/\/Mock.*fasta//)
+RAW_PATH=$(echo $FASTA | sed -e 's/\/Mock.*fasta//')
 PROCESS_PATH=$(echo $RAW_PATH | sed -e s/raw/process/)
 FILE_STUB=$(echo $FASTA | sed -e 's/.*\/\(Mock.*\).fasta/\1/')
 PROCESS_STUB=$PROCESS_PATH/$FILE_STUB
