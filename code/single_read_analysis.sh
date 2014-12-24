@@ -33,14 +33,15 @@ if [[ $FASTA == *"R1"* ]]; then
     mothur "#set.dir(output=$OUTPUT_PATH);
         align.seqs(fasta=$FASTA, reference=data/references/HMP_MOCK.align, processors=12);
         filter.seqs(fasta=current-data/references/HMP_MOCK.align, vertical=T);
-        seq.error(fasta=current, qfile=$QUAL, reference=HMP_MOCK.filter.fasta);"
+        seq.error(fasta=current, qfile=$QUAL, report=current, reference=data/references/HMP_MOCK.filter.fasta);"
 else
     mothur "#set.dir(output=$OUTPUT_PATH);
         reverse.seqs(fasta=$FASTA, qfile=$QUAL);
         align.seqs(fasta=current, reference=data/references/HMP_MOCK.align, processors=12);
         filter.seqs(fasta=current-data/references/HMP_MOCK.align, vertical=T);
-        seq.error(fasta=current, qfile=current, reference=HMP_MOCK.filter.fasta);"
+        seq.error(fasta=current, qfile=current, report=current, reference=data/references/HMP_MOCK.filter.fasta);"
 fi
 
 rm $(echo $FINAL_FASTA | sed -e s/fasta/align/)
 rm $(echo $FINAL_FASTA | sed -e s/fasta/filter.fasta/)
+rm $(echo $FINAL_FASTA | sed -e s/fasta/align.report/)
