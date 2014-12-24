@@ -62,13 +62,13 @@ single_read.error : fastq.info $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
 
 $(ERRSUMMARY) :
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
-	sh single_read_analysis.sh $FASTA
+	sh code/single_read_analysis.sh $FASTA
 $(ERRMATRIX) :
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
-	sh single_read_analysis.sh $FASTA
+	sh code/single_read_analysis.sh $FASTA
 $(ERRQUAL) :
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
-	sh single_read_analysis.sh $FASTA
+	sh code/single_read_analysis.sh $FASTA
 
 
 
