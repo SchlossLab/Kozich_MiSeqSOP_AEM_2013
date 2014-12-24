@@ -9,8 +9,8 @@
 # * Paired *.fastq files out of the data/raw/ directory
 #
 # Produces contigs formed between pairs of reads and a report:
-# * *.trim.contigs.fasta
-# * *.trim.contigs.report
+# * *.#.contigs.fasta
+# * *.#.contigs.report
 #
 ################################################################################
 
