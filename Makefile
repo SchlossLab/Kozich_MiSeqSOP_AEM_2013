@@ -45,6 +45,7 @@ $(REFS)HMP_MOCK.align : $(REFS)HMP_MOCK.fasta
 	mothur "#align.seqs(fasta=$(REFS)HMP_MOCK.fasta, reference=$(REFS)silva.bacteria.align)"
 
 
+
 # Let's get the raw data
 # The cross product of all runs and fastq files
 RAWFASTQ = $(foreach R, $(RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
@@ -73,22 +74,22 @@ $(RAWQUAL) :
 
 
 
-# We want to get the error data for the individual sequence reads from each
-# sequencing run
+# We want to get the error data for the individual Mock community sequence reads
+# from each sequencing run
 PROCFASTA = $(subst raw,process,$(RAWFASTA))
 ERRSUMMARY = $(subst fasta,error.summary,$(PROCFASTA))
 ERRMATRIX = $(subst fasta,error.matrix,$(PROCFASTA))
 ERRQUAL = $(subst fasta,error.quality,$(PROCFASTA))
 
-single_read.error : fastq.info $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
+single_read.error : $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
 
-$(ERRSUMMARY) :
+$(ERRSUMMARY) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERRMATRIX) :
+$(ERRMATRIX) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERRQUAL) :
+$(ERRQUAL) : get.references fastq.info
 	FASTA=$(subst error.summary,fasta,$(subst process,raw, $@)); \
 	sh code/single_read_analysis.sh $(FASTA)
 

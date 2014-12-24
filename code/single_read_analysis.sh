@@ -40,3 +40,7 @@ else
         filter.seqs(fasta=current-../data/references/HMP_MOCK.align, vertical=T);
         seq.error(fasta=current, qfile=current, reference=HMP_MOCK.filter.fasta);"
 fi
+
+PROCFASTA=$(echo $FASTA | sed -e s/raw/process/)
+rm $(echo $PROCFASTA | sed -e s/fasta/align/)
+rm $(echo $PROCFASTA | sed -e s/fasta/filter.fasta/)
