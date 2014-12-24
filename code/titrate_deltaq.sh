@@ -28,7 +28,7 @@ CONTIG_FASTA=$(echo $TEMP | sed -e s/fastq/trim.contigs.fasta/)
 CONTIG_REPORT=$(echo $TEMP | sed -e s/fastq/trim.contigs.report/)
 
 mv $CONTIG_FASTA $(echo $CONTIG_FASTA | sed -e s/trim/$DELTA_Q/)
-mv $CONTIG_REPORT $(echo $CONTIG_REPORT | sed -e s/trim/$DELTA_Q/)
+mv $CONTIG_REPORT $(echo $CONTIG_REPORT | sed -e s/contigs/$DELTA_Q.contigs/)
 
 #
 #   delete:
