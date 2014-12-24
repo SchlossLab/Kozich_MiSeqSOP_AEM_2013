@@ -16,11 +16,18 @@
 
 F_FASTQ=$1
 R_FASTQ=$2
+DELTA_Q=$3
 
 RAW_DIR=$(echo $F_FASTQ | sed -e s/Mock.*//)
 PROC_DIR=$(echo $RAW_DIR | sed -e s/raw/process/)
 
-mothur "#make.contigs(ffastq=$F_FASTQ, rfastq=$R_FASTQ, outputdir=$PROC_DIR, processors=12)"
+mothur "#make.contigs(ffastq=$F_FASTQ, rfastq=$R_FASTQ, outputdir=$PROC_DIR, deltaq=$DELTA_Q, processors=12)"
+
+CONTIG_FASTA=$(echo $F_FASTQ | sed -e s/fastq/trim.contigs.fasta/)
+CONTIG_REPORT=$(echo $F_FASTQ | sed -e s/fastq/trim.contigs.report/)
+
+mv $CONTIG_FASTA $(echo $CONTIG_FASTA | sed -e s/trim/$DELTA_Q/)
+mv $CONTIG_REPORT $(echo $CONTIG_REPORT | sed -e s/trim/$DELTA_Q/)
 
 #
 #   delete:
