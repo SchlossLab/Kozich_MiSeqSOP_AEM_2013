@@ -22,6 +22,7 @@ DELTA_Q=$3
 
 RAW_DIR=$(echo $F_FASTQ | sed -e s/Mock.*//)
 PROC_DIR=$(echo $RAW_DIR | sed -e s/raw/process/)
+mkdir -p $PROC_DIR
 
 mothur "#make.contigs(ffastq=$F_FASTQ, rfastq=$R_FASTQ, outputdir=$PROC_DIR, deltaq=$DELTA_Q, processors=12)"
 
