@@ -37,7 +37,7 @@ get_references: $(REFS)silva.bacteria.align $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOC
 $(REFS)silva.bacteria.align :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
 	tar xvzf $(REFS)Silva.nr_v119.tgz -C $(REFS) silva.nr_v119.align silva.nr_v119.tax; \
-	mothur "#get_lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
+	mothur "#get.lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
 	mv $(REFS)silva.nr_v119.pick.align $(REFS)silva.bacteria.align;
 
 $(REFS)HMP_MOCK.fasta :
@@ -109,7 +109,7 @@ $(ERR_QUAL) : get_references fastq.info
 
 
 # We want to build contigs with between 0 and 10 quality score differences
-DIFFS = 1 2 3 4 5 6 7 8 9 10
+DIFFS =  0 1 2 3 4 5 6 7 8 9 10
 FOR_MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock2_S2_L001_R1_001.fastq Mock3_S3_L001_R1_001.fastq
 FILE_STUB = $(subst fastq,,$(FOR_MOCK_FQ))
 
