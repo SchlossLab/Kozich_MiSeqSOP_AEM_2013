@@ -95,7 +95,7 @@ ERR_SUMMARY = $(subst fasta,error.summary,$(PROC_MOCK_FA))
 ERR_MATRIX = $(subst fasta,error.matrix,$(PROC_MOCK_FA))
 ERR_QUAL = $(subst fasta,error.quality,$(PROC_MOCK_FA))
 
-single_read_error : $(ERRSUMMARY) $(ERRMATRIX) $(ERRQUAL)
+single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
 $(ERR_SUMMARY) : get_references run_fastq_info
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))) \
@@ -104,6 +104,9 @@ $(ERR_MATRIX) : get_references run_fastq_info
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ERR_QUAL) : get_references run_fastq_info
+	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
+	sh code/single_read_analysis.sh $(FASTA)
+$(ALIGN_SUMMARY) : get_references run_fastq_info
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
 
