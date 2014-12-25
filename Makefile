@@ -121,15 +121,15 @@ build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
 
 #ugly
 $(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))))
-	@ $(eval FFASTQ=$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq); \
-	@ $(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq); \
-	@ $(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))); \
+	$(eval FFASTQ=$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq) \
+	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq) \
+	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))) \
 	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 $(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq)
-	@ $(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq); \
-	@ $(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq); \
-	@ $(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))); \
+	$(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) \
+	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq) \
+	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))) \
 	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 
