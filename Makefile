@@ -32,9 +32,9 @@ print-%:
 #Location of reference files
 REFS = data/references/
 
-get_references: $(REFS)silva.bacteria.fasta $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
+get_references: $(REFS)silva.bacteria.align $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 
-$(REFS)silva.bacteria.fasta :
+$(REFS)silva.bacteria.align :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
 	tar xvzf $(REFS)Silva.nr_v119.tgz -C $(REFS) silva.nr_v119.align silva.nr_v119.tax; \
 	mothur "#get_lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
