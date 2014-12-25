@@ -136,9 +136,18 @@ $(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,
 	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 
+# Now we want to take those contigs and get their alignment positions in the
+# reference alignment space and quantify the error rate
+CONTIG_ALIGN_SUMMARY = $(subst fasta,summary,$(QDIFF_CONTIG_FA))
+CONTIG_ERROR_SUMMARY = $(subst fasta,error.summary,$(QDIFF_CONTIG_FA))
+
+contig_error_rate : $(CONTIG_ALIGN_SUMMARY) $(CONTIG_ERROR_SUMMARY)
+
+$(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@)
+	sh code/contig_error_analysis.sh $^
+
+$(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@)
+	sh code/contig_error_analysis.sh $^
 
 
-
-
-
-write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs
+write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
