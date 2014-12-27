@@ -97,16 +97,16 @@ ERR_QUAL = $(subst fasta,error.quality,$(PROC_MOCK_FA))
 
 single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
-$(ERR_SUMMARY) : get_references run_fastq_info
+$(ERR_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))) \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERR_MATRIX) : get_references run_fastq_info
+$(ERR_MATRIX) : get_references run_fastq_info code/single_read_analysis.sh
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ERR_QUAL) : get_references run_fastq_info
+$(ERR_QUAL) : get_references run_fastq_info code/single_read_analysis.sh
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
-$(ALIGN_SUMMARY) : get_references run_fastq_info
+$(ALIGN_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
 	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
 
@@ -123,13 +123,13 @@ QDIFF_CONTIG_REP = $(addsuffix .contigs.report,$(foreach P, $(PROC_RUNSPATH), $(
 build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
 
 #ugly
-$(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))))
+$(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))))) code/titrate_deltaq.sh
 	$(eval FFASTQ=$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))) \
 	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
-$(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq)
+$(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) code/titrate_deltaq.sh
 	$(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))) \
@@ -143,11 +143,11 @@ CONTIG_ERROR_SUMMARY = $(subst fasta,error.summary,$(QDIFF_CONTIG_FA))
 
 contig_error_rate : $(CONTIG_ALIGN_SUMMARY) $(CONTIG_ERROR_SUMMARY)
 
-$(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@)
-	sh code/contig_error_analysis.sh $^
+$(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@) code/contig_error_analysis.sh
+	sh code/contig_error_analysis.sh $(subst summary,fasta,$@)
 
-$(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@)
-	sh code/contig_error_analysis.sh $^
+$(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_analysis.sh
+	sh code/contig_error_analysis.sh $(subst error.summary,fasta,$@)
 
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
