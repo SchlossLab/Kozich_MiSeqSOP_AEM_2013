@@ -16,7 +16,7 @@ cd $PBS_O_WORKDIR
 
 NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
 
-make write.paper
+make get_references
 
 echo "qsub working directory absolute is"
 echo $PBS_O_WORKDIR
