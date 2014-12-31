@@ -179,9 +179,9 @@ $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_anal
 # a qdel of 6...
 DELTA_Q = 6
 
-build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh 
-
 FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F))
+
+build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh 
 
 $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
 	sh code/build_final_contigs.sh $(DELTA_Q)  \
