@@ -149,5 +149,11 @@ $(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@) code/contig_error_analysis.s
 $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_analysis.sh
 	sh code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
 
+# Need to...
+# *	id the different regions
+# *	separate by region
+# *	align/filter (v=T, t=.)/unique/precluster
+# *
+
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
