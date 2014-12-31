@@ -149,8 +149,14 @@ PAIRED_V34_ACCNOS = $(subst summary,v34.accnos,$(PAIRED_TEMP))
 PAIRED_V4_ACCNOS = $(subst summary,v4.accnos,$(PAIRED_TEMP))
 PAIRED_V45_ACCNOS = $(subst summary,v45.accnos,$(PAIRED_TEMP))
 
-PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
 PAIRED_REGION = $(subst summary,region,$(PAIRED_TEMP))
+PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
+
+TEST1 = $(subst region,summary, $(PAIRED_REGION)))
+TEST2 = $(subst R1_001,R2_001.rc, $(subst region,summary, $(PAIRED_REGION)))))
+
+$(PAIRED_REGION) : code/split_error_summary.R $(subst region,summary, $@)) $(subst R1_001,R2_001.rc, $(subst region,summary, $@))))
+	R -e 'source("code/split_error_summary.R"); reads_split("$(subst region,summary, $@))", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))))")'
 
 $(PAIRED_ACCNOS) : code/split_error_summary.R $(addsuffix .summary, $(basename $(subst .accnos,, $@))) $(subst R1_001,R2_001.rc, $(addsuffix .summary, $(basename $(subst .accnos,, $@))))
 	R -e 'source("code/split_error_summary.R"); reads_split("$(addsuffix .summary,$(basename $(subst .accnos,, $@)))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
