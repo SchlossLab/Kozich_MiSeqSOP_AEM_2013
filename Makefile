@@ -214,10 +214,10 @@ CONTIG_ACCNOS = $(CONTIG_V34_ACCNOS) $(CONTIG_V4_ACCNOS) $(CONTIG_V45_ACCNOS)
 get_contig_region : $(CONTIG_REGION) $(CONTIG_ACCNOS)
 
 $(CONTIG_REGION) : code/split_error_summary.R $(subst region,summary, $@)
-	R -e 'source("code/split_error_summary.R"); contig_split("$(subst region,summary, $@)")'
+	R -e 'source("code/split_error_summary.R"); contig_split("$(strip $(subst region,summary, $@))")'
 
 $(CONTIG_ACCNOS) : code/split_error_summary.R $(subst accnos,summary, $@)
-	R -e 'source("code/split_error_summary.R"); contig_split("$(subst accnos,summary, $@)")'
+	R -e 'source("code/split_error_summary.R"); contig_split("$(strip $(subst accnos,summary, $@))")'
 
 
 
