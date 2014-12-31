@@ -86,8 +86,9 @@ $(RAW_QUAL) :
 # Now we're going to start working with the Mock community data...
 
 # The mock community fastq files
-MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_001.fastq \
-		Mock2_S2_L001_R2_001.fastq Mock3_S3_L001_R1_001.fastq Mock3_S3_L001_R2_001.fastq
+MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq \
+		Mock2_S2_L001_R1_001.fastq Mock2_S2_L001_R2_001.fastq \
+		Mock3_S3_L001_R1_001.fastq Mock3_S3_L001_R2_001.fastq
 
 # Get the names of the Mock community fastq files
 RAW_MOCK_FQ = $(foreach R, $(RAW_RUNSPATH), $(foreach F, $(MOCK_FQ), $(R)/$(F)))
@@ -97,10 +98,10 @@ RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
 # We want to get the error data for the individual Mock community sequence reads
 # from each sequencing run
 
-PROC_MOCK_FA = $(subst raw,process,$(RAW_MOCK_FA))
-ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_FA))
-ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_FA))
-ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_FA))
+PROC_MOCK_TEMP = $(subst R2_001,R2_001.rc, $(subst raw,process,$(RAW_MOCK_FA)))
+ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_TEMP))
+ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_TEMP))
+ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 
 single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
@@ -118,7 +119,10 @@ $(ALIGN_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
 	sh code/single_read_analysis.sh $(FASTA)
 
 
-# We want to build contigs with between 0 and 10 quality score differences
+
+# We want to build contigs with between 0 and 10 quality score differences using
+# the mock community libraries
+
 DIFFS =  0 1 2 3 4 5 6 7 8 9 10
 FOR_MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock2_S2_L001_R1_001.fastq Mock3_S3_L001_R1_001.fastq
 FILE_STUB = $(subst fastq,,$(FOR_MOCK_FQ))
