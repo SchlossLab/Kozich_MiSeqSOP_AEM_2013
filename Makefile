@@ -26,6 +26,8 @@ RAW_RUNSPATH = $(addprefix $(RAW_DATA),$(RUNS))
 PROC_DATA = data/process/
 PROC_RUNSPATH = $(addprefix $(PROC_DATA),$(RUNS))
 
+# Location of references
+REFS = data/references/
 
 # Utility function
 print-%:
@@ -37,7 +39,7 @@ print-%:
 # We need to find the start and end coordinates for each region within the
 # HMP_MOCK reference alignment
 
-data/references/start_stop.positions : code/get_region_coordinates.sh data/references/HMP_MOCK.align
+$(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.align
 	sh code/get_region_coordinates.sh
 
 
@@ -177,6 +179,8 @@ $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_anal
 # a qdel of 6...
 DELTA_Q = 6
 
+build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh 
+
 FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F))
 
 $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
@@ -192,4 +196,4 @@ $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1
 # *	align/filter (v=T, t=.)/unique/precluster
 
 
-write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
+write.paper: get_references $(REFS)start_stop.positions get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
