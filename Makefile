@@ -165,16 +165,22 @@ $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_anal
 
 # Now we want to make sure we have all of the contigs for the 12 libraries using
 # a qdel of 6...
+DELTA_Q = 6
 
 FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), \
 						 $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F))
 
+$(FINAL_CONTIGS) : $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $(FINAL_CONTIGS))) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $(FINAL_CONTIGS)))
+	sh code/build_final_contigs.sh $(DELTA_Q) \
+		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $(FINAL_CONTIGS))) \
+		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $(FINAL_CONTIGS)))
+	
 
 # Need to...
+# * make contigs
 # *	id the different regions
 # *	separate by region
 # *	align/filter (v=T, t=.)/unique/precluster
-# *
 
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
