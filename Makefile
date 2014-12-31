@@ -34,6 +34,16 @@ print-%:
 
 # Let's get ready to rumble...
 
+# We need to find the start and end coordinates for each region within the
+# HMP_MOCK reference alignment
+
+data/references/start_stop.positions : code/get_region_coordinates.sh data/references/HMP_MOCK.align
+	sh code/get_region_coordinates.sh
+
+
+
+
+
 
 # We need to get our reference files:
 #Location of reference files
@@ -175,15 +185,9 @@ $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1
 		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
 	
 
-# We need to find the start and end coordinates for each region within the
-# HMP_MOCK reference alignment
-
-data/references/start_stop.positions : code/get_region_coordinates.sh
-	sh code/get_region_coordinates.sh
 
 
 # Need to...
-# *	id the different regions
 # *	separate by region
 # *	align/filter (v=T, t=.)/unique/precluster
 
