@@ -170,7 +170,8 @@ DELTA_Q = 6
 FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), \
 						 $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F))
 
-$(FINAL_CONTIGS) : $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $(FINAL_CONTIGS))) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $(FINAL_CONTIGS)))
+
+$(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $(FINAL_CONTIGS))) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $(FINAL_CONTIGS)))
 	sh code/build_final_contigs.sh $(DELTA_Q) \
 		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $(FINAL_CONTIGS))) \
 		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $(FINAL_CONTIGS)))
