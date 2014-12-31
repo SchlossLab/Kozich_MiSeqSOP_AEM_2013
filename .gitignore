@@ -3,6 +3,7 @@
 .RData
 data/raw/
 
+*.qsub*
 *~
 
 mothur*logfile
