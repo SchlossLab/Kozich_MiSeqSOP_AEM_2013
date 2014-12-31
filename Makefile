@@ -172,9 +172,7 @@ FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), \
 
 
 $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
-	sh code/build_final_contigs.sh $(DELTA_Q) \
-		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) \
-		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@)
+	sh code/build_final_contigs.sh $(DELTA_Q)  $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@)
 	
 
 # Need to...
