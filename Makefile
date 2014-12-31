@@ -221,6 +221,8 @@ $(CONTIG_ACCNOS) : code/split_error_summary.R $(subst accnos,summary, $@)
 
 
 
+
+
 # Now we want to make sure we have all of the contigs for the 12 libraries using
 # a qdel of 6...
 DELTA_Q = 6
@@ -240,12 +242,17 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 # screen.seqs and the positions that we determined earlier 
 # [$(REFS)start_stop.positions]
 
-
-
-
 # Need to...
+# * screen.seqs
+# * align
 # *	separate by region
-# *	align/filter (v=T, t=.)/unique/precluster
+# *	filter (v=T, t=.)
+# * unique
+# * precluster
+# * chimera.uchime
+# * remove.seqs
+# * dist.seqs
+# * cluster
 
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate
