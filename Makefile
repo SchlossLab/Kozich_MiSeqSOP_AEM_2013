@@ -190,10 +190,14 @@ $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1
 	
 
 
+# Now we want to split the files into the three different regions using
+# screen.seqs and the positions that we determined earlier 
+# [$(REFS)start_stop.positions]
+
 
 # Need to...
 # *	separate by region
 # *	align/filter (v=T, t=.)/unique/precluster
 
 
-write.paper: get_references $(REFS)start_stop.positions get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
+write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate

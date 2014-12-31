@@ -44,7 +44,7 @@ if [[ $FASTA == *"R1"* ]]; then
         rm $PROCESS_STUB.align.report
         rm $PROCESS_STUB.filter.fasta
 else
-	QUAL_RC=$(echo $QUAL | sed -e s/qual/rc.qual/)
+	QUAL_RC=$(echo $QUAL | sed -e s/qual/rc.qual/ | sed -e s/raw/process/)
     mothur "#set.dir(output=$PROCESS_PATH/);
         reverse.seqs(fasta=$FASTA, qfile=$QUAL);
         align.seqs(fasta=current, reference=data/references/HMP_MOCK.align, processors=12);
@@ -52,7 +52,7 @@ else
         filter.seqs(fasta=current-data/references/HMP_MOCK.align, vertical=T);
         seq.error(fasta=current, qfile=$QUAL_RC, report=$PROCESS_STUB.rc.align.report, reference=$PROCESS_PATH/HMP_MOCK.filter.fasta);"
 
-#        rm $PROCESS_STUB.rc.align
-#        rm $PROCESS_STUB.rc.align.report
-#        rm $PROCESS_STUB.rc.filter.fasta
+        rm $PROCESS_STUB.rc.align
+        rm $PROCESS_STUB.rc.align.report
+        rm $PROCESS_STUB.rc.filter.fasta
 fi
