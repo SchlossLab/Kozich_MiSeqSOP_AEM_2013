@@ -98,23 +98,23 @@ RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
 # from each sequencing run
 
 PROC_MOCK_FA = $(subst raw,process,$(RAW_MOCK_FA))
-ERR_SUMMARY = $(subst fasta,error.summary,$(PROC_MOCK_FA))
-ERR_MATRIX = $(subst fasta,error.matrix,$(PROC_MOCK_FA))
-ERR_QUAL = $(subst fasta,error.quality,$(PROC_MOCK_FA))
+ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_FA))
+ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_FA))
+ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_FA))
 
 single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
 $(ERR_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))) \
+	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ERR_MATRIX) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
+	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ERR_QUAL) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
+	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ALIGN_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst error.summary,fasta,$(subst process,raw, $@))); \
+	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))); \
 	sh code/single_read_analysis.sh $(FASTA)
 
 
