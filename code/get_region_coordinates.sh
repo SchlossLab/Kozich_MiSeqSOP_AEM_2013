@@ -11,7 +11,7 @@
 # Dependencies...
 # * HMP_MOCK.align
 #
-# Produces ...
+# Produces data/references/start_stop.positions
 #
 ################################################################################
 
