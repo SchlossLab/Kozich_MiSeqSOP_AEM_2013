@@ -155,10 +155,11 @@ PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
 get_paired_region : $(PAIRED_REGION) $(PAIRED_ACCNOS)
 
 $(PAIRED_REGION) : code/split_error_summary.R $(subst region,summary, $@) $(subst R1_001,R2_001.rc, $(subst region,summary, $@))
-	R -e 'source("code/split_error_summary.R"); reads_split("$(subst region,summary, $@)", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))")'
+	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(subst region,summary, $@))", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))")'
 
 $(PAIRED_ACCNOS) : code/split_error_summary.R $(addsuffix .summary, $(basename $(subst .accnos,, $@))) $(subst R1_001,R2_001.rc, $(addsuffix .summary, $(basename $(subst .accnos,, $@))))
-	R -e 'source("code/split_error_summary.R"); reads_split("$(addsuffix .summary,$(basename $(subst .accnos,, $@)))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
+	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(addsuffix .summary,$(basename $(subst .accnos,, $@))))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
+
 
 
 # We want to build contigs with between 0 and 10 quality score differences using
@@ -216,7 +217,7 @@ $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1
 	sh code/build_final_contigs.sh $(DELTA_Q)  \
 		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) \
 		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
-	
+
 
 
 # Now we want to split the files into the three different regions using
@@ -229,4 +230,4 @@ $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1
 # *	align/filter (v=T, t=.)/unique/precluster
 
 
-write.paper: get_references get_fastqs run_fastq_info single_read_error build_mock_contigs contig_error_rate
+write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate
