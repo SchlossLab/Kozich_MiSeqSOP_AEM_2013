@@ -203,6 +203,22 @@ $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_anal
 	sh code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
 
 
+# Now we need to get the region that each contig belongs to...
+CONTIG_V34_ACCNOS = $(subst summary,v34.accnos,$(CONTIG_ALIGN_SUMMARY))
+CONTIG_V4_ACCNOS = $(subst summary,v4.accnos,$(CONTIG_ALIGN_SUMMARY))
+CONTIG_V45_ACCNOS = $(subst summary,v45.accnos,$(CONTIG_ALIGN_SUMMARY))
+
+CONTIG_REGION = $(subst summary,region,$(CONTIG_ALIGN_SUMMARY))
+CONTIG_ACCNOS = $(CONTIG_V34_ACCNOS) $(CONTIG_V4_ACCNOS) $(CONTIG_V45_ACCNOS)
+
+get_contig_region : $(CONTIG_REGION) $(CONTIG_ACCNOS)
+
+$(CONTIG_REGION) : code/split_error_summary.R $(subst region,summary, $@)
+	R -e 'source("code/split_error_summary.R"); contig_split("$(subst region,summary, $@)")'
+
+$(CONTIG_ACCNOS) : code/split_error_summary.R $(subst accnos,summary, $@)
+	R -e 'source("code/split_error_summary.R"); contig_split("$(subst accnos,summary, $@)")'
+
 
 
 # Now we want to make sure we have all of the contigs for the 12 libraries using
@@ -212,15 +228,19 @@ FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fastq,6.cont
 
 build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh 
 
+# excluding the Mocks, which we have a rule for above...
 $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
 	sh code/build_final_contigs.sh $(DELTA_Q)  \
 		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) \
 		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
 
 
+
 # Now we want to split the files into the three different regions using
 # screen.seqs and the positions that we determined earlier 
 # [$(REFS)start_stop.positions]
+
+
 
 
 # Need to...
