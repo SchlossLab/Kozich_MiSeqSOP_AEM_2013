@@ -2,14 +2,21 @@
 RUNS = 121203 121205 121207 130125 130211 130220 130306 130401 130403 130417 130422
 
 # The 24 fastq files that come with each run
-FASTQS = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R1_001.fastq \
-	Mock2_S2_L001_R2_001.fastq Mock3_S3_L001_R1_001.fastq Mock3_S3_L001_R2_001.fastq \
-	Human1_S7_L001_R1_001.fastq Human1_S7_L001_R2_001.fastq Human2_S8_L001_R1_001.fastq \
-	Human2_S8_L001_R2_001.fastq Human3_S9_L001_R1_001.fastq Human3_S9_L001_R2_001.fastq \
-	Mouse1_S10_L001_R1_001.fastq Mouse1_S10_L001_R2_001.fastq Mouse2_S11_L001_R1_001.fastq \
-	Mouse2_S11_L001_R2_001.fastq Mouse3_S12_L001_R1_001.fastq Mouse3_S12_L001_R2_001.fastq \
-	Soil1_S4_L001_R1_001.fastq Soil1_S4_L001_R2_001.fastq Soil2_S5_L001_R1_001.fastq \
-	Soil2_S5_L001_R2_001.fastq Soil3_S6_L001_R1_001.fastq Soil3_S6_L001_R2_001.fastq
+F_FASTQS = Mock1_S1_L001_R1_001.fastq Mock2_S2_L001_R1_001.fastq \
+	Mock3_S3_L001_R1_001.fastq Human1_S7_L001_R1_001.fastq \
+	Human2_S8_L001_R1_001.fastq Human3_S9_L001_R1_001.fastq \
+	Mouse1_S10_L001_R1_001.fastq Mouse2_S11_L001_R1_001.fastq \
+	Mouse3_S12_L001_R1_001.fastq Soil1_S4_L001_R1_001.fastq \
+	Soil2_S5_L001_R1_001.fastq Soil3_S6_L001_R1_001.fastq
+
+R_FASTQS = Mock1_S1_L001_R2_001.fastq Mock2_S2_L001_R2_001.fastq \
+	Mock3_S3_L001_R2_001.fastq Human1_S7_L001_R2_001.fastq \
+	Human2_S8_L001_R2_001.fastq Human3_S9_L001_R2_001.fastq \
+	Mouse1_S10_L001_R2_001.fastq Mouse2_S11_L001_R2_001.fastq \
+	Mouse3_S12_L001_R2_001.fastq Soil1_S4_L001_R2_001.fastq \
+	Soil2_S5_L001_R2_001.fastq Soil3_S6_L001_R2_001.fastq
+
+FASTQS = $(F_FASTQS) $(R_FASTQS)
 
 # Location of raw runs' data on local machine
 RAW_DATA = data/raw/
@@ -148,6 +155,16 @@ $(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@) code/contig_error_analysis.s
 
 $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_analysis.sh
 	sh code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
+
+
+
+
+# Now we want to make sure we have all of the contigs for the 12 libraries using
+# a qdel of 6...
+
+FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), \
+						 $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F))
+
 
 # Need to...
 # *	id the different regions
