@@ -106,16 +106,16 @@ ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
 $(ERR_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ERR_MATRIX) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))); \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))); \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ERR_QUAL) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))); \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))); \
 	sh code/single_read_analysis.sh $(FASTA)
 $(ALIGN_SUMMARY) : get_references run_fastq_info code/single_read_analysis.sh
-	$(eval FASTA=$(subst filter.error.summary,fasta,$(subst process,raw, $@))); \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))); \
 	sh code/single_read_analysis.sh $(FASTA)
 
 
