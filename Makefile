@@ -143,6 +143,20 @@ $(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	sh code/single_read_analysis.sh $(FASTA)
 
 
+# Now we want to know which region each fragment belongs to
+PAIRED_TEMP = $(sort $(subst R2_001.rc,R1_001,$(ALIGN_SUMMARY)))
+PAIRED_V34_ACCNOS = $(subst summary,v34.accnos,$(PAIRED_TEMP))
+PAIRED_V4_ACCNOS = $(subst summary,v4.accnos,$(PAIRED_TEMP))
+PAIRED_V45_ACCNOS = $(subst summary,v45.accnos,$(PAIRED_TEMP))
+
+PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
+PAIRED_REGION = $(subst summary,region,$(PAIRED_TEMP))
+
+TEST = $(addsuffix .summary, $(basename $(subst .accnos,, $(PAIRED_ACCNOS))))
+TEST2 = $(subst R1_001,R2_001.rc, $(addsuffix .summary, $(basename $(subst .accnos,, $(PAIRED_ACCNOS)))))
+
+$(PAIRED_ACCNOS) : code/split_error_summary.R
+R -e 'source("split_error_summary.R"); reads_split($(addsuffix .summary, $(basename $(subst .accnos,, $@))), $(subst R1_001,R2_001.rc, $(addsuffix .summary, $(basename $(subst .accnos,, $@)))) )'
 
 # We want to build contigs with between 0 and 10 quality score differences using
 # the mock community libraries
