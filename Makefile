@@ -178,9 +178,9 @@ $(FINAL_CONTIGS) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1
 # We need to find the start and end coordinates for each region within the
 # HMP_MOCK reference alignment
 
-data/references/start_stop.positions : get_region_coordinates.sh
-	sh get_region_coordinates.sh
-	
+data/references/start_stop.positions : code/get_region_coordinates.sh
+	sh code/get_region_coordinates.sh
+
 
 # Need to...
 # *	id the different regions
