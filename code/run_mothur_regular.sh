@@ -127,5 +127,5 @@ rm $CONTIG_STUB.good.fasta
 # $CONTIG_STUB.v*.filter.unique.precluster.fasta #the unique, filtered, region-specific alignment, post preclustering
 # $CONTIG_STUB.v*.filter.names		#the unique, filtered, region-specific alignment
 # $CONTIG_STUB.v*.filter.unique.fasta #the unique, filtered, region-specific alignment
-# $CONTIG_STUB.report	#from make.contigs
-# $CONTIG_STUB.fasta	#from make.contigs
+# $CONTIG_STUB.report	#from make.contigs - not create here
+# $CONTIG_STUB.fasta	#from make.contigs - not create here
