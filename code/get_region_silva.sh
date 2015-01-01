@@ -49,7 +49,7 @@ run_mothur $V45_START $V45_END v45
 
 V45_START=$(grep "V35" $POS_REF | cut -f 2 -d " ")
 V45_END=$(grep "V35" $POS_REF | cut -f 3 -d " ")
-run_mothur $V35_START $V35_END v35
+run_mothur $V34_START $V45_END v35
 
 # garbage collection
 rm data/references/silva.bacteria.pcr.align

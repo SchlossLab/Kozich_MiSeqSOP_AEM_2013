@@ -51,11 +51,11 @@ $(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.ali
 #Location of reference files
 REFS = data/references/
 
-get_references: $(REFS)silva.v34.align $(REFS)silva.v4.align $(REFS)silva.v45.align \
-				$(REFS)silva.v35.align $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
+get_references: $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 
-$(REFS)silva.v%.align : $(REFS)silva.bacteria.align code/get_region_silva.sh $(REFS)start_stop.positions
-	sh code/get_region_silva.sh
+# turned out this wasn't actually needed...
+# $(REFS)silva.v%.align : $(REFS)silva.bacteria.align code/get_region_silva.sh $(REFS)start_stop.positions
+# 	sh code/get_region_silva.sh
 
 $(REFS)silva.bacteria.align :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
