@@ -261,7 +261,7 @@ FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary
 
 get_full_summary : $(FULL_SUMMARY) code/run_mothur_regular.sh
 
-$(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@))) code/run_mothur_regular.sh
-	sh code/run_mothur_regular.sh $<
+$(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
+	sh code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary
