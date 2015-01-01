@@ -26,7 +26,7 @@ ALIGN_REF=data/references/silva.bacteria.align
 
 # we will remove any contig with an N in it; unique them, and then align them
 # to the full silva.bacteria.align reference 
-mothur "screen.seqs(fasta=$CONTIG_FASTA, maxambig=0, processors=12);
+mothur "#screen.seqs(fasta=$CONTIG_FASTA, maxambig=0, processors=12);
 	unique.seqs(fasta=current);
 	align.seqs(fasta=current, reference=$ALIGN_REF, processors=4);"
 			
