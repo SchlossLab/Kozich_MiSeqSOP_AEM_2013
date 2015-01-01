@@ -93,3 +93,39 @@ run_mothur () {
 run_mothur $V4_ALIGN $V4_NAMES
 run_mothur $V34_ALIGN $V34_NAMES
 run_mothur $V45_ALIGN $V45_NAMES
+
+
+
+# garbage collection
+CONTIG_STUB=$(echo $CONTIG_FASTA | sed -E s/.fasta//)
+rm $CONTIG_STUB.v*.filter.unique.precluster.pick.an.list
+rm $CONTIG_STUB.v*.filter.unique.precluster.pick.an.rabund
+rm $CONTIG_STUB.v*.filter.unique.precluster.pick.an.sabund
+rm $CONTIG_STUB.v*.filter.unique.precluster.pick.dist
+rm $CONTIG_STUB.v*.filter.unique.precluster.uchime.chimeras
+rm $CONTIG_STUB.v*.filter.unique.precluster.uchime.accnos
+rm $CONTIG_STUB.v*.filter.unique.precluster.map
+rm $CONTIG_STUB.v*.filter.fasta
+rm $CONTIG_STUB.v*.names
+rm $CONTIG_STUB.v*.align
+rm $CONTIG_STUB.good.unique.flip.accnos
+rm $CONTIG_STUB.good.unique.align.report
+rm $CONTIG_STUB.good.unique.align
+rm $CONTIG_STUB.good.names
+rm $CONTIG_STUB.good.unique.bad.accnos
+rm $CONTIG_STUB.good.unique.fasta
+rm $CONTIG_STUB.bad.accnos
+rm $CONTIG_STUB.good.fasta
+
+
+# keeping...
+# $CONTIG_STUB.v*.filter.unique.precluster.pick.an.ave-std.summary	#the number of OTUs w/ rarefaction to 5000 seqs
+# $CONTIG_STUB.v*.filter.unique.precluster.pick.an.summary	#the number of OTUs and sequences w/o rarefaction
+# $CONTIG_STUB.v*.filter.unique.precluster.pick.fasta	#the unique, filtered, region-specific alignment, post preclustering, and chimera removal
+# $CONTIG_STUB.v*.filter.unique.precluster.pick.names	#the unique, filtered, region-specific alignment, post preclustering, and chimera removal
+# $CONTIG_STUB.v*.filter.unique.precluster.names #the unique, filtered, region-specific alignment, post preclustering
+# $CONTIG_STUB.v*.filter.unique.precluster.fasta #the unique, filtered, region-specific alignment, post preclustering
+# $CONTIG_STUB.v*.filter.names		#the unique, filtered, region-specific alignment
+# $CONTIG_STUB.v*.filter.unique.fasta #the unique, filtered, region-specific alignment
+# $CONTIG_STUB.report	#from make.contigs
+# $CONTIG_STUB.fasta	#from make.contigs
