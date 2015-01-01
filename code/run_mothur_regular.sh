@@ -78,6 +78,8 @@ mv $ALL_GOOD_NAMES $V45_NAMES
 run_mothur () {
 	ALIGN=$1
 	NAMES=$2
+	REGION=$3
+	
 	mothur "#filter.seqs(fasta=$ALIGN, vertical=T, trump=., processors=12);
 		unique.seqs(fasta=current, name=$NAMES);
 		pre.cluster(fasta=current, name=current, diffs=2);
@@ -86,13 +88,17 @@ run_mothur () {
 		dist.seqs(fasta=current, cutoff=0.20, processors=8);
 		cluster(column=current, name=current);
 		summary.single(rabund=current, calc=nseqs-sobs, label=0.03, subsample=5000)"
+	
+	
+	touch $CONTIG_STUB.$REGION.filter.unique.precluster.pick.an.ave-std.summary
+	touch $CONTIG_STUB.$REGION.filter.unique.precluster.pick.an.summary
 }
 
 
 # run the function on the three datasets...
-run_mothur $V4_ALIGN $V4_NAMES
-run_mothur $V34_ALIGN $V34_NAMES
-run_mothur $V45_ALIGN $V45_NAMES
+run_mothur $V4_ALIGN $V4_NAMES v4
+run_mothur $V34_ALIGN $V34_NAMES v34
+run_mothur $V45_ALIGN $V45_NAMES v45
 
 
 
