@@ -116,7 +116,8 @@ RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
 
 PROC_MOCK_TEMP = $(subst R2_001,R2_001.rc, $(subst raw,process,$(RAW_MOCK_FA)))
 ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_TEMP))
-ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_TEMP))
+ERR_FORWARD = $(subst fasta,filter.error.seq.forward,$(PROC_MOCK_TEMP))
+ERR_REVERSE = $(subst fasta,filter.error.seq.reverse,$(PROC_MOCK_TEMP))
 ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
@@ -128,10 +129,16 @@ $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
 	sh code/single_read_analysis.sh $(FASTA)
 	
-$(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst filter.error.matrix,qual,$(subst process,raw, $@)))
-	$(eval FASTA=$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@)))); \
+$(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
+					$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@))) \
+					$(subst .rc,,$(subst filter.error.seq.forward,qual,$(subst process,raw, $@)))
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@)))); \
+	sh code/single_read_analysis.sh $(FASTA)
+
+$(ERR_REVERSE) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
+					$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@))) \
+					$(subst .rc,,$(subst filter.error.seq.reverse,qual,$(subst process,raw, $@)))
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@)))); \
 	sh code/single_read_analysis.sh $(FASTA)
 
 $(ERR_QUAL) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
@@ -277,6 +284,29 @@ get_noseq_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
 HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
 	sh code/noseq_error_analysis.sh
 	
+
+
+# Let's build a copy of Figure 2 from each of the runs..
+FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.pdf, $(RUNS)))
+
+build_figure2 : $(FIGURE2)
+
+$(FIGURE2) : code/paper_figure2.R \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@)))
+	R -e "source('code/paper_figure2.R');make.figure2($(patsubst results/figures/%.fig2.pdf,%, $@))"
+
+				
 	
 # To do:
 # * Generate Figure 2 for each run

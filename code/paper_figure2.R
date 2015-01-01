@@ -1,5 +1,5 @@
 make.figure2 <- function(run){
-	run <- "121203"
+
 	figure <- paste0("results/figures/", run, ".figure2.pdf")
 	stub <- paste0("data/process/", run)
 	
