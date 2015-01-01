@@ -28,7 +28,7 @@ ALIGN_REF=data/references/silva.bacteria.align
 # to the full silva.bacteria.align reference 
 mothur "#screen.seqs(fasta=$CONTIG_FASTA, maxambig=0, processors=12);
 	unique.seqs(fasta=current);
-	align.seqs(fasta=current, reference=$ALIGN_REF, processors=4);"
+	align.seqs(fasta=current, reference=$ALIGN_REF, processors=12);"
 			
 ALL_ALIGN=$(echo $CONTIG_FASTA | sed -E s/fasta/good.unique.align/)
 ALL_NAMES=$(echo $CONTIG_FASTA | sed -E s/fasta/good.names/)

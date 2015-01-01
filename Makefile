@@ -58,10 +58,9 @@ get_references: $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 # 	sh code/get_region_silva.sh
 
 $(REFS)silva.bacteria.align :
-	wget -N -P $(REFS) http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz; \
-	tar xvzf $(REFS)Silva.nr_v119.tgz -C $(REFS) silva.nr_v119.align silva.nr_v119.tax; \
-	mothur "#get.lineage(fasta=$(REFS)silva.nr_v119.align, taxonomy=$(REFS)silva.nr_v119.tax, taxon=Bacteria)"; \
-	mv $(REFS)silva.nr_v119.pick.align $(REFS)silva.bacteria.align;
+	wget -N -P $(REFS) http://www.mothur.org/w/images/9/98/Silva.bacteria.zip; \
+	unzip $(REFS)Silva.bacteria.zip -d $(REFS) silva.bactera/silva.bacteria.fasta; \
+	mv $(REFS)silva.bacteria.fasta $(REFS)silva.bacteria.align;
 
 $(REFS)HMP_MOCK.fasta :
 	wget -N -P $(REFS) http://www.mothur.org/MiSeqDevelopmentData/HMP_MOCK.fasta
