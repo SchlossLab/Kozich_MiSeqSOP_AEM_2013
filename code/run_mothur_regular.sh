@@ -90,8 +90,8 @@ run_mothur () {
 		summary.single(rabund=current, calc=nseqs-sobs, label=0.03, subsample=5000)"
 	
 	
-	touch $CONTIG_STUB.$REGION.filter.unique.precluster.pick.an.ave-std.summary
-	touch $CONTIG_STUB.$REGION.filter.unique.precluster.pick.an.summary
+	touch $CONTIG_FASTA.$REGION.filter.unique.precluster.pick.an.ave-std.summary
+	touch $CONTIG_FASTA.$REGION.filter.unique.precluster.pick.an.summary
 }
 
 
