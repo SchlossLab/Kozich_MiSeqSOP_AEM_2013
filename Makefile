@@ -226,7 +226,7 @@ $(CONTIG_ACCNOS) : code/split_error_summary.R $(subst accnos,summary, $@)
 # Now we want to make sure we have all of the contigs for the 12 libraries using
 # a qdel of 6...
 DELTA_Q = 6
-FINAL_CONTIGS = $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F))
+FINAL_CONTIGS = $(strip $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F)))
 
 build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh 
 
@@ -239,20 +239,27 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 
 
 # Now we want to split the files into the three different regions using
-# screen.seqs and the positions that we determined earlier 
-# [$(REFS)start_stop.positions]
+# screen.seqs and the positions that we determined earlier in
+# [$(REFS)start_stop.positions] and run the resulting contigs through the basic
+# mothur pipeline where we...
+# 	* align
+# 	* screen.seqs
+# 	*	filter (v=T, t=.)
+# 	* unique
+# 	* precluster
+# 	* chimera.uchime
+# 	* remove.seqs
+# 	* dist.seqs
+# 	* cluster
+# 	* rarefy
+# There are a ton of files produced here, but we will only keep a subset and we
+# will make the *.ave-std.summary file created for each region the only target
 
-# Need to...
-# * screen.seqs
-# * align
-# *	separate by region
-# *	filter (v=T, t=.)
-# * unique
-# * precluster
-# * chimera.uchime
-# * remove.seqs
-# * dist.seqs
-# * cluster
+FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
+		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
+		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
 
+$(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@))) code/run_mothur_regular.sh
+	sh code/run_mothur_regular.sh $<
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate
