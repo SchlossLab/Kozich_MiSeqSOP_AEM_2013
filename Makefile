@@ -182,7 +182,7 @@ $(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(s
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))) \
 	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
-$(QDIFF_CONTIG_REP) : $(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq $(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) code/titrate_deltaq.sh
+$(QDIFF_CONTIG_REP) : $(addsuffix .fastq,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))))) code/titrate_deltaq.sh
 	$(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))) \
