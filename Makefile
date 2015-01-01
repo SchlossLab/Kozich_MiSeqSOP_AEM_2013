@@ -291,20 +291,22 @@ FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.pdf, $(RUNS)))
 
 build_figure2 : $(FIGURE2)
 
+TEST=$(patsubst results/figures/%.figure2.pdf,%, $(FIGURE2))
+
 $(FIGURE2) : code/paper_figure2.R \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.fig2.pdf,%, $@)))
-	R -e "source('code/paper_figure2.R');make.figure2('$(patsubst results/figures/%.fig2.pdf,%, $@)')"
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
+				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.pdf,%, $@)))
+	R -e "source('code/paper_figure2.R');make.figure2('$(patsubst results/figures/%.figure2.pdf,%, $@)')"
 
 				
 	
