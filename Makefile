@@ -258,10 +258,10 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 # 	* rarefy
 # There are a ton of files produced here, but we will only keep a subset and we
 # will make the *.ave-std.summary file created for each region the only target
-
-FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
-		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
-		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
+ALL_CONTIGS = $(sort $(QDIFF_CONTIG_FA) $(FINAL_CONTIGS))
+FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(ALL_CONTIGS)) \
+		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(ALL_CONTIGS)) \
+		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(ALL_CONTIGS))
 
 get_full_summary : $(FULL_SUMMARY) code/run_mothur_regular.sh
 
