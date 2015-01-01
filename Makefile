@@ -274,4 +274,14 @@ HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
 	sh code/noseq_error_analysis.sh
 	
 	
+# To do:
+# * Generate Figure 2 for each run
+#	* Have the data
+# * Generate Figure 3 for each run
+#	* Have the data
+# * Generate Table S2
+# 	* Need error rate post pre-cluster
+#	* Need # OTUs with perfect chimera removal
+
+	
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary get_noseq_sobs
