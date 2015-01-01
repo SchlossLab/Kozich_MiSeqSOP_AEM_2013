@@ -291,8 +291,6 @@ FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.pdf, $(RUNS)))
 
 build_figure2 : $(FIGURE2)
 
-TEST=$(patsubst results/figures/%.figure2.pdf,%, $(FIGURE2))
-
 $(FIGURE2) : code/paper_figure2.R \
 				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
 				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.pdf,%, $@))) \
