@@ -244,7 +244,7 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 # mothur pipeline where we...
 # 	* align
 # 	* screen.seqs
-# 	*	filter (v=T, t=.)
+# 	* filter (v=T, t=.)
 # 	* unique
 # 	* precluster
 # 	* chimera.uchime
