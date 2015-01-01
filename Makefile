@@ -60,7 +60,8 @@ get_references: $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 $(REFS)silva.bacteria.align :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/9/98/Silva.bacteria.zip; \
 	unzip $(REFS)Silva.bacteria.zip -d $(REFS) silva.bacteria/silva.bacteria.fasta; \
-	mv $(REFS)silva.bacteria.fasta $(REFS)silva.bacteria.align;
+	mv $(REFS)silva.bacteria/silva.bacteria.fasta $(REFS)silva.bacteria.align; \
+	rm -rf $(REFS)silva.bacteria
 
 $(REFS)HMP_MOCK.fasta :
 	wget -N -P $(REFS) http://www.mothur.org/MiSeqDevelopmentData/HMP_MOCK.fasta
