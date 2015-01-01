@@ -261,7 +261,17 @@ FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary
 
 get_full_summary : $(FULL_SUMMARY) code/run_mothur_regular.sh
 
-$(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
+$(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))  code/run_mothur_regular.sh
 	sh code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
 
-write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary
+
+get_noseq_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
+				data/process/noseq_error/HMP_MOCK.v4.summary \
+				data/process/noseq_error/HMP_MOCK.v45.summary \
+				code/noseq_error_analysis.sh
+
+HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
+	sh code/noseq_error_analysis.sh
+	
+	
+write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary get_noseq_sobs
