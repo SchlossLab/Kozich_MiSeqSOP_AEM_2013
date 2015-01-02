@@ -264,11 +264,13 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 # 	* cluster
 # 	* rarefy
 # There are a ton of files produced here, but we will only keep a subset and we
-# will make the *.ave-std.summary file created for each region the only target
-ALL_CONTIGS = $(sort $(QDIFF_CONTIG_FA) $(FINAL_CONTIGS))
-FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(ALL_CONTIGS)) \
-		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(ALL_CONTIGS)) \
-		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(ALL_CONTIGS))
+# will make the *.ave-std.summary file created for each region the only target.
+# We also only really want to run this on our final set of contigs - those with
+# qdel == 6, which are stored in $(FINAL_CONTIGS).
+
+FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
+		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
+		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
 
 get_full_summary : $(FULL_SUMMARY) code/run_mothur_regular.sh
 
@@ -276,7 +278,7 @@ $(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.preclust
 	bash code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
 
 
-get_noseq_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
+get_noseqrror_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
 				data/process/noseq_error/HMP_MOCK.v4.summary \
 				data/process/noseq_error/HMP_MOCK.v45.summary \
 				code/noseq_error_analysis.sh
@@ -316,4 +318,4 @@ $(FIGURE2) : code/paper_figure2.R \
 #	* Need # OTUs with perfect chimera removal
 
 	
-write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary get_noseq_sobs
+write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary build_figure2
