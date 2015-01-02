@@ -494,6 +494,16 @@ quality of data possible with 454 sequencing; however, the error rates
 could potentially be improved using the quality scores and building
 consensus sequences from the paired reads.
 
+--------
+
+![**Figure 2.**](results/figures/130403.figure2.png)
+
+**Figure 2. Profile of sequencing errors in the first and second read (A
+and C) and the quality scores associated with different types of errors
+in the first and second read (B and D) using data from run 130403.**
+
+--------
+
 ***De-noising via consensus.*** Building upon the observation that the
 quality scores provided meaningful information, we developed a
 de-noising strategy that utilized that quality score information.
