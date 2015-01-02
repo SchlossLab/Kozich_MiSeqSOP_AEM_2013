@@ -16,11 +16,11 @@
 
 **Running title:** Sequencing 16S rRNA genes on a MiSeq
 
-James J. Kozich^1^, Sarah L. Westcott^1^, Nielson T. Baxter^1^, Sarah K.
-Highlander^2^, and Patrick D. Schloss^1\*
+James J. Kozich<sup>1</sup>, Sarah L. Westcott<sup>1</sup>, Nielson T.
+Baxter<sup>1</sup>, Sarah K. Highlander<sup>2</sup>, and Patrick D.
+Schloss<sup>1</sup>\*
 
-\* Correspondence: <pschloss@umich.edu>
-
+> \* Correspondence: <pschloss@umich.edu>
 > 734.647.5801
 >
 > Department of Microbiology and Immunology
@@ -432,7 +432,7 @@ expected, errors were associated with low quality scores and rarely had
 a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
-log~10~P) with slopes of -11.7 and -14.3 for the first and second read,
+log<sub>10</sub>P) with slopes of -11.7 and -14.3 for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
 quality of data possible with 454 sequencing; however, the error rates
@@ -456,7 +456,7 @@ calls in the overlapping region we defined a parameter ΔQ, which
 represented the difference in the quality scores of the two reads at
 that position in the sequence. Based on the empirical definition of the
 quality scores, we would expect the fold reduction in the error rate of
-the base in question (ΔP) to be proportional to 10\^(ΔQ/10). We varied
+the base in question (ΔP) to be proportional to 10<sup>(ΔQ/10)</sup>. We varied
 the minimum ΔQ between 0 and 10 and if the observed ΔQ value fell below
 the specified minimum, the read was culled from the dataset. When this
 approach was applied to the V4 region (**Figure 3**), we observed a
@@ -567,7 +567,7 @@ Nextera-based shotgun libraries constructed from the genomic DNAs of the
 mock community, human feces and two cultured isolates from mouse feces.
 We then repeated the scale-up analysis using a target of 5% PhiX, 50% V4
 amplicons, and 45% metagenomes with a cluster density of 718 K
-clusters/mm^2. The increased fraction of sequencing allocated to the V4
+clusters/mm<sup>2</sup>. The increased fraction of sequencing allocated to the V4
 amplicons allowed us to have an average library coverage of 13,980 pairs
 of reads per sample (95% of the samples had more than 3,437 pairs of
 sequences). The mock community amplicons again gave a final error rate
@@ -612,7 +612,7 @@ To assess the tradeoff between number of usable reads and cluster
 density, we multiplied the number of 16S rRNA gene sequences (Table 1)
 by the percentage of reads that passed the threshold (Table 2). This
 demonstrated that the actual number of sequences obtained when the
-cluster density was between 690 and 1,094 K clusters/mm^2^ yielded 7.0
+cluster density was between 690 and 1,094 K clusters/mm<sup>2</sup> yielded 7.0
 to 7.5 million contigs. If this sequencing depth were achieved when
 sequencing 384 samples one would expect an average of 18,000 to 20,000
 reads per sample. Subsequent experience sequencing samples from other
@@ -902,7 +902,7 @@ in the first and second read (B and D) using data from run 130403.**
 sequences kept as a function of the ΔQ value for the V34, V4, and V45
 regions using data from run 130403.**
 
-**Figure 4. Principal coordinates ordination of Θ~YC~ values relating
+**Figure 4. Principal coordinates ordination of Θ<sub>YC</sub> values relating
 the community structures of the fecal microbiota from 12 mice collected
 in the days 0 through 9 (“Early”) and days 141 through 150 (“Late”)
 after weaning.**
