@@ -13,10 +13,11 @@ Repository overview
     |  +- paper/       # manuscript(s), whether generated or not
     |
     |- data            # raw and primary data, are not changed once created
+    |  |			   #  the files in this directory are not maintained in repo
     |  |- references/  # reference files to be used in analysis
     |  |- raw/         # raw data, specifically fastq files and output from fastq.info
-    |  +- clean/       # cleaned data, will not be altered once created. This
-    |				   #   has subdirectories for the different runs and analyses
+    |  +- process/     # cleaned data; this has subdirectories for the different
+    |				   #   runs and analyses
 	|
     |- code/           # bash and R code
 	|
@@ -26,9 +27,9 @@ Repository overview
     |
     |- scratch/        # temporary files that can be safely deleted or lost
     |
-    |- study.Rmd       # executable Rmarkdown for this study, if applicable
-	|
-    |- Makefile        # executable Makefile for this study, if applicable
+    |- Kozich_AEM_2013.Rmd # executable Rmarkdown for the original Kozich et al
+	|				   #   AEM 2013 manuscript
+    |- Makefile        # executable Makefile for this study
 	|
     |- datapackage.json # metadata for the (input and output) data files
 
