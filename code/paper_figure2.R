@@ -1,7 +1,37 @@
-# ToDo:
-# * add some header material - note that the figure in the paper only used rep 1 - here we average the three runs
-# * get rid of dependency on 250 cycles
 # * figure out the problem with the reverse quality scores - remaking those files
+
+################################################################################
+#
+# paper_figure2.R
+#
+#
+# Here we run the output of running seq.error through a script to generate a
+# figure similar to what we presented as Figure 2 in Kozich et al. AEM 2013. A
+# subtle difference between what we do here and we did in the original paper was
+# to average the seq.forward/seq.reverse files and add the counts of the
+# quality files. Ideally we could have done a weighted average of the
+# seq.forward/seq.reverse files, but whatever. It shouldn't have resulted in a
+# huge difference. The figure in the paper was based on the Mock1 files.
+#
+# Dependencies...
+# * data/process/$RUN/Mock1_S1_L001_R1_001.filter.error.seq.forward
+# * data/process/$RUN/Mock2_S2_L001_R1_001.filter.error.seq.forward
+# * data/process/$RUN/Mock3_S3_L001_R1_001.filter.error.seq.forward
+# * data/process/$RUN/Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse
+# * data/process/$RUN/Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse
+# * data/process/$RUN/Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse
+# * data/process/$RUN/Mock1_S1_L001_R1_001.filter.error.quality
+# * data/process/$RUN/Mock2_S2_L001_R1_001.filter.error.quality
+# * data/process/$RUN/Mock3_S3_L001_R1_001.filter.error.quality
+# * data/process/$RUN/Mock1_S1_L001_R2_001.rc.filter.error.quality
+# * data/process/$RUN/Mock2_S2_L001_R2_001.rc.filter.error.quality
+# * data/process/$RUN/Mock3_S3_L001_R2_001.rc.filter.error.quality
+#
+#
+# Produces...
+# * results/figures/$RUN.figure2.pdf
+#
+################################################################################
 
 
 make.figure2 <- function(run){
@@ -18,10 +48,11 @@ make.figure2 <- function(run){
 	a<-read.table(file=paste0(stub, "/Mock1_S1_L001_R1_001.filter.error.seq.forward"), header=T)
 	b<-read.table(file=paste0(stub, "/Mock2_S2_L001_R1_001.filter.error.seq.forward"), header=T)
 	c<-read.table(file=paste0(stub, "/Mock3_S3_L001_R1_001.filter.error.seq.forward"), header=T)
-	composite <- (a[1:250,] + b[1:250,] + c[1:250,])/3
+	nr <- min(c(nrow(a), nrow(b), nrow(c))
+	composite <- (a[1:nr,] + b[1:nr,] + c[1:nr,])/3
 	
-	plot(100*(1-composite$match), xlim=c(0,250), ylim=c(0,10), type="l", xlab="", ylab="Substitution rate (%)", xaxt="n", cex.lab=1.2)
-	points(100*composite$substitution, type="l", col="black")
+	plot(100*(1-composite$match[1:nr]), xlim=c(0,nr), ylim=c(0,10), type="l", xlab="", ylab="Substitution rate (%)", xaxt="n", cex.lab=1.2)
+#	points(100*composite$substitution[1:nr], type="l", col="black")
 	text(x=0, y=9.9, label="A", cex=1.5, font=2)
 
 
@@ -30,10 +61,11 @@ make.figure2 <- function(run){
 	a<-read.table(file=paste0(stub, "/Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
 	b<-read.table(file=paste0(stub, "/Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
 	c<-read.table(file=paste0(stub, "/Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
-	composite <- (a[1:250,] + b[1:250,] + c[1:250,])/3
+	nr <- min(c(nrow(a), nrow(b), nrow(c))
+	composite <- (a[1:nr,] + b[1:nr,] + c[1:nr,])/3
 	
-	plot(100*(1-composite$match), xlim=c(0,250), ylim=c(0,10), type="l", xlab="Bases sequenced", ylab="", cex.lab=1.2)
-	points(100*composite$substitution, type="l", col="black")
+	plot(100*(1-composite$match[1:nr]), xlim=c(0,nr), ylim=c(0,10), type="l", xlab="Bases sequenced", ylab="", cex.lab=1.2)
+#	points(100*composite$substitution, type="l", col="black")
 	text(x=0, y=9.9, label="B", cex=1.5, font=2)
 
 
