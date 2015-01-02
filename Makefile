@@ -71,6 +71,12 @@ $(REFS)HMP_MOCK.align : $(REFS)HMP_MOCK.fasta $(REFS)silva.bacteria.align
 	mothur "#align.seqs(fasta=$(REFS)HMP_MOCK.fasta, reference=$(REFS)silva.bacteria.align)"
 
 
+$(REFS)trainset9_032012.pds.tax : 
+	wget -N -P $(REFS) http://www.mothur.org/w/images/5/59/Trainset9_032012.pds.zip;
+	unzip -o $(REFS)Trainset9_032012.pds.zip -d $(REFS) 
+
+$(REFS)trainset9_032012.pds.fasta : $(REFS)trainset9_032012.pds.tax
+
 
 # Let's get the raw data
 # The cross product of all runs and fastq files
@@ -339,6 +345,7 @@ data/raw/w_metag/w_metag.files :
 	rm data/raw/w_metag/StabilityWMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/w_metag")'
 
+# Now let's run mothur
 
 
 
