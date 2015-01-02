@@ -1,3 +1,9 @@
+# ToDo:
+# * add some header material - note that the figure in the paper only used rep 1 - here we average the three runs
+# * get rid of dependency on 250 cycles
+# * figure out the problem with the reverse quality scores - remaking those files
+
+
 make.figure2 <- function(run){
 
 	figure <- paste0("results/figures/", run, ".figure2.pdf")
