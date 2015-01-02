@@ -323,7 +323,6 @@ $(FIGURE2) : code/paper_figure2.R \
 # from the mouse data
 
 # Let's get the raw data
-
 get_fastqs : data/raw/no_metag/StabilityNoMetaG data/raw/no_metag/StabilityWMetaG
 
 data/raw/no_metag/no_metag.files :
@@ -333,12 +332,15 @@ data/raw/no_metag/no_metag.files :
 	rm data/raw/no_metag/StabilityNoMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/no_metag")'
 		
-data/raw/w_metag/metag.files :
+data/raw/w_metag/w_metag.files :
 	wget -N -P data/raw/w_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityWMetaG.tar; \
 	tar xvf data/raw/w_metag/StabilityWMetaG.tar -C data/raw/w_metag/; \
 	bunzip2 -f data/raw/w_metag/*bz2; \
 	rm data/raw/w_metag/StabilityWMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/w_metag")'
+
+
+
 
 # To do:
 # * Generate Figure 3 for each run
