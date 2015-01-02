@@ -1,3 +1,15 @@
+> **Note:** This page was generated from a Rmarkdown document that was made
+> after the [original Kozich et al. manuscript](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3753973/)
+> was published in *Applied and *Environmental Microbiology* in 2013. We have
+> inserted the numbers calculated using the methods in the accompanying [GitHub repository]()
+> in **boldface**. Readers may have noticed that Tables S1 and S2 were expanded versions
+> of Tables 1 and 2; therefore, we only represent Tables S1 and S2 here. Also,
+> in the original manuscript (and here) Figures 2 and 3 only contained data from
+> run 130403. You may find the same figures generated for the other runs in the
+> results/figures folder. Finally, At this point we have only updated the 16S
+> rRNA gene sequence data; we have not attempted to replicate the analysis of
+> the metagenomic data.
+
 **Development of a dual-index sequencing strategy and curation pipeline
 for analyzing amplicon sequence data on the MiSeq Illumina sequencing
 platform**
@@ -5,7 +17,7 @@ platform**
 **Running title:** Sequencing 16S rRNA genes on a MiSeq
 
 James J. Kozich^1^, Sarah L. Westcott^1^, Nielson T. Baxter^1^, Sarah K.
-Highlander^2^, and Patrick D. Schloss^1\#^
+Highlander^2^, and Patrick D. Schloss^1\*
 
 \* Correspondence: <pschloss@umich.edu>
 
@@ -388,6 +400,20 @@ sequence each of the four DNA samples in triplicate to evaluate the
 effects of different cluster densities on error rates and develop a
 sequence curation pipeline.
 
+--------
+
+![**Figure 1.**](results/pictures/figure1.png)
+
+**Figure 1. Design of dual index sequencing strategy and schematic
+describing the four sequencing reads.** The primers specific to the 16S
+rRNA gene are shown in bolded black text while the linkers are in blue,
+pads are in green, the index region in red, and the adapters are
+underlined. This schematic is demonstrated using the V4-specific primer
+sequences and linkers. The PCR and sequencing primers for each of the
+three regions are provided in the Supplementary Materials.
+
+--------
+
 ***Error profile.*** Next, we sought to develop a strategy to reduce the
 observed error rates for the two sequencing reads. For all regions of
 the 16S rRNA gene, the error rates increased over the length of the
@@ -539,7 +565,7 @@ Nextera-based shotgun libraries constructed from the genomic DNAs of the
 mock community, human feces and two cultured isolates from mouse feces.
 We then repeated the scale-up analysis using a target of 5% PhiX, 50% V4
 amplicons, and 45% metagenomes with a cluster density of 718 K
-clusters/mm^2^. The increased fraction of sequencing allocated to the V4
+clusters/mm^2. The increased fraction of sequencing allocated to the V4
 amplicons allowed us to have an average library coverage of 13,980 pairs
 of reads per sample (95% of the samples had more than 3,437 pairs of
 sequences). The mock community amplicons again gave a final error rate
@@ -862,14 +888,6 @@ in parallel to 16S rRNA gene sequences.**
 
 A: The contig length where all contigs that length or longer contain
 more than 50% of the bases found across all contigs
-
-**Figure 1. Design of dual index sequencing strategy and schematic
-describing the four sequencing reads.** The primers specific to the 16S
-rRNA gene are shown in bolded black text while the linkers are in blue,
-pads are in green, the index region in red, and the adapters are
-underlined. This schematic is demonstrated using the V4-specific primer
-sequences and linkers. The PCR and sequencing primers for each of the
-three regions are provided in the Supplementary Materials.
 
 **Figure 2. Profile of sequencing errors in the first and second read (A
 and C) and the quality scores associated with different types of errors
