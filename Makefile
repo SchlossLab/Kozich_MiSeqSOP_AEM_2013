@@ -40,7 +40,7 @@ print-%:
 # HMP_MOCK reference alignment
 
 $(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.align
-	sh code/get_region_coordinates.sh
+	bash code/get_region_coordinates.sh
 
 
 
@@ -55,7 +55,7 @@ get_references: $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
 
 # turned out this wasn't actually needed...
 # $(REFS)silva.v%.align : $(REFS)silva.bacteria.align code/get_region_silva.sh $(REFS)start_stop.positions
-# 	sh code/get_region_silva.sh
+# 	bash code/get_region_silva.sh
 
 $(REFS)silva.bacteria.align :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/9/98/Silva.bacteria.zip; \
@@ -127,31 +127,31 @@ $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.summary,qual,$(subst process,raw, $@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
-	sh code/single_read_analysis.sh $(FASTA)
+	bash code/single_read_analysis.sh $(FASTA)
 	
 $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.seq.forward,qual,$(subst process,raw, $@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@)))) \
-	sh code/single_read_analysis.sh $(FASTA)
+	bash code/single_read_analysis.sh $(FASTA)
 
 $(ERR_REVERSE) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.seq.reverse,qual,$(subst process,raw, $@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@)))) \
-	sh code/single_read_analysis.sh $(FASTA)
+	bash code/single_read_analysis.sh $(FASTA)
 
 $(ERR_QUAL) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.quality,qual,$(subst process,raw, $@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@)))) \
-	sh code/single_read_analysis.sh $(FASTA)
+	bash code/single_read_analysis.sh $(FASTA)
 
 $(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst summary,qual,$(subst process,raw, $@)))
 	$(eval FASTA=$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@)))) \
-	sh code/single_read_analysis.sh $(FASTA)
+	bash code/single_read_analysis.sh $(FASTA)
 
 
 # Now we want to know which region each fragment belongs to
@@ -191,13 +191,13 @@ $(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(s
 	$(eval FFASTQ=$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))) \
-	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
+	bash code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 $(QDIFF_CONTIG_REP) : $(addsuffix .fastq,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))))) code/titrate_deltaq.sh
 	$(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))) \
-	sh code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
+	bash code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
 
 # Now we want to take those contigs and get their alignment positions in the
@@ -208,10 +208,10 @@ CONTIG_ERROR_SUMMARY = $(subst fasta,filter.error.summary,$(QDIFF_CONTIG_FA))
 contig_error_rate : $(CONTIG_ALIGN_SUMMARY) $(CONTIG_ERROR_SUMMARY)
 
 $(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@) code/contig_error_analysis.sh
-	sh code/contig_error_analysis.sh $(subst summary,fasta,$@)
+	bash code/contig_error_analysis.sh $(subst summary,fasta,$@)
 
 $(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_analysis.sh
-	sh code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
+	bash code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
 
 
 # Now we need to get the region that each contig belongs to...
@@ -243,7 +243,7 @@ build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh
 
 # excluding the Mocks, which we have a rule for above...
 $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
-	sh code/build_final_contigs.sh $(DELTA_Q)  \
+	bash code/build_final_contigs.sh $(DELTA_Q)  \
 		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) \
 		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
 
@@ -273,7 +273,7 @@ FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary
 get_full_summary : $(FULL_SUMMARY) code/run_mothur_regular.sh
 
 $(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))  code/run_mothur_regular.sh
-	sh code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
+	bash code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
 
 
 get_noseq_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
@@ -282,7 +282,7 @@ get_noseq_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
 				code/noseq_error_analysis.sh
 
 HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
-	sh code/noseq_error_analysis.sh
+	bash code/noseq_error_analysis.sh
 	
 
 
