@@ -309,8 +309,6 @@ $(FIGURE2) : code/paper_figure2.R \
 				
 	
 # To do:
-# * Generate Figure 2 for each run
-#	* Have the data
 # * Generate Figure 3 for each run
 #	* Have the data
 # * Generate Table S2
