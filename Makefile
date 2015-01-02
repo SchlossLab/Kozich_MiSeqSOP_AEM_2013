@@ -132,25 +132,25 @@ $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.seq.forward,qual,$(subst process,raw, $@)))
-	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@)))); \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@)))) \
 	sh code/single_read_analysis.sh $(FASTA)
 
 $(ERR_REVERSE) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.seq.reverse,qual,$(subst process,raw, $@)))
-	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@)))); \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@)))) \
 	sh code/single_read_analysis.sh $(FASTA)
 
 $(ERR_QUAL) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.quality,qual,$(subst process,raw, $@)))
-	$(eval FASTA=$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@)))); \
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@)))) \
 	sh code/single_read_analysis.sh $(FASTA)
 
 $(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst summary,qual,$(subst process,raw, $@)))
-	$(eval FASTA=$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@)))); \
+	$(eval FASTA=$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@)))) \
 	sh code/single_read_analysis.sh $(FASTA)
 
 
