@@ -30,5 +30,5 @@ get_contigsfile <- function(p){
 	files.file <- paste0(gsub(".*\\/(.*)", "\\1", p), ".files")
 	p.files.file <- paste0(p, "/", files.file)
 	
-	write.table(file=p.files.file, cbind(r1, r2, r1.group), sep="\t", quote=F, row.names=F, col.names=F)
+	write.table(file=p.files.file, cbind(r1.group, r1, r2), sep="\t", quote=F, row.names=F, col.names=F)
 }
