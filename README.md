@@ -15,9 +15,16 @@ Repository overview
 	|- data				# raw and primary data, are not changed once created
 	|  |				#  the files in this directory are not maintained in repo
 	|  |- references/	# reference files to be used in analysis
-	|  |- raw/			# raw data, specifically fastq files and output from fastq.info
-	|  +- process/		# cleaned data; this has subdirectories for the different
-	|					#   runs and analyses
+	|  +- raw/			# raw data, specifically fastq files and output from fastq.info
+	|     |- '\d{6}'	#   YYMMDD stamp for when the libraries were sequenced					
+	|	  |-stability1	#	mouse data from the run with no metagenomes
+	|	  +-stability2	#	mouse data from the run with metagenomes
+	|
+	|  +- process/		# cleaned data:
+	|     |- '\d{6}'	#   YYMMDD stamp for when the libraries were sequenced					
+	|	  |-noseq_error	#   OTU assignments when there are no seq errors/chimeras
+	|	  |-stability1	#	mouse data from the run with no metagenomes
+	|	  +-stability2	#	mouse data from the run with metagenomes
 	|
 	|- code/			# bash and R code
 	|
