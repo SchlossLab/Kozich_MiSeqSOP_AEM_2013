@@ -323,7 +323,7 @@ $(FIGURE2) : code/paper_figure2.R \
 # from the mouse data
 
 # Let's get the raw data
-get_fastqs : data/raw/no_metag/StabilityNoMetaG data/raw/no_metag/StabilityWMetaG
+get_fastqs : data/raw/no_metag/no_metag.files data/raw/w_metag/w_metag.files
 
 data/raw/no_metag/no_metag.files :
 	wget -N -P data/raw/no_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityNoMetaG.tar; \
