@@ -322,6 +322,59 @@ genomic library control, and varying cluster densities. Four sequencing
 runs were performed with RTA v. 1.17.28, MCS v. 2.2.0, a target of 5%
 PhiX, and varying cluster densities.
 
+
+-----
+
+**Table 1. Summary of operating conditions for various MiSeq sequencing
+runs, machine reported quality metrics, and observed error rates.** The types
+of errors are reported as percentages of the total error rates.
+
+```{r error_profile, echo=FALSE}
+old_runs <- c("121203", "121205", "121207", "130125", "130211", "130220", "130306")
+new_runs <- c("130401", "130403", "130417", "130422")
+all_runs <- c(old_runs, new_runs)
+
+get_errors <- function(run){
+	prefix <- "data/process/"
+	suffix <- ".filter.error.matrix"
+	a <- read.table(file=paste0(prefix, run, "/Mock1_S1_L001_R1_001", suffix), header=T)
+	b <- read.table(file=paste0(prefix, run, "/Mock2_S2_L001_R1_001", suffix), header=T)
+	c <- read.table(file=paste0(prefix, run, "/Mock3_S3_L001_R1_001", suffix), header=T)
+	d <- read.table(file=paste0(prefix, run, "/Mock1_S1_L001_R2_001.rc", suffix), header=T)
+	e <- read.table(file=paste0(prefix, run, "/Mock2_S2_L001_R2_001.rc", suffix), header=T)
+	f <- read.table(file=paste0(prefix, run, "/Mock3_S3_L001_R2_001.rc", suffix), header=T)
+
+	composite <- as.matrix(a + b + c + d + e + f)
+	composite <- composite[1:6,]
+	total <- sum(composite)
+	
+	diag(composite) <- 0
+	error.total <- sum(composite);
+	substitutions <- sum(composite[1:4,1:4]) / error.total
+	ambiguous <- sum(composite["qN",]) / error.total
+	deletions <- sum(composite["qGap",]) / error.total
+	insertions <- sum(composite[,"rGap"]) / error.total
+	overall.error <- sum(composite) / total
+
+	c(overall=overall.error, subs=substitutions, ambiguous=ambiguous,
+					deletions=deletions, insertions=insertions) 
+}
+
+all_rates <- t(100*sapply(all_runs, get_errors))
+all_rates <- round(all_rates, 1)
+run_data <- read.table(file="data/references/run_data.tsv", header=T, row.names=1)
+
+combined <- cbind(run_data, all_rates)
+c.names <- c("RTA version", "MCS version", "[DNA] (pM)",
+	"Cluster density (K/mm<sup>2</sup>)", "% PhiX", "Correction", "%>= Q30",
+	"Reported machine error (%)", "16S rRNA pairs (10<sup>6</sup>)",
+	"Observed error (%)", "Substitutions (%)", "Ambiguous (%)", "Deletions (%)", 
+	"Insertions (%)")
+kable(combined, align='c', col.names=c.names)
+```
+
+-----
+
 ***Shotgun library construction.*** DNA (2.5 ng) from the mock and human
 fecal communities used in our amplicon experiments plus genomic DNA from
 two *Clostridium clostridioforme* strains (D4 and CIP110249) were used
@@ -420,12 +473,14 @@ three regions are provided in the Supplementary Materials.
 observed error rates for the two sequencing reads. For all regions of
 the 16S rRNA gene, the error rates increased over the length of the
 reads with the second read having a higher error rate than the first
-(**Figure 2**); substitutions were the primary source of error (99.4%),
-followed by ambiguous base calls (0.2%), deletions (0.2%), and
-insertions (0.2%). We were unable to detect a reproducible substitution
-bias between bases and all bases were equally likely to be inserted or
-deleted. To explore whether the quality scores could be used as reliable
-surrogate for sequence quality we categorized each quality score by
+(**Figure 2**); substitutions were the primary source of error
+**(`r all_rates["130403", "subs"]`%)**, followed by ambiguous base calls
+**(`r all_rates["130403", "ambiguous"]`%)**, deletions
+**(`r all_rates["130403", "deletions"]`%)**, and insertions
+**(`r all_rates["130403", "insertions"]`%)** (Table 1). We were unable to detect a
+reproducible substitution bias between bases and all bases were equally likely
+to be inserted or deleted. To explore whether the quality scores could be used
+as reliable surrogate for sequence quality we categorized each quality score by
 whether its base call was the expected base (i.e. a match), a
 substitution, an insertion, or an ambiguous base (**Figure 2**). As
 expected, errors were associated with low quality scores and rarely had
@@ -798,28 +853,8 @@ L. Westcott.** 2011. Assessing and improving methods used in operational
 taxonomic unit-based approaches for 16S rRNA gene sequence analysis.
 Appl Environ Microbiol **77:**3219-26.
 
-**Table 1. Summary of operating conditions for various MiSeq sequencing
-runs and machine reported quality metrics.** These four runs were
-performed using RTA v. 1.17.28 and MCS v. 2.2.0. Data for runs performed
-using previous versions of the software are provided in Tables S1 and
-S2.
 
-  -----------------------------------------------------------------------------------------------------
-  **Run**   **[DNA]**   **Cluster**     **% PhiX**   **%\>= Q30**   **Reported**    **16S rRNA**
-                                                                                    
-            **(pM)**    **density**                                 **machine**     **pairs (10^6^)**
-                                                                                    
-                        **(K/mm^2^)**                               **error (%)**   
-                                                                                    
-  --------- ----------- --------------- ------------ -------------- --------------- -------------------
-  130401    10.0        1,313           3.8          63.7           1.31            12.6
 
-  130403    5.0         1,094           3.2          70.5           0.89            12.4
-
-  130417    3.0         839             6.2          74.6           0.92            10.5
-
-  130422    1.8         690             8.0          80.1           0.65            9.0
-  -----------------------------------------------------------------------------------------------------
 
 **Table 2. Summary of the error rates and number of observed OTUs for
 the sequencing runs described in Table 1.**
@@ -894,9 +929,6 @@ in parallel to 16S rRNA gene sequences.**
 A: The contig length where all contigs that length or longer contain
 more than 50% of the bases found across all contigs
 
-**Figure 2. Profile of sequencing errors in the first and second read (A
-and C) and the quality scores associated with different types of errors
-in the first and second read (B and D) using data from run 130403.**
 
 **Figure 3. Relationship between the error rate and the fraction of
 sequences kept as a function of the ΔQ value for the V34, V4, and V45
