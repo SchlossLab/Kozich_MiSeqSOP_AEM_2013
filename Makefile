@@ -1,4 +1,5 @@
 # Names of Runs - would be nice to automate this with info from the server
+# These were the runs from the paper...
 RUNS = 121203 121205 121207 130125 130211 130220 130306 130401 130403 130417 130422
 
 # The 24 fastq files that come with each run
@@ -116,19 +117,26 @@ RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
 
 PROC_MOCK_TEMP = $(subst R2_001,R2_001.rc, $(subst raw,process,$(RAW_MOCK_FA)))
 ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_TEMP))
+ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_TEMP))
 ERR_FORWARD = $(subst fasta,filter.error.seq.forward,$(PROC_MOCK_TEMP))
 ERR_REVERSE = $(subst fasta,filter.error.seq.reverse,$(PROC_MOCK_TEMP))
 ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
-single_read_error : $(ERR_SUMMARY) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY)
+single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY) 
 
 $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.summary,qual,$(subst process,raw, $@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
-	
+
+$(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
+					$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@))) \
+					$(subst .rc,,$(subst filter.error.matrix,qual,$(subst process,raw, $@)))
+	$(eval FASTA=$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@)))) \
+	bash code/single_read_analysis.sh $(FASTA)
+
 $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@))) \
 					$(subst .rc,,$(subst filter.error.seq.forward,qual,$(subst process,raw, $@)))
