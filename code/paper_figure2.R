@@ -29,7 +29,7 @@
 #
 #
 # Produces...
-# * results/figures/$RUN.figure2.pdf
+# * results/figures/$RUN.figure2.png
 #
 ################################################################################
 
@@ -39,7 +39,7 @@ make.figure2 <- function(run){
 	figure <- paste0("results/figures/", run, ".figure2.pdf")
 	stub <- paste0("data/process/", run)
 	
-	pdf(file=figure, width=11, height=6.5)
+	png(file=figure, width=11, height=6.5)
 
 	par(mfcol=c(2,2))
 
