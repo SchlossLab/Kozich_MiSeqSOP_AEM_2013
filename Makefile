@@ -121,7 +121,7 @@ ERR_REVERSE = $(subst fasta,filter.error.seq.reverse,$(PROC_MOCK_TEMP))
 ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
-single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_QUAL) $(ALIGN_SUMMARY)
+single_read_error : $(ERR_SUMMARY) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
 $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
