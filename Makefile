@@ -327,17 +327,17 @@ $(FIGURE2) : code/paper_figure2.R \
 get_fastqs : data/raw/no_metag/StabilityNoMetaG data/raw/no_metag/StabilityWMetaG
 
 data/raw/no_metag/no_metag.files :
-	wget -N -P data/raw/no_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityNoMetaG.tar \
-	tar xvf data/raw/no_metag/StabilityNoMetaG.tar -C data/raw/no_metag/ \
-	gunzip -f data/raw/no_metag/*gz \
-	rm data/raw/no_metag/StabilityNoMetaG.tar \
+	wget -N -P data/raw/no_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityNoMetaG.tar; \
+	tar xvf data/raw/no_metag/StabilityNoMetaG.tar -C data/raw/no_metag/; \
+	gunzip -f data/raw/no_metag/*gz; \
+	rm data/raw/no_metag/StabilityNoMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/no_metag")'
 		
 data/raw/w_metag/metag.files :
-	wget -N -P data/raw/w_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityWMetaG.tar \
-	tar xvf data/raw/w_metag/StabilityWMetaG.tar -C data/raw/w_metag/ \
-	bunzip2 -f data/raw/w_metag/*bz2 \
-	rm data/raw/w_metag/StabilityWMetaG.tar \
+	wget -N -P data/raw/w_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityWMetaG.tar; \
+	tar xvf data/raw/w_metag/StabilityWMetaG.tar -C data/raw/w_metag/; \
+	bunzip2 -f data/raw/w_metag/*bz2; \
+	rm data/raw/w_metag/StabilityWMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/w_metag")'
 
 # To do:
