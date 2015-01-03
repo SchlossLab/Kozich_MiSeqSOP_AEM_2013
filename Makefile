@@ -340,7 +340,7 @@ data/raw/no_metag/no_metag.files : code/get_contigsfile.R
 data/raw/w_metag/w_metag.files : code/get_contigsfile.R
 	wget -N -P data/raw/w_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityWMetaG.tar; \
 	tar xvf data/raw/w_metag/StabilityWMetaG.tar -C data/raw/w_metag/; \
-	bunzip2 -f data/raw/w_metag/*bz2; \
+	gunzip -f data/raw/w_metag/*gz; \
 	rm data/raw/w_metag/StabilityWMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/w_metag")'
 
