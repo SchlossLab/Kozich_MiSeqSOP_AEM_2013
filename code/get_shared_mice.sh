@@ -30,7 +30,7 @@ mothur "#set.dir(output=$PROCESS_PATH);
 	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275);
 	unique.seqs();
 	count.seqs(name=current, group=current);
-	align.seqs(fasta=current, reference=silva.v4.align);
+	align.seqs(fasta=current, reference=$PROCESS_PATH/silva.v4.align);
 	screen.seqs(fasta=current, count=current, start=1968, end=11550, maxhomop=8);
 	filter.seqs(fasta=current, vertical=T, trump=.);
 	unique.seqs(fasta=current, count=current);
