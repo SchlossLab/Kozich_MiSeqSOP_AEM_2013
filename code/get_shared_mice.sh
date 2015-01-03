@@ -21,8 +21,8 @@ RAW_PATH=$(echo $FILES_FILE | sed -E 's/(.*)\/[^\/]*/\1/')
 PROCESS_PATH=$(echo $RAW_PATH | sed -E 's/raw/process/')
 mkdir -p $PROCESS_PATH
 
-mothur "#pcr.seqs(fasta=data/references/silva.bacteria.align, start=11894, end=25319, keepdots=F, processors=12)"
-mv data/references/silva.bacteria.pcr.align $PROCESS_PATH/silva.v4.align
+mothur "#pcr.seqs(outputdir=$PROCESS_PATH, fasta=data/references/silva.bacteria.align, start=11894, end=25319, keepdots=F, processors=12)"
+mv $PROCESS_PATH/silva.bacteria.pcr.align $PROCESS_PATH/silva.v4.align
 
 
 mothur "#set.dir(output=$PROCESS_PATH);
