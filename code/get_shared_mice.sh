@@ -27,7 +27,7 @@ mv data/references/silva.bacteria.pcr.align $PROCESS_PATH/silva.v4.align
 
 mothur "#set.dir(output=$PROCESS_PATH);
 	make.contigs(inputdir=$RAW_PATH, file=$FILES_FILE, processors=12);
-	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275);
+	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
 	unique.seqs();
 	count.seqs(name=current, group=current);
 	align.seqs(fasta=current, reference=$PROCESS_PATH/silva.v4.align);
