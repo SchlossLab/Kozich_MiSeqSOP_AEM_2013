@@ -344,8 +344,16 @@ data/raw/w_metag/w_metag.files : code/get_contigsfile.R
 	rm data/raw/w_metag/StabilityWMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/w_metag")'
 
-# Now let's run mothur
 
+# Now let's run mothur and generate our shared files
+get_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
+			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared
+
+data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared : get_shared_mice.sh data/raw/w_metag/w_metag.files
+	bash code/get_shared_mice.sh data/raw/no_metag/w_metag.files
+
+data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared : get_shared_mice.sh data/raw/w_metag/w_metag.files
+	bash code/get_shared_mice.sh data/raw/w_metag/w_metag.files
 
 
 # To do:
