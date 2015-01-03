@@ -2,19 +2,17 @@
 
 ################################################################################
 #
-# run_mothur_mice.sh
+# get_shared_mice.sh
 #
 #
 # Here we run the data/raw/*metag/*.files through mothur like we would in a
-# normal study
+# normal study and outputs a shared file
 #
 # Dependencies...
 # * data/raw/*metag/*.files
 #
 # Produces...
-# * *.thetayc.ave.dist
-# * *.nmds.axes
-# * *.error.summary
+# * *.an.shared
 #
 ################################################################################
 
@@ -26,9 +24,9 @@ mkdir -p $PROCESS_PATH
 mothur "#pcr.seqs(fasta=data/references/silva.bacteria.align, start=11894, end=25319, keepdots=F, processors=12)"
 mv data/references/silva.bacteria.pcr.align $PROCESS_PATH/silva.v4.align
 
-#change the name of the file from stability.files to whatever suits your study
+
 mothur "#set.dir(output=$PROCESS_PATH);
-	make.contigs(file=$FILES_FILE, processors=12);
+	make.contigs(inputdir=$RAW_PATH, file=$FILES_FILE, processors=12);
 	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275);
 	unique.seqs();
 	count.seqs(name=current, group=current);
@@ -44,6 +42,4 @@ mothur "#set.dir(output=$PROCESS_PATH);
 	remove.groups(count=current, fasta=current, taxonomy=current, groups=Mock-Mock2);
 	cluster.split(fasta=current, count=current, taxonomy=current, splitmethod=classify, taxlevel=4, cutoff=0.15);
 	make.shared(list=current, count=current, label=0.03);
-	classify.otu(list=current, count=current, taxonomy=current, label=0.03);
-	phylotype(taxonomy=current);
-	make.shared(list=current, count=current, label=1);"
+	classify.otu(list=current, count=current, taxonomy=current, label=0.03);"
