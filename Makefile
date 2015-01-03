@@ -350,7 +350,7 @@ get_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter
 			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared
 
 data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared : code/get_shared_mice.sh data/raw/no_metag/no_metag.files
-	bash code/get_shared_mice.sh data/raw/no_metag/w_metag.files
+	bash code/get_shared_mice.sh data/raw/no_metag/no_metag.files
 
 data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared : code/get_shared_mice.sh data/raw/w_metag/w_metag.files
 	bash code/get_shared_mice.sh data/raw/w_metag/w_metag.files
