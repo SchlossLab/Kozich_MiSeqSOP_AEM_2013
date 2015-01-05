@@ -33,16 +33,16 @@ contig_split <- function(contig_file){
 	scrap <- !(v34 | v4 | v45)
 	
 	region <- rep(NA, length(scrap))
+	region[v4] <- "v4"	# order is very importnat here. if v4 goes 2nd, then it wipes out all of the v34
 	region[v34] <- "v34"
-	region[v4] <- "v4"
 	region[v45] <- "v45"
 	
 	stub_file <- gsub(".summary", "", contig_file)
 	
-	write(file=paste0(stub_file, ".v34.accnos"), rownames(align_data)[v34])
-	write(file=paste0(stub_file, ".v4.accnos"), rownames(align_data)[v4])
-	write(file=paste0(stub_file, ".v45.accnos"), rownames(align_data)[v45])
-	write(file=paste0(stub_file, ".region"), region)
+	write.table(file=paste0(stub_file, ".v34.accnos"), rownames(align_data)[v34], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v4.accnos"), rownames(align_data)[v4], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v45.accnos"), rownames(align_data)[v45], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".region"), cbind(rownames(align_data), region), quote=F, col.names=F, row.names=F)
 }
 
 
@@ -56,14 +56,14 @@ reads_split <- function(read1_file, read2_file){
 	scrap <- !(v34 | v4 | v45)
 	
 	region <- rep(NA, length(scrap))
-	region[v34] <- "v34"
 	region[v4] <- "v4"
+	region[v34] <- "v34"
 	region[v45] <- "v45"
 	
 	stub_file <- gsub(".summary", "", read1_file)
 	
-	write(file=paste0(stub_file, ".v34.accnos"), rownames(read1_data)[v34])
-	write(file=paste0(stub_file, ".v4.accnos"), rownames(read1_data)[v4])
-	write(file=paste0(stub_file, ".v45.accnos"), rownames(read1_data)[v45])
-	write(file=paste0(stub_file, ".region"), region)
+	write.table(file=paste0(stub_file, ".v34.accnos"), rownames(read1_data)[v34], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v4.accnos"), rownames(read1_data)[v4], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v45.accnos"), rownames(read1_data)[v45], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".region"), cbind(rownames(read1_data), region), quote=F, col.names=F, row.names=F)
 }
