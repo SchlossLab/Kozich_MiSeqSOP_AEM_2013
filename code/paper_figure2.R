@@ -57,7 +57,7 @@ make.figure2 <- function(run){
 
 
 	#B
-	par(mar=c(5, 5, 1, 1))
+	par(mar=c(6, 5, 0, 1))
 	a<-read.table(file=paste0(stub, "/Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
 	b<-read.table(file=paste0(stub, "/Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
 	c<-read.table(file=paste0(stub, "/Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
@@ -87,7 +87,7 @@ make.figure2 <- function(run){
 
 
 	#D
-	par(mar=c(5, 5, 1, 1))
+	par(mar=c(6, 5, 0, 1))
 	a<-read.table(file=paste0(stub, "/Mock1_S1_L001_R2_001.rc.filter.error.quality"), header=T)
 	b<-read.table(file=paste0(stub, "/Mock2_S2_L001_R2_001.rc.filter.error.quality"), header=T)
 	c<-read.table(file=paste0(stub, "/Mock3_S3_L001_R2_001.rc.filter.error.quality"), header=T)
