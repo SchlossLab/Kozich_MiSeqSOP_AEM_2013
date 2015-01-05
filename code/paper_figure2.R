@@ -1,5 +1,3 @@
-# * figure out the problem with the reverse quality scores - remaking those files
-
 ################################################################################
 #
 # paper_figure2.R
