@@ -36,7 +36,7 @@
 
 make.figure2 <- function(run){
 
-	figure <- paste0("results/figures/", run, ".figure2.pdf")
+	figure <- paste0("results/figures/", run, ".figure2.png")
 	stub <- paste0("data/process/", run)
 	
 	png(file=figure)
