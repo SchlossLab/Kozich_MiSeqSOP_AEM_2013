@@ -302,7 +302,7 @@ HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
 
 
 # Let's build a copy of Figure 2 from each of the runs..
-FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.pdf, $(RUNS)))
+FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.png, $(RUNS)))
 
 build_figure2 : $(FIGURE2)
 

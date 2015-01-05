@@ -39,7 +39,7 @@ make.figure2 <- function(run){
 	figure <- paste0("results/figures/", run, ".figure2.pdf")
 	stub <- paste0("data/process/", run)
 	
-	png(file=figure, width=11, height=6.5)
+	png(file=figure)
 
 	par(mfcol=c(2,2))
 
@@ -48,7 +48,7 @@ make.figure2 <- function(run){
 	a<-read.table(file=paste0(stub, "/Mock1_S1_L001_R1_001.filter.error.seq.forward"), header=T)
 	b<-read.table(file=paste0(stub, "/Mock2_S2_L001_R1_001.filter.error.seq.forward"), header=T)
 	c<-read.table(file=paste0(stub, "/Mock3_S3_L001_R1_001.filter.error.seq.forward"), header=T)
-	nr <- min(c(nrow(a), nrow(b), nrow(c))
+	nr <- min(c(nrow(a), nrow(b), nrow(c)))
 	composite <- (a[1:nr,] + b[1:nr,] + c[1:nr,])/3
 	
 	plot(100*(1-composite$match[1:nr]), xlim=c(0,nr), ylim=c(0,10), type="l", xlab="", ylab="Substitution rate (%)", xaxt="n", cex.lab=1.2)
@@ -61,7 +61,7 @@ make.figure2 <- function(run){
 	a<-read.table(file=paste0(stub, "/Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
 	b<-read.table(file=paste0(stub, "/Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
 	c<-read.table(file=paste0(stub, "/Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse"), header=T)
-	nr <- min(c(nrow(a), nrow(b), nrow(c))
+	nr <- min(c(nrow(a), nrow(b), nrow(c)))
 	composite <- (a[1:nr,] + b[1:nr,] + c[1:nr,])/3
 	
 	plot(100*(1-composite$match[1:nr]), xlim=c(0,nr), ylim=c(0,10), type="l", xlab="Bases sequenced", ylab="", cex.lab=1.2)
