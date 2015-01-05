@@ -27,22 +27,21 @@ colnames(positions) <- c("start", "end")
 contig_split <- function(contig_file){
 	align_data <- read.table(file=contig_file, header=T, row.names=1)
 	
-	v34 <- align_data$start <= positions["V34", "start"] & align_data$end >= positions["V34", "end"]
-	v4 <- align_data$start <= positions["V4", "start"] & align_data$end >= positions["V4", "end"]
-	v45 <- align_data$start <= positions["V45", "start"] & align_data$end >= positions["V45", "end"]
-	scrap <- !(v34 | v4 | v45)
+	v34 <- align_data$start <= positions["V34", "start"] & align_data$end >= positions["V34", "end"] & align_data$nbases <= 450
+	v4 <- align_data$start <= positions["V4", "start"] & align_data$end >= positions["V4", "end"] & align_data$nbases <= 260
+	v45 <- align_data$start <= positions["V45", "start"] & align_data$end >= positions["V45", "end"] & align_data$nbases <= 400 
 	
-	region <- rep(NA, length(scrap))
+	region <- rep(NA, nrow(align_data))
+	region[v4] <- "v4"	# order is very importnat here. if v4 goes 2nd, then it wipes out all of the v34
 	region[v34] <- "v34"
-	region[v4] <- "v4"
 	region[v45] <- "v45"
 	
 	stub_file <- gsub(".summary", "", contig_file)
 	
-	write(file=paste0(stub_file, ".v34.accnos"), rownames(align_data)[v34])
-	write(file=paste0(stub_file, ".v4.accnos"), rownames(align_data)[v4])
-	write(file=paste0(stub_file, ".v45.accnos"), rownames(align_data)[v45])
-	write(file=paste0(stub_file, ".region"), region)
+	write.table(file=paste0(stub_file, ".v34.accnos"), rownames(align_data)[v34], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v4.accnos"), rownames(align_data)[v4], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v45.accnos"), rownames(align_data)[v45], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".region"), cbind(rownames(align_data), region), quote=F, col.names=F, row.names=F)
 }
 
 
@@ -53,17 +52,16 @@ reads_split <- function(read1_file, read2_file){
 	v34 <- read1_data$start <= positions["V34", "start"] & read2_data$end >= positions["V34", "end"]
 	v4 <- read1_data$start <= positions["V4", "start"] & read2_data$end >= positions["V4", "end"]
 	v45 <- read1_data$start <= positions["V45", "start"] & read2_data$end >= positions["V45", "end"]
-	scrap <- !(v34 | v4 | v45)
 	
-	region <- rep(NA, length(scrap))
+	region <- rep(NA, nrow(read1_data))
+	region[v4] <- "v4"	#order is very important. if v4 goes second, it will write over the v34 data
 	region[v34] <- "v34"
-	region[v4] <- "v4"
 	region[v45] <- "v45"
 	
 	stub_file <- gsub(".summary", "", read1_file)
 	
-	write(file=paste0(stub_file, ".v34.accnos"), rownames(read1_data)[v34])
-	write(file=paste0(stub_file, ".v4.accnos"), rownames(read1_data)[v4])
-	write(file=paste0(stub_file, ".v45.accnos"), rownames(read1_data)[v45])
-	write(file=paste0(stub_file, ".region"), region)
+	write.table(file=paste0(stub_file, ".v34.accnos"), rownames(read1_data)[v34], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v4.accnos"), rownames(read1_data)[v4], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".v45.accnos"), rownames(read1_data)[v45], quote=F, col.names=F, row.names=F)
+	write.table(file=paste0(stub_file, ".region"), cbind(rownames(read1_data), region), quote=F, col.names=F, row.names=F)
 }
