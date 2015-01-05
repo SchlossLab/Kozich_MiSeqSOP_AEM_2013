@@ -56,7 +56,7 @@ reads_split <- function(read1_file, read2_file){
 	scrap <- !(v34 | v4 | v45)
 	
 	region <- rep(NA, length(scrap))
-	region[v4] <- "v4"
+	region[v4] <- "v4"	#order is very important. if v4 goes second, it will write over the v34 data
 	region[v34] <- "v34"
 	region[v45] <- "v45"
 	
