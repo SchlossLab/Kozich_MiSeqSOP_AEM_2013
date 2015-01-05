@@ -83,7 +83,7 @@ make.figure2 <- function(run){
 	boxplot(rep(q, composite$substitutions), at=2,add=T, outline=F, yaxt="n")
 	boxplot(rep(q, composite$insertions), at=3, add=T, outline=F, yaxt="n")
 	boxplot(rep(q, composite$ambiguous), at=4, add=T, outline=F, yaxt="n")
-	text(0.5, 39, label="C", cex=1.5, font=2)
+	text(0.5, 39.9, label="C", cex=1.5, font=2)
 
 
 	#D
@@ -100,8 +100,8 @@ make.figure2 <- function(run){
 	boxplot(rep(q, composite$substitutions), at=2,add=T, outline=F, yaxt="n")
 	boxplot(rep(q, composite$insertions), at=3, add=T, outline=F, yaxt="n")
 	boxplot(rep(q, composite$ambiguous), at=4, add=T, outline=F, yaxt="n")
-	axis(1, at=c(1,2,3,4), labels=c("Matches", "Substitutions", "Insertions", "Ambiguous"))
-	text(0.5, 39, label="D", cex=1.5, font=2)
+	axis(1, at=c(1,2,3,4), labels=c("Matches", "Substitutions", "Insertions", "Ambiguous"), las=2)
+	text(0.5, 39.9, label="D", cex=1.5, font=2)
 	par(mfrow=c(1,1))
 
 	dev.off()
