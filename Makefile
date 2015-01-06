@@ -325,12 +325,12 @@ $(FIGURE2) : code/paper_figure2.R \
 
 # Let's build a copy of Figure 3 from each of the runs...
 TABS4_FIGURE3 = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
-TABS4_FIGURE3_ERROR = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.filter.error.summary) \
-						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.filter.error.summary) \
-						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.filter.error.summary)
-TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.filter.region) \
-						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.filter.region) \
-						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.filter.region)
+TABS4_FIGURE3_ERROR = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.error.summary) \
+						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.error.summary) \
+						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.error.summary)
+TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.region) \
+						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.region) \
+						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.region)
 
 
 build_tabs4_figure3 : $(TABS4_FIGURE3)
