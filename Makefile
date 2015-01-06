@@ -332,10 +332,11 @@ TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.fi
 						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.region) \
 						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.region)
 
+#TEST = $(addprefix $(subst deltaq.error.summary,,data/process/121203/deltaq.error.summary), $(TABS4_FIGURE3_ERROR))
 
 build_tabs4_figure3 : $(TABS4_FIGURE3)
 
-$(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix $(subst deltaq.error.summary,,$@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))
+$(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix $(subst deltaq.error.summary,,$@), $(TABS4_FIGURE3_ERROR))
 	$(eval RUN=$(subst data/process/,,$(subst /summarize_error_deltaQ.R,,$@)) \
 	R -e "source('code/summarize_error_deltaQ.R'); get.summary($RUN)"
 
