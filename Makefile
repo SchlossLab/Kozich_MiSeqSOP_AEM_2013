@@ -337,8 +337,7 @@ build_tabs4_figure3 : $(TABS4_FIGURE3)
 
 $(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix($(basename $@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))
 	$(eval RUN=$(subst data/process/,,$(subst /summarize_error_deltaQ.R,,$@))) \
-	@echo $($(addprefix $(subst deltaq.error.summary,,$@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))) \
-	R -e "source('code/summarize_error_deltaQ.R'); get.summary($RUN)"
+	R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
 
 
 
