@@ -323,6 +323,26 @@ $(FIGURE2) : code/paper_figure2.R \
 
 
 
+# Let's build a copy of Figure 3 from each of the runs...
+TABS4_FIGURE3 = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
+TABS4_FIGURE3_ERROR = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.filter.error.summary) \
+						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.filter.error.summary) \
+						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.filter.error.summary)
+TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.filter.region) \
+						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.filter.region) \
+						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.filter.region)
+
+
+build_tabs4_figure3 : $(TABS4_FIGURE3)
+
+$(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix $(subst deltaq.error.summary,,$@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))
+	$(eval RUN=$(subst data/process/,,$(subst /summarize_error_deltaQ.R,,$@)) \
+	R -e "source('code/summarize_error_deltaQ.R'); get.summary($RUN)"
+
+
+
+
+
 
 # Let's build ordinations for the two sequencing runs where we sequenced data
 # from the mouse data
