@@ -19,7 +19,6 @@
 
 get.summary <- function(run){
 
-	run <- "130403"
 	directory <- paste0("data/process/", run, "/")
 	
 	deltaq <- 0:10
@@ -33,7 +32,7 @@ get.summary <- function(run){
 	c.summary <- paste0(directory, "Mock3_S3_L001_R1_001.", deltaq, ".contigs.filter.error.summary")
 	
 	error.summary <- data.frame()
-	deltaq <- 0:3
+
 	for(dq in deltaq){
 		region <- rbind(read.table(file=a.region[dq+1]), read.table(file=b.region[dq+1]), read.table(file=c.region[dq+1])) 
 		summary <- rbind(read.table(file=a.summary[dq+1], header=T), read.table(file=b.summary[dq+1], header=T), read.table(file=c.summary[dq+1], header=T)) 
