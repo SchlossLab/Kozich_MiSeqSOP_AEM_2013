@@ -47,9 +47,3 @@ get.summary <- function(run){
 	output <- paste0(directory, "/deltaq.error.summary")
 	write.table(file=outut, s.table, quote=F)
 }
-
-v4 length <= 260
-v45 length <= 400
-v34 length <= 450
-
-
