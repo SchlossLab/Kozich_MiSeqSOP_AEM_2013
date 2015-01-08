@@ -525,6 +525,18 @@ in the first and second read (B and D) using data from run 130403.**
 
 --------
 
+```{r consensusdenoising, echo=F}
+get.errors <- function(run, deltaQ){
+	file.name <- paste0("data/process/", run, "/deltaq.error.summary")
+	data <- read.table(file=file.name, header=T)
+	zeros <- data[data$deltaQ == deltaQ,]
+	c(v34=zeros[zeros$region=="v34","error.rate"], v4=zeros[zeros$region=="v4","error.rate"], v45=zeros[zeros$region=="v45","error.rate"])
+}
+
+deltaQ0 <- sapply(new_runs, get.errors, deltaQ=0)
+deltaQ6 <- sapply(new_runs, get.errors, deltaQ=6)
+```
+
 ***De-noising via consensus.*** Building upon the observation that the
 quality scores provided meaningful information, we developed a
 de-noising strategy that utilized that quality score information.
@@ -550,12 +562,14 @@ significant reduction in the error rate as we increased ΔQ. The error
 rate did not change by more than 0.01% for values of ΔQ greater than 6
 for a theoretical 4-fold reduction in the error rate. For the V4 dataset
 the initial error rate (i.e. ΔQ=0) was proportional to the cluster
-density (range: 0.25 to 1.08%); however, when the ΔQ was set at 6, the
-error rate dropped to 0.05-0.06% (**Table 2**). For the V34 and V45
-datasets the initial error rate again varied with cluster density.
-Applying the same ΔQ to data from the V34 and V45 datasets reduced the
-error rates to 0.29 and 0.58%, respectively, when the lowest cluster
-density was used (**Table 2**). It was surprising that the shorter V45
+density (range: `r paste(round(100*range(deltaQ0["v4",]), digits=2), collapse=" to ")`%);
+however, when the ΔQ was set at 6, the
+error rate dropped to `r paste(round(100*range(deltaQ6["v4",]), digits=2), collapse="-")`%)%
+(**Table 2**). For the V34 and V45 datasets the initial error rate again varied
+with cluster density. Applying the same ΔQ to data from the V34 and V45 datasets
+reduced the error rates to `r round(100*deltaQ6["v34", "130422"], 2)` and
+`r round(100*deltaQ6["v45", "130422"], 2)`%, respectively, when the lowest
+cluster density was used (**Table 2**). It was surprising that the shorter V45
 region actually had a larger error rate than the V34 region. One
 hypothesis is that this was due to the number of sites within the V34
 (43 forward and 51 reverse) and V45 (81 forward and 29 reverse) regions
