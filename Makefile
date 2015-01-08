@@ -343,12 +343,10 @@ FIGURE3 = $(addsuffix .figure3.png,$(addprefix results/figures/, $(RUNS)))
 
 build_figure3 : $(FIGURE3)
 
-TEST = $(patsubst results/figures/%.figure3.png,data/process/%/deltaq.error.summary, $(FIGURE3))
 
-$(FIGURE3) : code/paper_figure3.R $(patsubst results/figures/%.figure3.png,data/process/%/deltaq.error.summary, $@)
-	echo $(eval $^)
-#	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
-#	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))"; 
+results/figures/%.figure3.png : code/paper_figure3.R data/process/%/deltaq.error.summary
+	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
+	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))"; 
 
 
 # Let's build ordinations for the two sequencing runs where we sequenced data
@@ -384,8 +382,6 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 
 
 # To do:
-# * Generate Figure 3 for each run
-#	* Have the data
 # * Generate Table S2
 # 	* Need error rate post pre-cluster
 #	* Need # OTUs with perfect chimera removal
