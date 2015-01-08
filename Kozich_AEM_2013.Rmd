@@ -479,15 +479,15 @@ get_slope <- function(x, y, z){
 	1/al$coef
 }
 
-a<-read.table(file="data/process/130403/Mock1_S1_L001_R1_001.error.quality", header=T)
-b<-read.table(file="data/process/130403/Mock2_S2_L001_R1_001.error.quality", header=T)
-c<-read.table(file="data/process/130403/Mock3_S3_L001_R1_001.error.quality", header=T)
-forward.slope <- get_slope(a,b,c)
+a<-read.table(file="data/process/130403/Mock1_S1_L001_R1_001.filter.error.quality", header=T)
+b<-read.table(file="data/process/130403/Mock2_S2_L001_R1_001.filter.error.quality", header=T)
+c<-read.table(file="data/process/130403/Mock3_S3_L001_R1_001.filter.error.quality", header=T)
+forward.slope <- abs(get_slope(a,b,c))
 
-a<-read.table(file="data/process/130403/Mock1_S1_L001_R2_001.rc.error.quality", header=T)
-b<-read.table(file="data/process/130403/Mock2_S2_L001_R2_001.rc.error.quality", header=T)
-c<-read.table(file="data/process/130403/Mock3_S3_L001_R2_001.rc.error.quality", header=T)
-reverse.slope <- get_slope(a,b,c)
+a<-read.table(file="data/process/130403/Mock1_S1_L001_R2_001.rc.filter.error.quality", header=T)
+b<-read.table(file="data/process/130403/Mock2_S2_L001_R2_001.rc.filter.error.quality", header=T)
+c<-read.table(file="data/process/130403/Mock3_S3_L001_R2_001.rc.filter.error.quality", header=T)
+reverse.slope <- abs(get_slope(a,b,c))
 ```
 
 ***Error profile.*** Next, we sought to develop a strategy to reduce the
@@ -508,7 +508,8 @@ expected, errors were associated with low quality scores and rarely had
 a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
-log<sub>10</sub>P) with slopes of **`r forward.slope`**-11.7 and **`r reverse.slope`** for the first and second read,
+log<sub>10</sub>P) with slopes of **`r round(forward.slope, 1)`** and 
+**`r round(reverse.slope, digits=2)`** for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
 quality of data possible with 454 sequencing; however, the error rates
@@ -562,13 +563,13 @@ significant reduction in the error rate as we increased ΔQ. The error
 rate did not change by more than 0.01% for values of ΔQ greater than 6
 for a theoretical 4-fold reduction in the error rate. For the V4 dataset
 the initial error rate (i.e. ΔQ=0) was proportional to the cluster
-density (range: `r paste(round(100*range(deltaQ0["v4",]), digits=2), collapse=" to ")`%);
+density (range: **`r paste(round(100*range(deltaQ0["v4",]), digits=2), collapse=" to ")`**%);
 however, when the ΔQ was set at 6, the
-error rate dropped to `r paste(round(100*range(deltaQ6["v4",]), digits=2), collapse="-")`%)%
+error rate dropped to **`r paste(round(100*range(deltaQ6["v4",]), digits=2), collapse="-")`**%
 (**Table 2**). For the V34 and V45 datasets the initial error rate again varied
 with cluster density. Applying the same ΔQ to data from the V34 and V45 datasets
-reduced the error rates to `r round(100*deltaQ6["v34", "130422"], 2)` and
-`r round(100*deltaQ6["v45", "130422"], 2)`%, respectively, when the lowest
+reduced the error rates to **`r round(100*deltaQ6["v34", "130422"], 2)`** and
+**`r round(100*deltaQ6["v45", "130422"], 2)`**%, respectively, when the lowest
 cluster density was used (**Table 2**). It was surprising that the shorter V45
 region actually had a larger error rate than the V34 region. One
 hypothesis is that this was due to the number of sites within the V34
