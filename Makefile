@@ -339,9 +339,13 @@ $(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix($(basename $@), $(T
 	$(eval RUN=$(subst data/process/,,$(subst /deltaq.error.summary,,$@))) \
 	R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
 
+FIGURE3 = $(addsuffix .figure3.png,$(addprefix results/figures/, $(RUNS)))
 
+build_figure3 : $(FIGURE3)
 
-
+$(FIGURE3) : code/paper_figure3.R $(patsubst results/figures/%.figure3.png,data/process/%/deltaq.error.summary, $@)
+	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@) \
+	R -e "source('code/paper_figure3.R'); make.figure2($RUN)"; 
 
 
 # Let's build ordinations for the two sequencing runs where we sequenced data
