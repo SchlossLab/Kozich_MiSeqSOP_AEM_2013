@@ -322,6 +322,30 @@ genomic library control, and varying cluster densities. Four sequencing
 runs were performed with RTA v. 1.17.28, MCS v. 2.2.0, a target of 5%
 PhiX, and varying cluster densities.
 
+
+-----
+
+**Table 1. Summary of operating conditions for various MiSeq sequencing
+runs, machine reported quality metrics, and observed error rates.** The types
+of errors are reported as percentages of the total error rates.
+
+
+|       | RTA version | MCS version | [DNA] (pM) | Cluster density (K/mm<sup>2</sup>) | % PhiX | Correction | %>= Q30 | Reported machine error (%) | 16S rRNA pairs (10<sup>6</sup>) | Observed error (%) | Substitutions (%) | Ambiguous (%) | Deletions (%) | Insertions (%) |
+|:------|:-----------:|:-----------:|:----------:|:----------------------------------:|:------:|:----------:|:-------:|:--------------------------:|:-------------------------------:|:------------------:|:-----------------:|:-------------:|:-------------:|:--------------:|
+|121203 |   1.16.18   |    2.0.5    |    9.0     |                743                 |  49.6  |  Adaptive  |  57.0   |            2.94            |               5.6               |        4.4         |       98.6        |      0.6      |      0.7      |      0.2       |
+|121205 |   1.16.18   |    2.0.5    |    8.0     |                607                 |  59.9  |  Adaptive  |  64.5   |            1.37            |               3.9               |        3.3         |       98.0        |      1.7      |      0.2      |      0.1       |
+|121207 |   1.16.18   |    2.0.5    |    6.0     |                567                 |  59.2  |  Adaptive  |  63.3   |            1.50            |               3.7               |        3.0         |       99.3        |      0.4      |      0.2      |      0.1       |
+|130125 |   1.17.22   |   2.1.13    |    4.0     |                192                 |  82.8  |  Adaptive  |  94.4   |            0.61            |               0.4               |        0.5         |       95.6        |      4.0      |      0.3      |      0.1       |
+|130211 |   1.17.22   |   2.1.13    |    4.0     |                387                 |  68.9  | Hardcoded  |  92.0   |            0.59            |               1.9               |        1.0         |       97.0        |      2.8      |      0.2      |      0.1       |
+|130220 |   1.17.22   |   2.1.13    |    10.0    |                702                 |  58.8  | Hardcoded  |  93.9   |            0.87            |               4.5               |        1.7         |       99.3        |      0.3      |      0.2      |      0.2       |
+|130306 |   1.17.22   |   2.1.13    |    10.0    |                781                 |  42.3  | Hardcoded  |  78.9   |            0.96            |               4.6               |        2.6         |       89.2        |     10.5      |      0.2      |      0.2       |
+|130401 |   1.17.28   |    2.2.0    |    10.0    |                1313                |  3.8   |  Adaptive  |  63.7   |            1.31            |              12.6               |        4.7         |       98.8        |      0.7      |      0.3      |      0.2       |
+|130403 |   1.17.28   |    2.2.0    |    5.0     |                1094                |  3.2   |  Adaptive  |  70.5   |            0.89            |              12.4               |        3.3         |       99.0        |      0.6      |      0.2      |      0.2       |
+|130417 |   1.17.28   |    2.2.0    |    3.0     |                839                 |  6.2   |  Adaptive  |  74.6   |            0.92            |              10.5               |        2.8         |       98.2        |      1.4      |      0.2      |      0.2       |
+|130422 |   1.17.28   |    2.2.0    |    1.8     |                690                 |  8.0   |  Adaptive  |  80.1   |            0.65            |               9.0               |        1.8         |       97.8        |      1.8      |      0.2      |      0.1       |
+
+-----
+
 ***Shotgun library construction.*** DNA (2.5 ng) from the mock and human
 fecal communities used in our amplicon experiments plus genomic DNA from
 two *Clostridium clostridioforme* strains (D4 and CIP110249) were used
@@ -416,28 +440,45 @@ three regions are provided in the Supplementary Materials.
 
 --------
 
+
+
 ***Error profile.*** Next, we sought to develop a strategy to reduce the
 observed error rates for the two sequencing reads. For all regions of
 the 16S rRNA gene, the error rates increased over the length of the
 reads with the second read having a higher error rate than the first
-(**Figure 2**); substitutions were the primary source of error (99.4%),
-followed by ambiguous base calls (0.2%), deletions (0.2%), and
-insertions (0.2%). We were unable to detect a reproducible substitution
-bias between bases and all bases were equally likely to be inserted or
-deleted. To explore whether the quality scores could be used as reliable
-surrogate for sequence quality we categorized each quality score by
+(**Figure 2**); substitutions were the primary source of error
+**(99%)**, followed by ambiguous base calls
+**(0.6%)**, deletions
+**(0.2%)**, and insertions
+**(0.2%)** (Table 1). We were unable to detect a
+reproducible substitution bias between bases and all bases were equally likely
+to be inserted or deleted. To explore whether the quality scores could be used
+as reliable surrogate for sequence quality we categorized each quality score by
 whether its base call was the expected base (i.e. a match), a
 substitution, an insertion, or an ambiguous base (**Figure 2**). As
 expected, errors were associated with low quality scores and rarely had
 a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
-log<sub>10</sub>P) with slopes of -11.7 and -14.3 for the first and second read,
+log<sub>10</sub>P) with slopes of **11.8** and 
+**14.02** for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
 quality of data possible with 454 sequencing; however, the error rates
 could potentially be improved using the quality scores and building
 consensus sequences from the paired reads.
+
+--------
+
+![**Figure 2.**](results/figures/130403.figure2.png)
+
+**Figure 2. Profile of sequencing errors in the first and second read (A
+and C) and the quality scores associated with different types of errors
+in the first and second read (B and D) using data from run 130403.**
+
+--------
+
+
 
 ***De-noising via consensus.*** Building upon the observation that the
 quality scores provided meaningful information, we developed a
@@ -464,12 +505,14 @@ significant reduction in the error rate as we increased ΔQ. The error
 rate did not change by more than 0.01% for values of ΔQ greater than 6
 for a theoretical 4-fold reduction in the error rate. For the V4 dataset
 the initial error rate (i.e. ΔQ=0) was proportional to the cluster
-density (range: 0.25 to 1.08%); however, when the ΔQ was set at 6, the
-error rate dropped to 0.05-0.06% (**Table 2**). For the V34 and V45
-datasets the initial error rate again varied with cluster density.
-Applying the same ΔQ to data from the V34 and V45 datasets reduced the
-error rates to 0.29 and 0.58%, respectively, when the lowest cluster
-density was used (**Table 2**). It was surprising that the shorter V45
+density (range: **0.27 to 1.12**%);
+however, when the ΔQ was set at 6, the
+error rate dropped to **0.05-0.07**%
+(**Table 2**). For the V34 and V45 datasets the initial error rate again varied
+with cluster density. Applying the same ΔQ to data from the V34 and V45 datasets
+reduced the error rates to **0.33** and
+**0.43**%, respectively, when the lowest
+cluster density was used (**Table 2**). It was surprising that the shorter V45
 region actually had a larger error rate than the V34 region. One
 hypothesis is that this was due to the number of sites within the V34
 (43 forward and 51 reverse) and V45 (81 forward and 29 reverse) regions
@@ -798,28 +841,8 @@ L. Westcott.** 2011. Assessing and improving methods used in operational
 taxonomic unit-based approaches for 16S rRNA gene sequence analysis.
 Appl Environ Microbiol **77:**3219-26.
 
-**Table 1. Summary of operating conditions for various MiSeq sequencing
-runs and machine reported quality metrics.** These four runs were
-performed using RTA v. 1.17.28 and MCS v. 2.2.0. Data for runs performed
-using previous versions of the software are provided in Tables S1 and
-S2.
 
-  -----------------------------------------------------------------------------------------------------
-  **Run**   **[DNA]**   **Cluster**     **% PhiX**   **%\>= Q30**   **Reported**    **16S rRNA**
-                                                                                    
-            **(pM)**    **density**                                 **machine**     **pairs (10^6^)**
-                                                                                    
-                        **(K/mm^2^)**                               **error (%)**   
-                                                                                    
-  --------- ----------- --------------- ------------ -------------- --------------- -------------------
-  130401    10.0        1,313           3.8          63.7           1.31            12.6
 
-  130403    5.0         1,094           3.2          70.5           0.89            12.4
-
-  130417    3.0         839             6.2          74.6           0.92            10.5
-
-  130422    1.8         690             8.0          80.1           0.65            9.0
-  -----------------------------------------------------------------------------------------------------
 
 **Table 2. Summary of the error rates and number of observed OTUs for
 the sequencing runs described in Table 1.**
@@ -894,9 +917,6 @@ in parallel to 16S rRNA gene sequences.**
 A: The contig length where all contigs that length or longer contain
 more than 50% of the bases found across all contigs
 
-**Figure 2. Profile of sequencing errors in the first and second read (A
-and C) and the quality scores associated with different types of errors
-in the first and second read (B and D) using data from run 130403.**
 
 **Figure 3. Relationship between the error rate and the fraction of
 sequences kept as a function of the ΔQ value for the V34, V4, and V45
