@@ -291,6 +291,19 @@ $(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.preclust
 	bash code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
 
 
+
+
+PRECLUSTER_ERROR = $(subst pick.an.ave-std.summary,error.summary,$(FULL_SUMMARY))
+
+$(PRECLUSTER_ERROR) : $(subst error.summary,pick.an.ave-std.summary,$(FULL_SUMMARY))
+	echo $^
+
+
+
+
+# Let's see how many OTUs there would be without any sequencing errors or
+# chimeras...
+
 get_noseqrror_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
 				data/process/noseq_error/HMP_MOCK.v4.summary \
 				data/process/noseq_error/HMP_MOCK.v45.summary \
@@ -347,6 +360,13 @@ build_figure3 : $(FIGURE3)
 results/figures/%.figure3.png : code/paper_figure3.R data/process/%/deltaq.error.summary
 	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
 	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))"; 
+
+
+
+
+
+
+
 
 
 # Let's build ordinations for the two sequencing runs where we sequenced data
