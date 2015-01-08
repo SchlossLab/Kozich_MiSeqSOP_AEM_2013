@@ -345,7 +345,7 @@ build_figure3 : $(FIGURE3)
 
 $(FIGURE3) : code/paper_figure3.R $(patsubst results/figures/%.figure3.png,data/process/%/deltaq.error.summary, $@)
 	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
-	R -e "source('code/paper_figure3.R'); make.figure2($RUN)"; 
+	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))"; 
 
 
 # Let's build ordinations for the two sequencing runs where we sequenced data
