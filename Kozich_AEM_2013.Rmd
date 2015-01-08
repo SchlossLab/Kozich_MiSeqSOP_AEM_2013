@@ -509,7 +509,7 @@ a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
 log<sub>10</sub>P) with slopes of **`r round(forward.slope, 1)`** and 
-**`r round(reverse.slope, digits=2)`** for the first and second read,
+**`r round(reverse.slope, digits=1)`** for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
 quality of data possible with 454 sequencing; however, the error rates
@@ -579,6 +579,16 @@ together, these data demonstrate that for the V4 data, the fraction of
 sequences retained and length of sequences (i.e. ca. 250 nt) was
 comparable to our previous results using the PyroNoise algorithm on 454
 flowgrams trimmed to 450 flows (i.e. ca. 260 nt) ([9](#_ENREF_9)).
+
+--------
+
+![**Figure 3.**](results/figures/130403.figure3.png)
+
+**Figure 3. Relationship between the error rate and the fraction of
+sequences kept as a function of the ΔQ value for the V34, V4, and V45
+regions using data from run 130403.**
+
+--------
 
 ***Pre-clustering sequences.*** We previously showed that a
 pre-clustering step could further reduce the sequencing error and number
@@ -976,9 +986,6 @@ A: The contig length where all contigs that length or longer contain
 more than 50% of the bases found across all contigs
 
 
-**Figure 3. Relationship between the error rate and the fraction of
-sequences kept as a function of the ΔQ value for the V34, V4, and V45
-regions using data from run 130403.**
 
 **Figure 4. Principal coordinates ordination of Θ<sub>YC</sub> values relating
 the community structures of the fecal microbiota from 12 mice collected
