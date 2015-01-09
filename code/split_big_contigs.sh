@@ -62,25 +62,19 @@ run_mothur_on_regions $ALL_ALIGN $ALL_NAMES v45 400
 
 # Garbage collection
 CONTIG_STUB=$(echo $CONTIG_FASTA | sed -E s/.fasta//)
-rm *.filter
 rm $CONTIG_STUB.v{34,4,45}.filter.unique.precluster.map
+rm $CONTIG_STUB.v{34,4,45}.filter.unique.fasta
+rm $CONTIG_STUB.v{34,4,45}.filter.names
 rm $CONTIG_STUB.v{34,4,45}.filter.fasta
+rm $(echo $CONTIG_FASTA | sed -E s/6.contigs.fasta/filter/)
 rm $CONTIG_STUB.v{34,4,45}.names
 rm $CONTIG_STUB.v{34,4,45}.align
+rm $CONTIG_STUB.good.unique.bad.accnos
+rm $CONTIG_STUB.good.unique.align
 rm $CONTIG_STUB.good.unique.flip.accnos
 rm $CONTIG_STUB.good.unique.align.report
-rm $CONTIG_STUB.good.unique.align
-rm $CONTIG_STUB.good.names
-rm $CONTIG_STUB.good.unique.bad.accnos
 rm $CONTIG_STUB.good.unique.fasta
-rm $CONTIG_STUB.bad.accnos
-rm $CONTIG_STUB.good.fasta
-rm $CONTIG_STUB.good.unique.flip.accnos
-rm $CONTIG_STUB.good.unique.align.report
-rm $CONTIG_STUB.good.unique.align
 rm $CONTIG_STUB.good.names
-rm $CONTIG_STUB.good.unique.bad.accnos
-rm $CONTIG_STUB.good.unique.fasta
 rm $CONTIG_STUB.bad.accnos
 rm $CONTIG_STUB.good.fasta
 
