@@ -292,11 +292,14 @@ $(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.preclust
 
 
 
-
 PRECLUSTER_ERROR = $(subst pick.an.ave-std.summary,error.summary,$(FULL_SUMMARY))
 
-$(PRECLUSTER_ERROR) : $(subst error.summary,pick.an.ave-std.summary,$(FULL_SUMMARY))
-	echo $^
+.SECONDEXPANSION:
+$(PRECLUSTER_ERROR) : $$(subst error.summary,pick.an.ave-std.summary,$$@)
+	$(eval FASTA=$(subst error.summary,fasta,$@)) \
+	$(eval NAMES=$(subst error.summary,names,$@)) \
+	$(eval REFS=$(addprefix $(dir $@), HMP_MOCK.filter.fasta)) \
+	mothur "#seq.error(fasta=$(FASTA), name=$(NAMES), reference=$(REFS), aligned=F, processors=12)"
 
 
 
