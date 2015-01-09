@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 data/raw/
+temp
 
 *.qsub*
 *~
@@ -11,3 +12,4 @@ mothur*logfile
 code/original/
 data/process/
 data/references/
+
