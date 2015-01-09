@@ -1,6 +1,6 @@
 ################################################################################
 #
-# run_mothur_regular.sh
+# split_big_contigs.sh
 #
 #
 # Here we run the *contigs.fasta files through mothur like we would in a normal
