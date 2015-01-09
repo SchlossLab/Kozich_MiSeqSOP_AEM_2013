@@ -281,6 +281,26 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 # We also only really want to run this on our final set of contigs - those with
 # qdel == 6, which are stored in $(FINAL_CONTIGS).
 
+
+PRECLUSTER_FASTA = $(subst fasta,v34.filter.unique.precluster.fasta,$(FINAL_CONTIGS)) \
+		$(subst fasta,v4.filter.unique.precluster.fasta,$(FINAL_CONTIGS)) \
+		$(subst fasta,v45.filter.unique.precluster.fasta,$(FINAL_CONTIGS))
+PRECLUSTER_NAMES = $(subst fasta,names,$(PRECLUSTER_FASTA))
+
+get_precluster : $(PRECLUSTER_FASTA) $(PRECLUSTER_NAMES)
+
+
+.SECONDEXPANSION:
+$(PRECLUSTER_FASTA) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.precluster.fasta,,$$@))) code/split_big_contigs.sh 
+	bash code/split_big_contigs.sh $<
+
+.SECONDEXPANSION:
+$(PRECLUSTER_NAMES) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.precluster.names,,$$@))) code/split_big_contigs.sh
+	bash code/split_big_contigs.sh $<
+
+
+
+
 FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
 		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
 		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
