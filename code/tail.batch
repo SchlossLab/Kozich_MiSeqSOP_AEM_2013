@@ -1,0 +1,4 @@
+echo "qsub working directory absolute is"
+echo $PBS_O_WORKDIR
+exit
+

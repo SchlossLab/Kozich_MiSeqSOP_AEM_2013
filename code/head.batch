@@ -1,0 +1,18 @@
+#!/bin/sh
+#PBS -l nodes=1:ppn=12
+#PBS -l mem=47gb
+#PBS -l walltime=500:00:00
+#PBS -j oe
+#PBS -m abe
+#PBS -V
+#PBS -M pschloss@umich.edu
+#PBS -q first
+
+echo "ncpus-2.pbs"
+cat $PBS_NODEFILE
+qstat -f $PBS_JOBID
+
+cd $PBS_O_WORKDIR
+
+NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
+
