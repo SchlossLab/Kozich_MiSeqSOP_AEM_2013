@@ -295,7 +295,7 @@ $(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.preclust
 
 PRECLUSTER_ERROR = $(subst pick.an.ave-std.summary,error.summary,$(FULL_SUMMARY))
 
-$(PRECLUSTER_ERROR) : $(subst error.summary,pick.an.ave-std.summary,$(FULL_SUMMARY))
+$(PRECLUSTER_ERROR) : $(subst error.summary,pick.an.ave-std.summary,$@)
 	echo $^
 
 
