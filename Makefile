@@ -306,20 +306,20 @@ FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary
 get_full_summary : $(FULL_SUMMARY)
 
 .SECONDEXPANSION:
-$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,.fasta,$$@) $$(subst .pick.an.ave-std.summary,.names,$$@)  code/run_mothur_regular.sh
+$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,.fasta,$$@) $$(subst .pick.an.ave-std.summary,.names,$$@)  code/get_summary_from_precluster.sh
 	bash code/get_summary_from_precluster.sh $(subst .pick.an.ave-std.summary,.fasta,$@) $(subst .pick.an.ave-std.summary,.names,$@)
 
 
 
+MOCK_PC_ERROR = $(addsuffix .filter.unique.precluster.error.summary,$(foreach R,v34 v4 v45,$(foreach P, $(PROC_RUNSPATH),$(foreach F, $(FILE_STUB),$(P)/$(F)6.contigs.$(R)))))
 
-PRECLUSTER_ERROR = $(subst pick.an.ave-std.summary,error.summary,$(FULL_SUMMARY))
+get_mock_pc_error : $(MOCK_PC_ERROR)
 
 .SECONDEXPANSION:
-$(PRECLUSTER_ERROR) : $$(subst error.summary,pick.an.ave-std.summary,$$@)
+$(MOCK_PC_ERROR) : $$(subst error.summary,fasta,$$@) $$(subst error.summary,names,$$@)
 	$(eval FASTA=$(subst error.summary,fasta,$@)) \
 	$(eval NAMES=$(subst error.summary,names,$@)) \
-	$(eval REFS=$(addprefix $(dir $@), HMP_MOCK.filter.fasta)) \
-	mothur "#seq.error(fasta=$(FASTA), name=$(NAMES), reference=$(REFS), aligned=F, processors=12)"
+	mothur "#seq.error(fasta=$(FASTA), name=$(NAMES), reference=data/references/HMP_MOCK.fasta, aligned=F, processors=12)"
 
 
 
@@ -428,6 +428,6 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 # * Generate Table S2
 # 	* Need error rate post pre-cluster
 #	* Need # OTUs with perfect chimera removal
-
+# * Generate Figure 4 with mouse data
 	
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary build_figure2
