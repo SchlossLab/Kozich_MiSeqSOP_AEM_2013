@@ -306,8 +306,8 @@ FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary
 get_full_summary : $(FULL_SUMMARY)
 
 .SECONDEXPANSION:
-$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,fasta,$$@) $$(subst .pick.an.ave-std.summary,names,$$@)  code/run_mothur_regular.sh
-	bash code/get_summary_from_precluster.sh $(subst .pick.an.ave-std.summary,fasta,$@) $(subst .pick.an.ave-std.summary,names,$@)
+$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,.fasta,$$@) $$(subst .pick.an.ave-std.summary,.names,$$@)  code/run_mothur_regular.sh
+	bash code/get_summary_from_precluster.sh $(subst .pick.an.ave-std.summary,.fasta,$@) $(subst .pick.an.ave-std.summary,.names,$@)
 
 
 
