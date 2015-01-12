@@ -4,7 +4,7 @@ LINES=$2
 split -l $LINES $TEMP_FILE
 for X in x??
 do
-	cat head.batch $X tail.batch > $X.qsub
+	cat code/head.batch $X code/tail.batch > $X.qsub
 	qsub $X.qsub
 	rm $X.qsub $X
 done
