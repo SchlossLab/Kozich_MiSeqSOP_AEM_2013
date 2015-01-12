@@ -299,16 +299,16 @@ $(PRECLUSTER_NAMES) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.p
 	bash code/split_big_contigs.sh $<
 
 
-
-
 FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
 		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
 		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
 
-get_full_summary : $(FULL_SUMMARY) code/run_mothur_regular.sh
+get_full_summary : $(FULL_SUMMARY)
 
-$(FULL_SUMMARY) : $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))  code/run_mothur_regular.sh
-	bash code/run_mothur_regular.sh $(addsuffix .fasta, $(basename $(subst .filter.unique.precluster.pick.an.ave-std.summary,,$@)))
+.SECONDEXPANSION:
+$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,fasta,$$@) $$(subst .pick.an.ave-std.summary,names,$$@)  code/run_mothur_regular.sh
+	bash code/get_summary_from_precluster.sh $(subst .pick.an.ave-std.summary,fasta,$@) $(subst .pick.an.ave-std.summary,names,$@)
+
 
 
 
