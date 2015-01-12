@@ -32,7 +32,7 @@ run_mothur () {
 	PRECLUSTER_FASTA=$1
 	PRECLUSTER_NAMES=$2
 	
-	mothur "chimera.uchime(fasta=$PRECLUSTER_FASTA, name=$PRECLUSTER_NAMES);
+	mothur "#chimera.uchime(fasta=$PRECLUSTER_FASTA, name=$PRECLUSTER_NAMES);
 		remove.seqs(fasta=current, name=current, accnos=current);
 		dist.seqs(fasta=current, cutoff=0.20, processors=8);
 		cluster(column=current, name=current);
