@@ -324,6 +324,21 @@ $(MOCK_PC_ERROR) : $$(subst error.summary,fasta,$$@) $$(subst error.summary,name
 
 
 
+NO_CHIMERAS_SUMMARY = $(subst error.summary,perfect.an.summary, $(MOCK_PC_ERROR))
+NO_CHIMERAS_AVE_SUMMARY = $(subst error.summary,perfect.an.ave-std.summary, $(MOCK_PC_ERROR))
+
+get_sobs_wo_chimeras : $(NO_CHIMERAS_SUMMARY)
+
+.SECONDEXPANSION:
+$(NO_CHIMERAS_AVE_SUMMARY) :  $$(subst perfect.an.ave-std.summary,error.summary, $$@) $$(subst perfect.an.ave-std.summary,fasta, $$@) $$(subst perfect.an.ave-std.summary,names, $$@) code/get_sobs_nochimera.sh
+	bash code/get_sobs_nochimera.sh $(subst perfect.an.ave-std.summary,error.summary, $@)
+
+.SECONDEXPANSION:
+$(NO_CHIMERAS_SUMMARY) :  $$(subst perfect.an.summary,error.summary, $$@) $$(subst perfect.an.summary,fasta, $$@) $$(subst perfect.an.summary,names, $$@) code/get_sobs_nochimera.sh
+	bash code/get_sobs_nochimera.sh $(subst perfect.an.summary,error.summary, $@)
+
+
+
 # Let's see how many OTUs there would be without any sequencing errors or
 # chimeras...
 
