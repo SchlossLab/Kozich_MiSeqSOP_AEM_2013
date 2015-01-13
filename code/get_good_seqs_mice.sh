@@ -70,6 +70,7 @@ rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.fasta
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.fasta
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.count_table
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique*map
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.count_table
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.chimeras
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.accnos
