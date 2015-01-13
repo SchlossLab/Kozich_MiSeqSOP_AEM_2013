@@ -426,8 +426,7 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 
 # To do:
 # * Generate Table S2
-# 	* Need error rate post pre-cluster
-#	* Need # OTUs with perfect chimera removal
+#	* Need # OTUs with perfect chimera removal, but lingering error
 #	* Need # OTUs for "real" analysis
 # * Generate Figure 4 with mouse data
 	
