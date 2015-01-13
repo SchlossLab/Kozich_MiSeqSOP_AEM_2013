@@ -2,17 +2,20 @@
 
 ################################################################################
 #
-# get_shared_mice.sh
+# get_good_seqs_mice.sh
 #
 #
 # Here we run the data/raw/*metag/*.files through mothur like we would in a
-# normal study and outputs a shared file
+# normal study to the point of generating the final reads that go into
+# cluster.split
 #
 # Dependencies...
 # * data/raw/*metag/*.files
 #
 # Produces...
-# * *.an.shared
+# * *.precluster.pick.pick.fasta
+# * *.precluster.uchime.pick.pick.count_table
+# * *.precluster.pick.pds.wang.pick.taxonomy
 #
 ################################################################################
 
@@ -35,11 +38,47 @@ mothur "#set.dir(output=$PROCESS_PATH);
 	filter.seqs(fasta=current, vertical=T, trump=.);
 	unique.seqs(fasta=current, count=current);
 	pre.cluster(fasta=current, count=current, diffs=2);
-	chimera.uchime(fasta=current, count=current, dereplicate=t);
+	chimera.uchime(fasta=current, count=current, dereplicate=T);
 	remove.seqs(fasta=current, accnos=current);
 	classify.seqs(fasta=current, count=current, reference=data/references/trainset9_032012.pds.fasta, taxonomy=data/references/trainset9_032012.pds.tax, cutoff=80);
-	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
-	remove.groups(count=current, fasta=current, taxonomy=current, groups=Mock-Mock2);
-	cluster.split(fasta=current, count=current, taxonomy=current, splitmethod=classify, taxlevel=4, cutoff=0.15);
-	make.shared(list=current, count=current, label=0.03);
-	classify.otu(list=current, count=current, taxonomy=current, label=0.03);"
+	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);"
+
+
+
+# Garbage collection
+rm $PROCESS_PATH/silva.v4.8mer
+rm $PROCESS_PATH/silva.v4.align
+rm $PROCESS_PATH/silva.v4.summary
+rm $PROCESS_PATH/*.contigs.good.groups
+rm $PROCESS_PATH/*.contigs.groups
+rm $PROCESS_PATH/*.contigs.report
+rm $PROCESS_PATH/*.scrap.contigs.fasta
+rm $PROCESS_PATH/*.trim.contigs.bad.accnos
+rm $PROCESS_PATH/*.trim.contigs.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.count_table
+rm $PROCESS_PATH/*.trim.contigs.good.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.good.count_table
+rm $PROCESS_PATH/*.trim.contigs.good.names
+rm $PROCESS_PATH/*.trim.contigs.good.unique.align
+rm $PROCESS_PATH/*.trim.contigs.good.unique.align.report
+rm $PROCESS_PATH/*.trim.contigs.good.unique.bad.accnos
+rm $PROCESS_PATH/*.trim.contigs.good.unique.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.flip.accnos
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.align
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.count_table
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.count_table
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.count_table
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.chimeras
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.accnos
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.tax.summary
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.taxonomy
+
+
+#keeping...
+#	$PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy
+#	$PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+#	$PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table
