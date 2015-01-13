@@ -71,9 +71,9 @@ $(REFS)HMP_MOCK.align : $(REFS)HMP_MOCK.fasta $(REFS)silva.bacteria.align
 	mothur "#align.seqs(fasta=$(REFS)HMP_MOCK.fasta, reference=$(REFS)silva.bacteria.align)"
 
 
-$(REFS)trainset9_032012.pds.tax $(REFS)trainset9_032012.pds.fasta : 
+$(REFS)trainset9_032012.pds.tax $(REFS)trainset9_032012.pds.fasta :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/5/59/Trainset9_032012.pds.zip;
-	unzip -o $(REFS)Trainset9_032012.pds.zip -d $(REFS) 
+	unzip -o $(REFS)Trainset9_032012.pds.zip -d $(REFS)
 
 
 
@@ -128,7 +128,7 @@ ERR_REVERSE = $(subst fasta,filter.error.seq.reverse,$(PROC_MOCK_TEMP))
 ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
-single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY) 
+single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
 $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
@@ -252,7 +252,7 @@ $(CONTIG_ACCNOS) : code/split_error_summary.R $(subst accnos,summary, $@)
 DELTA_Q = 6
 FINAL_CONTIGS = $(strip $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fastq,6.contigs.fasta, $(F_FASTQS)), $P/$F)))
 
-build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh 
+build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh
 
 # excluding the Mocks, which we have a rule for above...
 $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
@@ -291,7 +291,7 @@ get_precluster : $(PRECLUSTER_FASTA) $(PRECLUSTER_NAMES)
 
 
 .SECONDEXPANSION:
-$(PRECLUSTER_FASTA) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.precluster.fasta,,$$@))) code/split_big_contigs.sh 
+$(PRECLUSTER_FASTA) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.precluster.fasta,,$$@))) code/split_big_contigs.sh
 	bash code/split_big_contigs.sh $<
 
 .SECONDEXPANSION:
@@ -349,7 +349,7 @@ get_noseqrror_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
 
 HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
 	bash code/noseq_error_analysis.sh
-	
+
 
 
 # Let's build a copy of Figure 2 from each of the runs..
@@ -397,7 +397,7 @@ build_figure3 : $(FIGURE3)
 
 results/figures/%.figure3.png : code/paper_figure3.R data/process/%/deltaq.error.summary
 	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
-	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))"; 
+	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))";
 
 
 
@@ -419,7 +419,7 @@ data/raw/no_metag/no_metag.files : code/get_contigsfile.R
 	gunzip -f data/raw/no_metag/*gz; \
 	rm data/raw/no_metag/StabilityNoMetaG.tar; \
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/no_metag")'
-		
+
 data/raw/w_metag/w_metag.files : code/get_contigsfile.R
 	wget -N -P data/raw/w_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityWMetaG.tar; \
 	tar xvf data/raw/w_metag/StabilityWMetaG.tar -C data/raw/w_metag/; \
@@ -429,14 +429,32 @@ data/raw/w_metag/w_metag.files : code/get_contigsfile.R
 
 
 # Now let's run mothur and generate our shared files
-get_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
-			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared
+get_mice_seqs : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta \
+			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta \
+			data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table \
+			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table \
+			data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy \
+			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy \
 
-data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared : code/get_shared_mice.sh data/raw/no_metag/no_metag.files
-	bash code/get_shared_mice.sh data/raw/no_metag/no_metag.files
+data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+	bash code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
 
-data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared : code/get_shared_mice.sh data/raw/w_metag/w_metag.files
-	bash code/get_shared_mice.sh data/raw/w_metag/w_metag.files
+data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+	bash code/get_good_seqs_mice.sh data/raw/w_metag/w_metag.files
+
+data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+	bash code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+
+data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+	bash code/get_good_seqs_mice.sh data/raw/w_metag/w_metag.files
+
+data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+	bash code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+
+data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
+	bash code/get_good_seqs_mice.sh data/raw/w_metag/w_metag.files
+
+
 
 
 # To do:
@@ -444,5 +462,5 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 # RUNNING:	* Need # OTUs with perfect chimera removal, but lingering error
 # RUNNING:	* Need # OTUs for "real" analysis
 # * Generate Figure 4 with mouse data
-	
+
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary build_figure2
