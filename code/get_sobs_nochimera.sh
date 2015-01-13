@@ -33,6 +33,7 @@ mothur "#remove.seqs(fasta=$STUB.fasta, name=$STUB.names, accnos=$STUB.perfect.a
 touch $STUB.perfect.an.ave-std.summary
 touch $STUB.perfect.an.summary
 
+#garbage collection...
 rm $STUB.perfect.accnos
 rm $STUB.perfect.names
 rm $STUB.perfect.fasta
@@ -40,3 +41,11 @@ rm $STUB.perfect.dist
 rm $STUB.perfect.an.sabund
 rm $STUB.perfect.an.rabund
 rm $STUB.perfect.an.list
+
+rm $STUB.error.chimera
+rm $STUB.error.count
+rm $STUB.error.matrix
+rm $STUB.error.ref
+rm $STUB.error.seq
+rm $STUB.error.seq.forward
+rm $STUB.error.seq.reverse
