@@ -1,3 +1,22 @@
+#!/bin/bash
+
+################################################################################
+#
+# get_sobs_nochimera.sh
+#
+#
+# Here we get the number of OTUs that are observed when the error rate is
+# maintained, but we can perfectly remove all chimeras
+#
+# Dependencies...
+# * *.error.su,,ary
+#
+# Produces
+# * *.perfect.an.ave-std.summary
+# * *.perfect.an.summary
+#
+################################################################################
+
 ERROR_SUMMARY=$1
 
 STUB=$(echo $ERROR_SUMMARY | sed 's/.error.summary//')
