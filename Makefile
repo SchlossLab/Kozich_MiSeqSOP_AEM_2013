@@ -429,6 +429,8 @@ data/raw/w_metag/w_metag.files : code/get_contigsfile.R
 
 
 # Now let's run mothur and generate our shared files
+
+# first we'll get the sequences...
 get_mice_seqs : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta \
 			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta \
 			data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table \
@@ -455,6 +457,24 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 	bash code/get_good_seqs_mice.sh data/raw/w_metag/w_metag.files
 
 
+# now we'll get the shared and cons.taxonomy file
+get_mice_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
+					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy \
+					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
+					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy
+
+
+%.pick.pick.pick.an.unique_list.shared : %.pick.pick.fasta %.uchime.pick.pick.count_table %.pick.pds.wang.pick.taxonomy code/get_shared_mice.sh
+	$(eval FASTA=$(patsubst %.pick.pick.pick.an.unique_list.shared,%.pick.pick.fasta,$@)) \
+	$(eval COUNT=$(patsubst %.pick.pick.pick.an.unique_list.shared,%.uchime.pick.pick.count_table,$@)) \
+	$(eval TAXONOMY=$(patsubst %.pick.pick.pick.an.unique_list.shared,%.pick.pds.wang.pick.taxonomy,$@)) \
+	bash code/get_shared_mice.sh $(FASTA) $(COUNT) $(TAXONOMY)
+
+%.pick.pick.pick.an.unique_list.0.03.cons.taxonomy : %.pick.pick.fasta %.uchime.pick.pick.count_table %.pick.pds.wang.pick.taxonomy code/get_shared_mice.sh
+	$(eval FASTA=$(patsubst %.pick.pick.pick.an.unique_list.0.03.cons.taxonomy,%.pick.pick.fasta,$@)) \
+	$(eval COUNT=$(patsubst %.pick.pick.pick.an.unique_list.0.03.cons.taxonomy,%.uchime.pick.pick.count_table,$@)) \
+	$(eval TAXONOMY=$(patsubst %.pick.pick.pick.an.unique_list.0.03.cons.taxonomy,%.pick.pds.wang.pick.taxonomy,$@)) \
+	bash code/get_shared_mice.sh $(FASTA) $(COUNT) $(TAXONOMY)
 
 
 # To do:
