@@ -18,14 +18,14 @@
 #
 ################################################################################
 
-FASTA=data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
-COUNT=data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table
+FASTA=$1    #data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta
+COUNT=$2    #data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table
 
-PICK_FASTA=data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta
-PICK_COUNT=data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.pick.count_table
+PICK_FASTA=$(echo $FASTA | sed -E 's/fasta/pick.fasta/')
+PICK_COUNT=$(echo $COUNT | sed -E 's/count_table/pick.count_table/')
 
-MOCK_FASTA=data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.fasta
-MOCK_COUNT=data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.mock.count_table
+MOCK_FASTA=$(echo $FASTA | sed -E 's/fasta/mock.fasta/')
+MOCK_COUNT=$(echo $COUNT | sed -E 's/count_table/mock.count_table/')
 
 PROCESS_PATH=$(echo $FASTA | sed -E 's/\/[^/]*$//')
 

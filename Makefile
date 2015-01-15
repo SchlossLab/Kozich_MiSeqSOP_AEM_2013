@@ -477,6 +477,18 @@ get_mice_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.f
 	bash code/get_shared_mice.sh $(FASTA) $(COUNT) $(TAXONOMY)
 
 
+# now we'll get the error rate from the mock community samples
+get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
+				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary
+
+%.pick.pick.mock.error.summary : %.pick.pick.fasta %.uchime.pick.pick.count_table code/get_error_mice.sh
+	$(eval FASTA=$(patsubst %.pick.pick.mock.error.summary,%.pick.pick.fasta,$@)) \
+	$(eval COUNT=$(patsubst %.pick.pick.mock.error.summary,%.uchime.pick.pick.count_table,$@)) \
+	bash code/get_error_mice.sh $(FASTA) $(COUNT)
+
+
+
+
 # To do:
 # * Generate Table S2
 # RUNNING:	* Need # OTUs with perfect chimera removal, but lingering error
