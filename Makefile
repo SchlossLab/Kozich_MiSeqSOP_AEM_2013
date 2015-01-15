@@ -477,6 +477,29 @@ get_mice_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.f
 	bash code/get_shared_mice.sh $(FASTA) $(COUNT) $(TAXONOMY)
 
 
+# now we'll get the rarefied distance file
+get_mice_thetayc : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.dist \
+				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.dist
+
+%.thetayc.0.03.lt.ave.dist : %.shared
+	$(eval STUB=$(patsubst %.thetayc.0.03.lt.ave.dist,,$@)) \
+	mothur "#dist.shared(shared=$(STUB).shared, calc=thetayc, subsample=3000, iters=100, processors=8);" \
+	rm $(STUB).thetayc.0.03.lt.dist \
+	rm $(STUB).thetayc.0.03.lt.std.dist
+
+
+# now we'll get the nmds file file
+get_mice_nmds : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes \
+				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes
+
+%.nmds.axes : %.dist
+	$(eval STUB=$(patsubst %.nmds.axes,,$@)) \
+	mothur "#nmds(phylip=$(STUB).dist, maxdim=2);" \
+	rm $(STUB).nmds.iters \
+	rm $(STUB).nmds.stress
+
+
+
 # now we'll get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary
@@ -485,6 +508,7 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 	$(eval FASTA=$(patsubst %.pick.pick.mock.error.summary,%.pick.pick.fasta,$@)) \
 	$(eval COUNT=$(patsubst %.pick.pick.mock.error.summary,%.uchime.pick.pick.count_table,$@)) \
 	bash code/get_error_mice.sh $(FASTA) $(COUNT)
+
 
 
 
