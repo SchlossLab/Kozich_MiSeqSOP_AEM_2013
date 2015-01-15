@@ -77,7 +77,7 @@ rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.tax.summary
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.taxonomy
-
+rm $PROCESS_PATH/*.filter
 
 #keeping...
 #	$PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy
