@@ -25,7 +25,7 @@ FASTA=$1
 COUNT=$2
 TAXONOMY=$3
 
-PROCESS_PATH=$(echo $FASTA | sed -E 's/[^/]*$//')
+PROCESS_PATH=$(echo $FASTA | sed -E 's/\/[^/]*$//')
 
 mothur "#set.dir(output=$PROCESS_PATH);
     remove.groups(count=$COUNT, fasta=$FASTA, taxonomy=$TAXONOMY, groups=Mock-Mock2);
@@ -36,12 +36,12 @@ mothur "#set.dir(output=$PROCESS_PATH);
 
 
 # Garbage collection
-rm $PROCESS_PATH/*/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta
-rm $PROCESS_PATH/*/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.pick.count_table
-rm $PROCESS_PATH/*/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.pick.taxonomy
-rm $PROCESS_PATH/*/*.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list
-rm $PROCESS_PATH/*/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.*.rabund
-rm $PROCESS_PATH/*/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.tax.summary
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.pick.count_table
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.pick.taxonomy
+rm $PROCESS_PATH/*.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.list
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.*.rabund
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.tax.summary
 
 #keeping...
 # $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy
