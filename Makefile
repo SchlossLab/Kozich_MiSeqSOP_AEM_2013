@@ -37,12 +37,6 @@ print-%:
 
 # Let's get ready to rumble...
 
-# We need to find the start and end coordinates for each region within the
-# HMP_MOCK reference alignment
-
-$(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.align
-	bash code/get_region_coordinates.sh
-
 
 
 
@@ -53,10 +47,6 @@ $(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.ali
 REFS = data/references/
 
 get_references: $(REFS)HMP_MOCK.fasta $(REFS)HMP_MOCK.align
-
-# turned out this wasn't actually needed...
-# $(REFS)silva.v%.align : $(REFS)silva.bacteria.align code/get_region_silva.sh $(REFS)start_stop.positions
-# 	bash code/get_region_silva.sh
 
 $(REFS)silva.bacteria.align :
 	wget -N -P $(REFS) http://www.mothur.org/w/images/9/98/Silva.bacteria.zip; \
@@ -77,11 +67,18 @@ $(REFS)trainset9_032012.pds.tax $(REFS)trainset9_032012.pds.fasta :
 
 
 
+# We need to find the start and end coordinates for each region within the
+# HMP_MOCK reference alignment
+
+$(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.align
+	bash code/get_region_coordinates.sh
+
+
+
+
 # Let's get the raw data
 # The cross product of all runs and fastq files
 ALL_FASTQ = $(foreach R, $(RAW_RUNSPATH), $(foreach F, $(FASTQS), $(R)/$(F)))
-
-get_fastqs : $(ALL_FASTQ)
 
 $(ALL_FASTQ) :
 	wget -N -P $(dir $@) http://www.mothur.org/MiSeqDevelopmentData/$(patsubst data/raw/%/,%, $(dir $@)).tar
@@ -95,7 +92,7 @@ $(ALL_FASTQ) :
 RAW_FASTA = $(subst fastq,fasta,$(ALL_FASTQ))
 RAW_QUAL = $(subst fastq,qual,$(ALL_FASTQ))
 
-run_fastq_info : get_fastqs $(RAW_FASTA) $(RAW_QUAL)
+run_fastq_info : $(RAW_FASTA) $(RAW_QUAL)
 
 $(RAW_FASTA) :
 	mothur "#fastq.info(fastq=$(subst fasta,fastq,$@))"
@@ -130,39 +127,45 @@ ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
 single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
+.SECONDEXPANSION:
 $(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst filter.error.summary,qual,$(subst process,raw, $@)))
+					$$(subst .rc,,$$(subst filter.error.summary,fasta,$$(subst process,raw, $$@))) \
+					$$(subst .rc,,$$(subst filter.error.summary,qual,$$(subst process,raw, $$@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+.SECONDEXPANSION:
 $(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst filter.error.matrix,qual,$(subst process,raw, $@)))
+					$$(subst .rc,,$$(subst filter.error.matrix,fasta,$$(subst process,raw, $$@))) \
+					$$(subst .rc,,$$(subst filter.error.matrix,qual,$$(subst process,raw, $$@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+.SECONDEXPANSION:
 $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst filter.error.seq.forward,qual,$(subst process,raw, $@)))
+					$$(subst .rc,,$$(subst filter.error.seq.forward,fasta,$$(subst process,raw, $$@))) \
+					$$(subst .rc,,$$(subst filter.error.seq.forward,qual,$$(subst process,raw, $$@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+.SECONDEXPANSION:
 $(ERR_REVERSE) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst filter.error.seq.reverse,qual,$(subst process,raw, $@)))
+					$(subst .rc,,$$(subst filter.error.seq.reverse,fasta,$$(subst process,raw, $$@))) \
+					$(subst .rc,,$$(subst filter.error.seq.reverse,qual,$$(subst process,raw, $$@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+.SECONDEXPANSION:
 $(ERR_QUAL) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst filter.error.quality,qual,$(subst process,raw, $@)))
+					$$(subst .rc,,$$(subst filter.error.quality,fasta,$$(subst process,raw, $$@))) \
+					$$(subst .rc,,$$(subst filter.error.quality,qual,$$(subst process,raw, $$@)))
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+.SECONDEXPANSION:
 $(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@))) \
-					$(subst .rc,,$(subst summary,qual,$(subst process,raw, $@)))
+					$$(subst .rc,,$$(subst summary,fasta,$$(subst process,raw, $$@))) \
+					$$(subst .rc,,$$(subst summary,qual,$$(subst process,raw, $$@)))
 	$(eval FASTA=$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
@@ -178,10 +181,12 @@ PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
 
 get_paired_region : $(PAIRED_REGION) $(PAIRED_ACCNOS)
 
-$(PAIRED_REGION) : code/split_error_summary.R $(subst region,summary, $@) $(subst R1_001,R2_001.rc, $(subst region,summary, $@))
+.SECONDEXPANSION:
+$(PAIRED_REGION) : code/split_error_summary.R $$(subst region,summary, $$@) $$(subst R1_001,R2_001.rc, $$(subst region,summary, $$@))
 	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(subst region,summary, $@))", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))")'
 
-$(PAIRED_ACCNOS) : code/split_error_summary.R $(addsuffix .summary, $(basename $(subst .accnos,, $@))) $(subst R1_001,R2_001.rc, $(addsuffix .summary, $(basename $(subst .accnos,, $@))))
+.SECONDEXPANSION:
+$(PAIRED_ACCNOS) : code/split_error_summary.R $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))) $$(subst R1_001,R2_001.rc, $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))))
 	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(addsuffix .summary,$(basename $(subst .accnos,, $@))))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
 
 
@@ -200,13 +205,19 @@ QDIFF_CONTIG_REP = $(addsuffix .contigs.report,$(foreach P, $(PROC_RUNSPATH), $(
 build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
 
 #ugly
-$(QDIFF_CONTIG_FA) : $(addsuffix .fastq,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))))) code/titrate_deltaq.sh
+.SECONDEXPANSION:
+$(QDIFF_CONTIG_FA) : $$(addsuffix .fastq,$$(basename $$(subst .contigs.fasta,, $$(subst process,raw,$$@)))) \
+					$$(addsuffix .fastq,$$(subst R1,R2,$$(basename $$(subst .contigs.fasta,, $$(subst process,raw,$$@))))) \
+					code/titrate_deltaq.sh
 	$(eval FFASTQ=$(basename $(subst .contigs.fasta, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.fasta, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))) \
 	bash code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
-$(QDIFF_CONTIG_REP) : $(addsuffix .fastq,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))) $(addsuffix .fastq,$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@))))) code/titrate_deltaq.sh
+.SECONDEXPANSION:
+$(QDIFF_CONTIG_REP) : $$(addsuffix .fastq,$$(basename $$(subst .contigs.report,, $$(subst process,raw,$$@)))) \
+					$$(addsuffix .fastq,$$(subst R1,R2,$$(basename $$(subst .contigs.report,, $$(subst process,raw,$$@))))) \
+					code/titrate_deltaq.sh
 	$(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) \
 	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq) \
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))) \
@@ -220,10 +231,12 @@ CONTIG_ERROR_SUMMARY = $(subst fasta,filter.error.summary,$(QDIFF_CONTIG_FA))
 
 contig_error_rate : $(CONTIG_ALIGN_SUMMARY) $(CONTIG_ERROR_SUMMARY)
 
-$(CONTIG_ALIGN_SUMMARY) : $(subst summary,fasta,$@) code/contig_error_analysis.sh
+.SECONDEXPANSION:
+$(CONTIG_ALIGN_SUMMARY) : $$(subst summary,fasta,$$@) code/contig_error_analysis.sh
 	bash code/contig_error_analysis.sh $(subst summary,fasta,$@)
 
-$(CONTIG_ERROR_SUMMARY) : $(subst error.summary,fasta,$@) code/contig_error_analysis.sh
+.SECONDEXPANSION:
+$(CONTIG_ERROR_SUMMARY) : $$(subst error.summary,fasta,$$@) code/contig_error_analysis.sh
 	bash code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
 
 
@@ -237,10 +250,12 @@ CONTIG_ACCNOS = $(CONTIG_V34_ACCNOS) $(CONTIG_V4_ACCNOS) $(CONTIG_V45_ACCNOS)
 
 get_contig_region : $(CONTIG_REGION) $(CONTIG_ACCNOS)
 
-$(CONTIG_REGION) : code/split_error_summary.R $(subst region,summary, $@)
+.SECONDEXPANSION:
+$(CONTIG_REGION) : code/split_error_summary.R $$(subst region,summary, $$@)
 	R -e 'source("code/split_error_summary.R"); contig_split("$(strip $(subst region,summary, $@))")'
 
-$(CONTIG_ACCNOS) : code/split_error_summary.R $(subst accnos,summary, $@)
+.SECONDEXPANSION:
+$(CONTIG_ACCNOS) : code/split_error_summary.R $$(subst accnos,summary, $$@)
 	R -e 'source("code/split_error_summary.R"); contig_split("$(strip $(subst accnos,summary, $@))")'
 
 
@@ -255,7 +270,10 @@ FINAL_CONTIGS = $(strip $(foreach P, $(PROC_RUNSPATH), $(foreach F, $(subst fast
 build_all_contigs : $(FINAL_CONTIGS) code/build_final_contigs.sh
 
 # excluding the Mocks, which we have a rule for above...
-$(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh $(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) $(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
+.SECONDEXPANSION:
+$(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh \
+				$$(subst R1_001.6.contigs.fasta,R1_001.fastq, $$(subst process,raw, $$@)) \
+				$$(subst R1_001.6.contigs.fasta,R2_001.fastq, $$(subst process,raw, $$@))
 	bash code/build_final_contigs.sh $(DELTA_Q)  \
 		$(subst R1_001.6.contigs.fasta,R1_001.fastq, $(subst process,raw, $@)) \
 		$(subst R1_001.6.contigs.fasta,R2_001.fastq, $(subst process,raw, $@))
@@ -515,8 +533,8 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 
 # To do:
 # * Generate Table S2
-# RUNNING:	* Need # OTUs with perfect chimera removal, but lingering error
-# RUNNING:	* Need # OTUs for "real" analysis
 # * Generate Figure 4 with mouse data
+# RUNNING:  * Get NMDS data
+# READY:	* Get error rate for mock community data
 
 write.paper: get_references get_fastqs run_fastq_info single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary build_figure2
