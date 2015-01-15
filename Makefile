@@ -522,8 +522,8 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 # now we'll get the shared and cons.taxonomy file
 get_mice_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
 					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy \
-					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
-					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy
+					data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
+					data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy
 
 
 %.pick.pick.pick.an.unique_list.shared : %.pick.pick.fasta %.uchime.pick.pick.count_table %.pick.pds.wang.pick.taxonomy code/get_shared_mice.sh
