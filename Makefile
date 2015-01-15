@@ -51,7 +51,9 @@ print-%:
 #	(silva.bacteria.align), and the RDP training set data (trainset9_032012).
 #	Finally, we use the HMP_MOCK.align to get the alignment coordinates for the
 #	V3-V4, V4, and V4-V5 data. These data will be stored in the data/references/
-#	folder
+#	folder.
+#
+#	The targets in this part are all used as dependencies in other rules
 #
 ################################################################################
 
@@ -94,6 +96,8 @@ $(REFS)start_stop.positions : code/get_region_coordinates.sh $(REFS)HMP_MOCK.ali
 #	*.fasta and *.qual files that can be used in subsequent analyses. All of
 #	these data are stored in the data/raw folder.
 #
+#	The targets in this part are all used as dependencies in other rules
+#
 ################################################################################
 
 # Download all of the fastq files
@@ -119,7 +123,21 @@ $(RAW_QUAL) : $$(subst qual,fastq,$$@)
 	mothur "#fastq.info(fastq=$(subst qual,fastq,$@))"
 
 
-# Now we're going to start working with the Mock community data...
+
+################################################################################
+#
+#	Part 3: Analyze the error rates for the single sequence reads
+#
+#	Here we take the forward and reverse sequence read data and assess the error
+#	rate and the type of errors that occur in the read. This analysis is only
+#	performed on the Mock community sequence data. These data will be used to
+#	generate Figure 2 and Table 1 in the paper
+#
+#	need to do:
+#		make single_read_analysis
+#
+#
+################################################################################
 
 # The mock community fastq files
 MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock1_S1_L001_R2_001.fastq \
@@ -131,28 +149,25 @@ RAW_MOCK_FQ = $(foreach R, $(RAW_RUNSPATH), $(foreach F, $(MOCK_FQ), $(R)/$(F)))
 RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
 
 
-
-
-
 # We want to get the error data for the individual Mock community sequence reads
 # from each sequencing run
-
 PROC_MOCK_TEMP = $(subst R2_001,R2_001.rc, $(subst raw,process,$(RAW_MOCK_FA)))
-ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_TEMP))
+#ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_TEMP))
 ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_TEMP))
 ERR_FORWARD = $(subst fasta,filter.error.seq.forward,$(PROC_MOCK_TEMP))
 ERR_REVERSE = $(subst fasta,filter.error.seq.reverse,$(PROC_MOCK_TEMP))
 ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
+
+# We want to find the start / end position for each pair of reads
 ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
-single_read_error : $(ERR_SUMMARY) $(ERR_MATRIX) $(ERR_FORWARD) $(ERR_REVERSE) $(ERR_QUAL) $(ALIGN_SUMMARY)
 
-.SECONDEXPANSION:
-$(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$$(subst .rc,,$$(subst filter.error.summary,fasta,$$(subst process,raw, $$@))) \
-					$$(subst .rc,,$$(subst filter.error.summary,qual,$$(subst process,raw, $$@)))
-	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
-	bash code/single_read_analysis.sh $(FASTA)
+#.SECONDEXPANSION:
+#$(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
+#					$$(subst .rc,,$$(subst filter.error.summary,fasta,$$(subst process,raw, $$@))) \
+#					$$(subst .rc,,$$(subst filter.error.summary,qual,$$(subst process,raw, $$@)))
+#	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
+#	bash code/single_read_analysis.sh $(FASTA)
 
 .SECONDEXPANSION:
 $(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
@@ -190,24 +205,53 @@ $(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	bash code/single_read_analysis.sh $(FASTA)
 
 
-# Now we want to know which region each fragment belongs to
-PAIRED_TEMP = $(sort $(subst R2_001.rc,R1_001,$(ALIGN_SUMMARY)))
-PAIRED_V34_ACCNOS = $(subst summary,v34.accnos,$(PAIRED_TEMP))
-PAIRED_V4_ACCNOS = $(subst summary,v4.accnos,$(PAIRED_TEMP))
-PAIRED_V45_ACCNOS = $(subst summary,v45.accnos,$(PAIRED_TEMP))
+## Now we want to know which region each fragment belongs to
+#PAIRED_TEMP = $(sort $(subst R2_001.rc,R1_001,$(ALIGN_SUMMARY)))
+##PAIRED_V34_ACCNOS = $(subst summary,v34.accnos,$(PAIRED_TEMP))
+##PAIRED_V4_ACCNOS = $(subst summary,v4.accnos,$(PAIRED_TEMP))
+##PAIRED_V45_ACCNOS = $(subst summary,v45.accnos,$(PAIRED_TEMP))
+#
+#PAIRED_REGION = $(subst summary,region,$(PAIRED_TEMP))
+##PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
+#
+#get_paired_region : $(PAIRED_REGION) # $(PAIRED_ACCNOS)
+#
+#.SECONDEXPANSION:
+#$(PAIRED_REGION) : code/split_error_summary.R $$(subst region,summary, $$@) $$(subst R1_001,R2_001.rc, $$(subst region,summary, $$@))
+#	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(subst region,summary, $@))", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))")'
+#
+##.SECONDEXPANSION:
+##$(PAIRED_ACCNOS) : code/split_error_summary.R $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))) $$(subst R1_001,R2_001.rc, $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))))
+##	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(addsuffix .summary,$(basename $(subst .accnos,, $@))))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
 
-PAIRED_REGION = $(subst summary,region,$(PAIRED_TEMP))
-PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
 
-get_paired_region : $(PAIRED_REGION) $(PAIRED_ACCNOS)
+# Let's build a copy of Figure 2 from each of the runs..
+FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.png, $(RUNS)))
 
-.SECONDEXPANSION:
-$(PAIRED_REGION) : code/split_error_summary.R $$(subst region,summary, $$@) $$(subst R1_001,R2_001.rc, $$(subst region,summary, $$@))
-	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(subst region,summary, $@))", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))")'
+build_figure2 :
 
-.SECONDEXPANSION:
-$(PAIRED_ACCNOS) : code/split_error_summary.R $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))) $$(subst R1_001,R2_001.rc, $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))))
-	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(addsuffix .summary,$(basename $(subst .accnos,, $@))))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
+$(FIGURE2) : code/paper_figure2.R \
+	$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
+	$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@)))
+R -e "source('code/paper_figure2.R');make.figure2('$(patsubst results/figures/%.figure2.png,%, $@)')"
+
+
+# $(ERR_MATRIX): Used in Rmd
+# $(ERR_QUAL): Used in Rmd
+
+single_read_analysis :  $(FIGURE2) $(ERR_MATRIX) $(ERR_QUAL)
+
+
 
 
 
@@ -390,26 +434,6 @@ HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
 
 
 
-# Let's build a copy of Figure 2 from each of the runs..
-FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.png, $(RUNS)))
-
-build_figure2 : $(FIGURE2)
-
-$(FIGURE2) : code/paper_figure2.R \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.seq.forward,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.seq.reverse,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R1_001.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock1_S1_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock2_S2_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@))) \
-				$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@)))
-	R -e "source('code/paper_figure2.R');make.figure2('$(patsubst results/figures/%.figure2.png,%, $@)')"
-
 
 
 # Let's build a copy of Figure 3 from each of the runs...
@@ -557,4 +581,4 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 # RUNNING:  * Get NMDS data
 # READY:	* Get error rate for mock community data
 
-write.paper: single_read_error get_paired_region build_mock_contigs contig_error_rate get_full_summary build_figure2
+write.paper: single_read_error
