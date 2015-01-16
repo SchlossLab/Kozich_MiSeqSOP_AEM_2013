@@ -162,13 +162,6 @@ ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
 
-#.SECONDEXPANSION:
-#$(ERR_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-#					$$(subst .rc,,$$(subst filter.error.summary,fasta,$$(subst process,raw, $$@))) \
-#					$$(subst .rc,,$$(subst filter.error.summary,qual,$$(subst process,raw, $$@)))
-#	$(eval FASTA=$(subst .rc,,$(subst filter.error.summary,fasta,$(subst process,raw, $@)))) \
-#	bash code/single_read_analysis.sh $(FASTA)
-
 .SECONDEXPANSION:
 $(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$$(subst .rc,,$$(subst filter.error.matrix,fasta,$$(subst process,raw, $$@))) \
@@ -205,25 +198,6 @@ $(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	bash code/single_read_analysis.sh $(FASTA)
 
 
-## Now we want to know which region each fragment belongs to
-#PAIRED_TEMP = $(sort $(subst R2_001.rc,R1_001,$(ALIGN_SUMMARY)))
-##PAIRED_V34_ACCNOS = $(subst summary,v34.accnos,$(PAIRED_TEMP))
-##PAIRED_V4_ACCNOS = $(subst summary,v4.accnos,$(PAIRED_TEMP))
-##PAIRED_V45_ACCNOS = $(subst summary,v45.accnos,$(PAIRED_TEMP))
-#
-#PAIRED_REGION = $(subst summary,region,$(PAIRED_TEMP))
-##PAIRED_ACCNOS = $(PAIRED_V34_ACCNOS) $(PAIRED_V4_ACCNOS) $(PAIRED_V45_ACCNOS)
-#
-#get_paired_region : $(PAIRED_REGION) # $(PAIRED_ACCNOS)
-#
-#.SECONDEXPANSION:
-#$(PAIRED_REGION) : code/split_error_summary.R $$(subst region,summary, $$@) $$(subst R1_001,R2_001.rc, $$(subst region,summary, $$@))
-#	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(subst region,summary, $@))", "$(strip $(subst R1_001,R2_001.rc, $(subst region,summary, $@)))")'
-#
-##.SECONDEXPANSION:
-##$(PAIRED_ACCNOS) : code/split_error_summary.R $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))) $$(subst R1_001,R2_001.rc, $$(addsuffix .summary, $$(basename $$(subst .accnos,, $$@))))
-##	R -e 'source("code/split_error_summary.R"); reads_split("$(strip $(addsuffix .summary,$(basename $(subst .accnos,, $@))))", "$(strip $(subst R1_001,R2_001.rc, $(addsuffix .summary,$(basename $(subst .accnos,, $@)))))")'
-
 
 # Let's build a copy of Figure 2 from each of the runs..
 FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.png, $(RUNS)))
@@ -245,9 +219,6 @@ $(FIGURE2) : code/paper_figure2.R \
 		$(addprefix data/process/,$(addsuffix /Mock3_S3_L001_R2_001.rc.filter.error.quality,$(patsubst results/figures/%.figure2.png,%, $@)))
 	R -e "source('code/paper_figure2.R');make.figure2('$(patsubst results/figures/%.figure2.png,%, $@)')"
 
-
-# $(ERR_MATRIX): Used in Rmd
-# $(ERR_QUAL): Used in Rmd
 
 single_read_analysis :  $(FIGURE2) $(ERR_MATRIX) $(ERR_QUAL)
 
@@ -579,6 +550,6 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 # * Generate Table S2
 # * Generate Figure 4 with mouse data
 # RUNNING:  * Get NMDS data
-# READY:	* Get error rate for mock community data
+# READY:	* Get error rate for mock community data ~ get_mice_error
 
 write.paper: single_read_error
