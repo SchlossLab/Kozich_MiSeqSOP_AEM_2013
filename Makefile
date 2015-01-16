@@ -550,4 +550,4 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 # * Generate Table S2
 # * Generate Figure 4 with mouse data
 
-write.paper: single_read_error
+write.paper: single_read_analysis
