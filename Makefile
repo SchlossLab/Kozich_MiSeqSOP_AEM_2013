@@ -544,7 +544,7 @@ get_mice_thetayc : data/process/no_metag/no_metag.trim.contigs.good.unique.good.
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.dist
 
 %.thetayc.0.03.lt.ave.dist : %.shared
-	$(eval STUB=$(patsubst %.thetayc.0.03.lt.ave.dist,,$@)) \
+	$(eval STUB=$(patsubst %.thetayc.0.03.lt.ave.dist,%,$@)) \
 	mothur "#dist.shared(shared=$(STUB).shared, calc=thetayc, subsample=3000, iters=100, processors=8);" \
 	rm $(STUB).thetayc.0.03.lt.dist \
 	rm $(STUB).thetayc.0.03.lt.std.dist
@@ -555,7 +555,7 @@ get_mice_nmds : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fil
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes
 
 %.nmds.axes : %.dist
-	$(eval STUB=$(patsubst %.nmds.axes,,$@)) \
+	$(eval STUB=$(patsubst %.nmds.axes,%,$@)) \
 	mothur "#nmds(phylip=$(STUB).dist, maxdim=2);" \
 	rm $(STUB).nmds.iters \
 	rm $(STUB).nmds.stress
