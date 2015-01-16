@@ -549,7 +549,5 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 # To do:
 # * Generate Table S2
 # * Generate Figure 4 with mouse data
-# RUNNING:  * Get NMDS data
-# READY:	* Get error rate for mock community data ~ get_mice_error
 
 write.paper: single_read_error
