@@ -521,7 +521,7 @@ get_mice_thetayc : data/process/no_metag/no_metag.trim.contigs.good.unique.good.
 	rm $(STUB).thetayc.0.03.lt.std.dist
 
 
-# now we'll get the nmds file file
+# now we'll get the nmds axes file
 get_mice_nmds : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes \
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes
 
@@ -532,7 +532,15 @@ get_mice_nmds : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fil
 	rm $(STUB).nmds.stress
 
 
+# now we'll plot the nmds axes file
 
+get_nmds_plots : results/figures/no_metag.figure4.png \
+				results/figures/w_metag.figure4.png
+
+.SECONDEXPANSION:
+%.figure4.png : $$(patsubst results/figures/%.figure4.png,data/process/%/%.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes, $$@) code/plot_nmds.R
+	R -e 'source("code/plot_nmds.R"); plot_nmds($<)'
+	
 # now we'll get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary
