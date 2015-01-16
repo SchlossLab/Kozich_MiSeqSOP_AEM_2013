@@ -533,13 +533,17 @@ get_mice_nmds : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fil
 
 
 # now we'll plot the nmds axes file
+get_figure4 : results/figures/no_metag.figure4.png results/figures/w_metag.figure4.png
 
-get_nmds_plots : results/figures/no_metag.figure4.png \
-				results/figures/w_metag.figure4.png
+results/figures/no_metag.figure4.png : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes code/plot_nmds.R
+	R -e 'source("code/plot_nmds.R"); plot_nmds("$<")'
 
-.SECONDEXPANSION:
-%.figure4.png : $$(patsubst results/figures/%.figure4.png,data/process/%/%.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes, $$@) code/plot_nmds.R
-	R -e 'source("code/plot_nmds.R"); plot_nmds($<)'
+results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes code/plot_nmds.R
+	R -e 'source("code/plot_nmds.R"); plot_nmds("$<")'
+
+
+
+
 	
 # now we'll get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
@@ -556,6 +560,6 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 
 # To do:
 # * Generate Table S2
-# * Generate Figure 4 with mouse data
+
 
 write.paper: single_read_analysis
