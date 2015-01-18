@@ -136,7 +136,6 @@ $(RAW_QUAL) : $$(subst qual,fastq,$$@)
 #	need to do:
 #		make single_read_analysis
 #
-#
 ################################################################################
 
 # The mock community fastq files
@@ -152,16 +151,17 @@ RAW_MOCK_FA = $(subst fastq,fasta,$(RAW_MOCK_FQ))
 # We want to get the error data for the individual Mock community sequence reads
 # from each sequencing run
 PROC_MOCK_TEMP = $(subst R2_001,R2_001.rc, $(subst raw,process,$(RAW_MOCK_FA)))
-#ERR_SUMMARY = $(subst fasta,filter.error.summary,$(PROC_MOCK_TEMP))
 ERR_MATRIX = $(subst fasta,filter.error.matrix,$(PROC_MOCK_TEMP))
 ERR_FORWARD = $(subst fasta,filter.error.seq.forward,$(PROC_MOCK_TEMP))
 ERR_REVERSE = $(subst fasta,filter.error.seq.reverse,$(PROC_MOCK_TEMP))
 ERR_QUAL = $(subst fasta,filter.error.quality,$(PROC_MOCK_TEMP))
 
 # We want to find the start / end position for each pair of reads
-ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
+# ALIGN_SUMMARY = $(subst fasta,summary,$(PROC_MOCK_TEMP))
 
 
+# Here we make sure we have the substitution matrix to characterize the types
+# of errors
 .SECONDEXPANSION:
 $(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$$(subst .rc,,$$(subst filter.error.matrix,fasta,$$(subst process,raw, $$@))) \
@@ -169,6 +169,9 @@ $(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.matrix,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+
+# Here we make sure we have the error rate for the first read along its length;
+# will be used in Figure 2
 .SECONDEXPANSION:
 $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$$(subst .rc,,$$(subst filter.error.seq.forward,fasta,$$(subst process,raw, $$@))) \
@@ -176,6 +179,8 @@ $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.forward,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+# Here we make sure we have the error rate for the second read along its length;
+# will be used in Figure 2
 .SECONDEXPANSION:
 $(ERR_REVERSE) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$(subst .rc,,$$(subst filter.error.seq.reverse,fasta,$$(subst process,raw, $$@))) \
@@ -183,6 +188,9 @@ $(ERR_REVERSE) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.seq.reverse,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
+
+# Here we get the quality scores associated with each error type; will be used
+# in Figure 1
 .SECONDEXPANSION:
 $(ERR_QUAL) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$$(subst .rc,,$$(subst filter.error.quality,fasta,$$(subst process,raw, $$@))) \
@@ -190,16 +198,19 @@ $(ERR_QUAL) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 	$(eval FASTA=$(subst .rc,,$(subst filter.error.quality,fasta,$(subst process,raw, $@)))) \
 	bash code/single_read_analysis.sh $(FASTA)
 
-.SECONDEXPANSION:
-$(ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
-					$$(subst .rc,,$$(subst summary,fasta,$$(subst process,raw, $$@))) \
-					$$(subst .rc,,$$(subst summary,qual,$$(subst process,raw, $$@)))
-	$(eval FASTA=$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@)))) \
-	bash code/single_read_analysis.sh $(FASTA)
+
+# Here we get the alignment coordinates for the aligned individual reads; not
+# sure this is actually needed
+# .SECONDEXPANSION:
+# (ALIGN_SUMMARY) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
+#					$$(subst .rc,,$$(subst summary,fasta,$$(subst process,raw, $$@))) \
+#					$$(subst .rc,,$$(subst summary,qual,$$(subst process,raw, $$@)))
+#	$(eval FASTA=$(subst .rc,,$(subst summary,fasta,$(subst process,raw, $@)))) \
+#	bash code/single_read_analysis.sh $(FASTA)
 
 
 
-# Let's build a copy of Figure 2 from each of the runs..
+# Let's build a copy of Figure 2 from each of the runs...
 FIGURE2 = $(addprefix results/figures/, $(addsuffix .figure2.png, $(RUNS)))
 
 build_figure2 :
@@ -220,10 +231,36 @@ $(FIGURE2) : code/paper_figure2.R \
 	R -e "source('code/paper_figure2.R');make.figure2('$(patsubst results/figures/%.figure2.png,%, $@)')"
 
 
+
+# The one rule that is needed to get everything for Part 3
+# * $(FIGURE2): builds Figure 2, which describes the different types of errors
+# * $(ERR_MATRIX): Needed in Rmd file to describe the types and frequencies of
+#	errors that are seen
+# * $(ERR_QUAL): The quality scores that are observed for each type. Used in
+#	regression analysis
+
 single_read_analysis :  $(FIGURE2) $(ERR_MATRIX) $(ERR_QUAL)
 
 
 
+
+################################################################################
+#
+#	Part 4: Analyze the error rates for the contigs with different delta Q
+#	values
+#
+#	Here we take the forward and reverse sequence read data and make contigs
+#	between them using different deltaQ values as a threshold to pick a basecall
+#	when there is a discrepancy between them. We then calculate the error
+#	rate for the assembled contigs. This analysis is only performed on the Mock
+#	community sequence data. These data will be used to generate Figure 3,
+# 	parts of Table 2, and analyses within the paper.
+#
+#	need to do:
+#		make deltaq_analysis
+#
+#
+################################################################################
 
 
 # We want to build contigs with between 0 and 10 quality score differences using
@@ -275,6 +312,7 @@ $(CONTIG_ERROR_SUMMARY) : $$(subst error.summary,fasta,$$@) code/contig_error_an
 	bash code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
 
 
+
 # Now we need to get the region that each contig belongs to...
 CONTIG_V34_ACCNOS = $(subst summary,v34.accnos,$(CONTIG_ALIGN_SUMMARY))
 CONTIG_V4_ACCNOS = $(subst summary,v4.accnos,$(CONTIG_ALIGN_SUMMARY))
@@ -292,6 +330,42 @@ $(CONTIG_REGION) : code/split_error_summary.R $$(subst region,summary, $$@)
 .SECONDEXPANSION:
 $(CONTIG_ACCNOS) : code/split_error_summary.R $$(subst accnos,summary, $$@)
 	R -e 'source("code/split_error_summary.R"); contig_split("$(strip $(subst accnos,summary, $@))")'
+
+
+
+# Let's build a copy of Figure 3 from each of the runs...
+TABS4_FIGURE3 = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
+TABS4_FIGURE3_ERROR = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.error.summary) \
+$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.error.summary) \
+$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.error.summary)
+TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.region) \
+$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.region) \
+$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.region)
+
+
+build_tabs4_figure3 : $(TABS4_FIGURE3)
+
+$(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix($(basename $@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))
+$(eval RUN=$(subst data/process/,,$(subst /deltaq.error.summary,,$@))) \
+R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
+
+FIGURE3 = $(addsuffix .figure3.png,$(addprefix results/figures/, $(RUNS)))
+
+build_figure3 : $(FIGURE3)
+
+
+results/figures/%.figure3.png : code/paper_figure3.R data/process/%/deltaq.error.summary
+$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
+R -e "source('code/paper_figure3.R'); make.figure2($(RUN))";
+
+
+deltaq_analysis
+
+
+
+
+
+
 
 
 
@@ -407,31 +481,6 @@ HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
 
 
 
-# Let's build a copy of Figure 3 from each of the runs...
-TABS4_FIGURE3 = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
-TABS4_FIGURE3_ERROR = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.error.summary) \
-						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.error.summary) \
-						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.error.summary)
-TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.region) \
-						$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.region) \
-						$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.region)
-
-
-build_tabs4_figure3 : $(TABS4_FIGURE3)
-
-$(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix($(basename $@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))
-	$(eval RUN=$(subst data/process/,,$(subst /deltaq.error.summary,,$@))) \
-	R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
-
-FIGURE3 = $(addsuffix .figure3.png,$(addprefix results/figures/, $(RUNS)))
-
-build_figure3 : $(FIGURE3)
-
-
-results/figures/%.figure3.png : code/paper_figure3.R data/process/%/deltaq.error.summary
-	$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
-	R -e "source('code/paper_figure3.R'); make.figure2($(RUN))";
-
 
 
 
@@ -544,7 +593,7 @@ results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.
 
 
 
-	
+
 # now we'll get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary
