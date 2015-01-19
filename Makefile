@@ -475,7 +475,7 @@ otu_analysis : $(MOCK_PC_ERROR) $(FULL_SUMMARY) $(NO_CHIMERAS_AVE_SUMMARY) $(MOC
 results/tables/table_2.tsv : $(DELTAQ_ERROR) $(MOCK_PERFECT_SOBS) \
 							$(NO_CHIMERAS_AVE_SUMMARY) $(FULL_SUMMARY) \
 							$(MOCK_PC_ERROR) code/build_table2.R
-	R -e "source(build_table2.R)"
+	R -e 'source("code/build_table2.R")'
 
 
 
