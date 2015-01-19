@@ -1,3 +1,5 @@
+
+
 get_ideal <- function(region){
 
     file_name <- paste0("data/process/noseq_error/HMP_MOCK.", region, ".summary")
@@ -160,8 +162,8 @@ per_reads_table <- cbind(runs_regions, per_reads_remaining)
 
 
 #Mock^b - Sobs with perfect chimera removal
-perfect_sobs <- mapply(get_nochim_otus, run=runs_regions$runs, region=runs_regions$regions)
-perfect_sobs_table <- cbind(runs_regions, perfect_sobs)
+nochim_sobs <- mapply(get_nochim_otus, run=runs_regions$runs, region=runs_regions$regions)
+nochim_sobs_table <- cbind(runs_regions, nochim_sobs)
 
 
 #Number of OTUs in the Mock, Soil, Mouse and Human samples
@@ -174,13 +176,15 @@ typical_sobs_table <- cbind(runs_regions, t(typical_sobs)[,c(2,4,3,1)])
 table_3 <- cbind(region = runs_regions$regions,
     perfect = perfect_sobs[runs_regions$regions],
     run = runs_regions$runs,
-    delta0_error = round(100*delta_0_table$delta_0, 2),
-    delta6_error = round(100*delta_6_table$delta_6, 2),
-    pc_error = round(100*pc_table$pc_errors, 2),
-    perecent_remaining = round(per_reads_table$per_reads_remaining, 1),
-    no_chimeras = round(perfect_sobs_table$perfect_sobs, 1),
-    typical_mock = round(typical_sobs_table$Mock, 1),
-    typical_soil = round(typical_sobs_table$Soil, 1),
-    typical_mouse = round(typical_sobs_table$Mouse, 1),
-    typical_human = round(typical_sobs_table$Human, 1)
+    delta0_error = format(round(100*delta_0_table$delta_0, 2), 2),
+    delta6_error = format(round(100*delta_6_table$delta_6, 2), 2),
+    pc_error = format(round(100*pc_table$pc_errors, 2), 2),
+    perecent_remaining = format(round(per_reads_table$per_reads_remaining, 1), 1),
+    no_chimeras = format(round(nochim_sobs_table$nochim_sobs, 1), 1),
+    typical_mock = format(round(typical_sobs_table$Mock, 1), 1),
+    typical_soil = format(round(typical_sobs_table$Soil, 1), 1),
+    typical_mouse = format(round(typical_sobs_table$Mouse, 1), 1),
+    typical_human = format(round(typical_sobs_table$Human, 1), 1)
 )
+
+write.table(file="results/tables/table_2.tsv", table_3, row.names=F, quote=F, sep="\t")
