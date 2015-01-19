@@ -29,6 +29,9 @@ MOCK_COUNT=$(echo $COUNT | sed -E 's/count_table/mock.count_table/')
 
 PROCESS_PATH=$(echo $FASTA | sed -E 's/\/[^/]*$//')
 
+echo Mock mock > mock.design
+echo Mock2 mock >> mock.design
+
 mothur "#set.dir(output=$PROCESS_PATH);
     get.groups(count=$COUNT, fasta=$FASTA, groups=Mock-Mock2);
     system(mv $PICK_FASTA $MOCK_FASTA);
@@ -37,12 +40,13 @@ mothur "#set.dir(output=$PROCESS_PATH);
     dist.seqs(fasta=$MOCK_FASTA, cutoff=0.10);
     cluster(count=$MOCK_COUNT);
     make.shared(label=0.03);
+    merge.groups(design=mock.design)
     summary.single(calc=sobs, subsample=5000)"
 
 
 # Garbage collection
-#rm $MOCK_FASTA
-#rm $MOCK_COUNT
+rm $MOCK_FASTA
+rm $MOCK_COUNT
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.seq
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.chimera
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.seq.forward
