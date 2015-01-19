@@ -1,3 +1,12 @@
+get_ideal <- function(region){
+
+    file_name <- paste0("data/process/noseq_error/HMP_MOCK.", region, ".summary")
+    file <- read.table(file=file_name, header=T)
+    file$sobs
+
+}
+
+
 get_delta_q_error <- function(run, region, dq){
 
     file_name <- paste0("data/process/", run, "/deltaq.error.summary")
@@ -113,6 +122,8 @@ get_typical_otus <- function(run, region){
 
 
 
+
+
 #Region and run
 #folders <- list.dirs("data/process", recursive=FALSE)
 #error_run <- grepl("data/process/1", folders)
@@ -121,6 +132,11 @@ get_typical_otus <- function(run, region){
 runs <- c("121205", "121207")
 regions <- c("v34", "v4", "v45")
 runs_regions <- expand.grid(runs=runs, regions=regions)
+
+
+#Get Sobs for each region w/o errors or chimeras
+perfect_sobs <- sapply(regions, get_ideal)
+names(perfect_sobs) <- regions
 
 
 #Basic error rate
