@@ -94,7 +94,6 @@ get_per_reads_remaining <- function(run, region, dq_a=0, dq_b=6){
 get_sobs <- function(summary_file){
 
     if(file.info(summary_file)$size != 0){
-
         data <- read.table(file=summary_file, header=T)
         sobs <- data[data$method == "ave", "sobs"]
     } else {
@@ -126,7 +125,8 @@ get_nochim_otus <- function(run, region){
 
 
 
-
+# Given the run number and the region, output the number of OTUs that would be
+# observed if we processed all of the data like normal.
 
 get_typical_otus <- function(run, region){
 
@@ -148,19 +148,23 @@ get_typical_otus <- function(run, region){
     names(return_sobs) <- ave_sobs$Group.1
     return_sobs[is.nan(return_sobs)] <- NA
     return_sobs
+
 }
 
 
 
-
-
-#Region and run
+#Find all of the run ids
 folders <- list.dirs("data/process", recursive=FALSE)
 error_run <- grepl("data/process/1", folders)
 error_folders <- folders[error_run]
 runs <- gsub("data/process/", "", error_folders)
+
+
+#The regions that were sequenced
 regions <- c("v34", "v4", "v45")
 
+
+#The permutations of all of the runs and the regions
 runs_regions <- expand.grid(runs=runs, regions=regions, stringsAsFactors=F)
 
 
