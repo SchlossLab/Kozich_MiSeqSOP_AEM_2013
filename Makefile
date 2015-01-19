@@ -459,17 +459,24 @@ $(NO_CHIMERAS_AVE_SUMMARY) :  $$(subst perfect.an.ave-std.summary,error.summary,
 
 
 
-# Finally, let's see how many OTUs there would be without any sequencing errors
-# or chimeras...
-MOCK_PERFECT_SOBS : data/process/noseq_error/HMP_MOCK.v34.summary \
-				data/process/noseq_error/HMP_MOCK.v4.summary \
-				data/process/noseq_error/HMP_MOCK.v45.summary \
-
+# Let's see how many OTUs there would be without any sequencing errors or
+# chimeras...
 $(MOCK_PERFECT_SOBS) : code/noseq_error_analysis.sh
 	bash code/noseq_error_analysis.sh
 
 
+
+
 otu_analysis : $(MOCK_PC_ERROR) $(FULL_SUMMARY) $(NO_CHIMERAS_AVE_SUMMARY) $(MOCK_PERFECT_SOBS)
+
+
+
+# Finally, let's synthesize the results of Parts 4 and 5 to generate Table 2
+results/tables/table_2.tsv : $(DELTAQ_ERROR) $(MOCK_PERFECT_SOBS) \
+							$(NO_CHIMERAS_AVE_SUMMARY) $(FULL_SUMMARY) \
+							$(MOCK_PC_ERROR) code/build_table2.R
+	R -e "source(build_table2.R)"
+
 
 
 
@@ -589,6 +596,7 @@ write.paper : single_read_analysis \
 				otu_analysis \
 				stability_analysis \
 				data/references/run_data.tsv \
-				results/pictures/figure1.png\
+				results/pictures/figure1.png \
+				results/tables/table_2.tsv \
 				Kozich_AEM_2013.Rmd
 	R -e 'library("knitr");knit2html("Kozich_AEM_2013.Rmd")'
