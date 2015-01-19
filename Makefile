@@ -585,4 +585,10 @@ stability_analysis : get_figure4 get_mice_error
 # * Generate Table S2
 
 
-write.paper: single_read_analysis deltaq_analysis otu_analysis stability_analysis
+write.paper : single_read_analysis \
+	 			deltaq_analysis \
+				otu_analysis \
+				stability_analysis \
+				data/references/run_data.tsv \
+				Kozich_AEM_2013.Rmd
+	R -e 'library("knitr");knit2html("Kozich_AEM_2013.Rmd")'
