@@ -599,6 +599,8 @@ data <- read.table(file="results/tables/table_2.tsv", header=T)
 rownames(data) <- paste(data$region, data$run, sep=".")
 
 perfect <- aggregate(data$perfect, by=list(data$region), mean)
+perfect <- perfect[1,2]
+
 data$region <- NULL
 data$perfect <- NULL
 
@@ -649,13 +651,19 @@ perfect sequences ([7](#_ENREF_7), [8](#_ENREF_8)). Application of this
 approach is generally flawed because the number of spurious OTUs is a
 product of the complexity of the mock community and the number of
 sequence reads being analyzed. Regardless, we performed two OTU-based
-analyses expecting 20 OTUs from each region in the absence of any
+analyses expecting `r perfect` OTUs from each region in the absence of any
 sequencing errors or chimeras. In the first analysis, we rarefied the
 data to 5,000 sequences per sample and assumed perfect removal of all
-chimeras. Using the V4 dataset we observed between 22.8 and 23.5 OTUs
-(i.e. 2.8 to 3.5 spurious OTUs). In the second analysis, we used UCHIME
+chimeras. Using the V4 dataset we observed between
+`r paste(format(range(c(data["v4.130401", "no_chimeras"], data["v4.130403", "no_chimeras"], data["v4.130417", "no_chimeras"], data["v4.130422", "no_chimeras"])), nsmall=1), collapse=' and ')`
+OTUs (i.e.
+`r paste(format(range(c(data["v4.130401", "no_chimeras"], data["v4.130403", "no_chimeras"], data["v4.130417", "no_chimeras"], data["v4.130422", "no_chimeras"])-perfect), nsmall=1), collapse=' and ')`
+spurious OTUs). In the second analysis, we used UCHIME
 to identify chimeric sequences and rarefied the data to 5,000 sequences
-per sample. We observed between 37.2 and 43.4 OTUs (i.e. 17.2 to 23.4
+per sample. We observed between
+`r paste(format(range(c(data["v4.130401", "typical_mock"], data["v4.130403", "typical_mock"], data["v4.130417", "typical_mock"], data["v4.130422", "typical_mock"])), nsmall=1), collapse=' and ')`
+OTUs (i.e.
+`r paste(format(range(c(data["v4.130401", "typical_mock"], data["v4.130403", "typical_mock"], data["v4.130417", "typical_mock"], data["v4.130422", "typical_mock"])-perfect), nsmall=1), collapse=' to ')`
 spurious OTUs; **Table 2**). When we replicated this analysis for the
 V34 and V45 datasets, we observed significantly more OTUs (**Table 2**).
 In general, the number of spurious OTUs was correlated with the error
