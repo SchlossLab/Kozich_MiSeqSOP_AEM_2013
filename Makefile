@@ -344,8 +344,30 @@ deltaq_analysis: $(FIGURE3)
 
 
 
-
-
+################################################################################
+#
+#	Part 5: Determine the number of OTUs that are observed for the various
+#	regions and in the different samples under varyious conditions
+#
+#	Here we form contigs using a deltaQ of 6 for the 12 libraries and then
+#	run them through the standard mothur pipeline to do several things...
+#
+#	1.	Determine the number of OTUs we'd get from the mock commmunity with no
+#		sequencing error and perfect chimera removal
+#	2.	Determine the number of OTUs we'd get from the mock community with
+#		perfect chimera removal.
+#	3.	Determine the number of OTUs we'd get with the use of UCHIME to remove
+#		chimeras.
+#	4.	Calculate the error rate for the mock community after applying the
+#		pre-cluster denoising algorithm.
+#
+#	These data will be used for parts of Table 2 and analyses within the paper.
+#
+#	need to do:
+#		make otu_analysis
+#
+#
+################################################################################
 
 
 
@@ -386,15 +408,16 @@ $(filter-out $(QDIFF_CONTIG_FA),$(FINAL_CONTIGS)) : code/build_final_contigs.sh 
 # will make the *.ave-std.summary file created for each region the only target.
 # We also only really want to run this on our final set of contigs - those with
 # qdel == 6, which are stored in $(FINAL_CONTIGS).
+#
+# So that we can calculate the error rate of the preclustered data, we will
+# break the pipeline into two parts
 
 
+# First, we'll go from contigs through the pre-cluster step
 PRECLUSTER_FASTA = $(subst fasta,v34.filter.unique.precluster.fasta,$(FINAL_CONTIGS)) \
 		$(subst fasta,v4.filter.unique.precluster.fasta,$(FINAL_CONTIGS)) \
 		$(subst fasta,v45.filter.unique.precluster.fasta,$(FINAL_CONTIGS))
 PRECLUSTER_NAMES = $(subst fasta,names,$(PRECLUSTER_FASTA))
-
-get_precluster : $(PRECLUSTER_FASTA) $(PRECLUSTER_NAMES)
-
 
 .SECONDEXPANSION:
 $(PRECLUSTER_FASTA) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.precluster.fasta,,$$@))) code/split_big_contigs.sh
@@ -404,22 +427,9 @@ $(PRECLUSTER_FASTA) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.p
 $(PRECLUSTER_NAMES) : $$(addsuffix .fasta, $$(basename $$(subst .filter.unique.precluster.names,,$$@))) code/split_big_contigs.sh
 	bash code/split_big_contigs.sh $<
 
-
-FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
-		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
-		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
-
-get_full_summary : $(FULL_SUMMARY)
-
-.SECONDEXPANSION:
-$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,.fasta,$$@) $$(subst .pick.an.ave-std.summary,.names,$$@)  code/get_summary_from_precluster.sh
-	bash code/get_summary_from_precluster.sh $(subst .pick.an.ave-std.summary,.fasta,$@) $(subst .pick.an.ave-std.summary,.names,$@)
-
-
-
+# Now let's get the error rate of the pre-clustered data for the Mock
+# community libraries
 MOCK_PC_ERROR = $(addsuffix .filter.unique.precluster.error.summary,$(foreach R,v34 v4 v45,$(foreach P, $(PROC_RUNSPATH),$(foreach F, $(FILE_STUB),$(P)/$(F)6.contigs.$(R)))))
-
-get_mock_pc_error : $(MOCK_PC_ERROR)
 
 .SECONDEXPANSION:
 $(MOCK_PC_ERROR) : data/references/HMP_MOCK.fasta $$(subst error.summary,fasta,$$@) $$(subst error.summary,names,$$@)
@@ -429,35 +439,40 @@ $(MOCK_PC_ERROR) : data/references/HMP_MOCK.fasta $$(subst error.summary,fasta,$
 
 
 
+# Next, we'll take the pre-clustered data all the way through the rest of the
+# pipeline and we'll rarefy the number of OTUs to 5000 reads per library
+FULL_SUMMARY = $(subst fasta,v4.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
+		$(subst fasta,v34.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS)) \
+		$(subst fasta,v45.filter.unique.precluster.pick.an.ave-std.summary,$(FINAL_CONTIGS))
 
+.SECONDEXPANSION:
+$(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,.fasta,$$@) $$(subst .pick.an.ave-std.summary,.names,$$@)  code/get_summary_from_precluster.sh
+	bash code/get_summary_from_precluster.sh $(subst .pick.an.ave-std.summary,.fasta,$@) $(subst .pick.an.ave-std.summary,.names,$@)
+
+
+
+# Now we'll find the numbrer of OTUs that we'd get out if we were perfect in our
+# ability to remove chimeras using the Mock community data
 NO_CHIMERAS_SUMMARY = $(subst error.summary,perfect.an.summary, $(MOCK_PC_ERROR))
 NO_CHIMERAS_AVE_SUMMARY = $(subst error.summary,perfect.an.ave-std.summary, $(MOCK_PC_ERROR))
-
-get_sobs_wo_chimeras : $(NO_CHIMERAS_SUMMARY)
 
 .SECONDEXPANSION:
 $(NO_CHIMERAS_AVE_SUMMARY) :  $$(subst perfect.an.ave-std.summary,error.summary, $$@) $$(subst perfect.an.ave-std.summary,fasta, $$@) $$(subst perfect.an.ave-std.summary,names, $$@) code/get_sobs_nochimera.sh
 	bash code/get_sobs_nochimera.sh $(subst perfect.an.ave-std.summary,error.summary, $@)
 
-.SECONDEXPANSION:
-$(NO_CHIMERAS_SUMMARY) :  $$(subst perfect.an.summary,error.summary, $$@) $$(subst perfect.an.summary,fasta, $$@) $$(subst perfect.an.summary,names, $$@) code/get_sobs_nochimera.sh
-	bash code/get_sobs_nochimera.sh $(subst perfect.an.summary,error.summary, $@)
 
 
-
-# Let's see how many OTUs there would be without any sequencing errors or
-# chimeras...
-
-get_noseqrror_sobs : data/process/noseq_error/HMP_MOCK.v34.summary \
+# Finally, let's see how many OTUs there would be without any sequencing errors
+# or chimeras...
+MOCK_PERFECT_SOBS : data/process/noseq_error/HMP_MOCK.v34.summary \
 				data/process/noseq_error/HMP_MOCK.v4.summary \
 				data/process/noseq_error/HMP_MOCK.v45.summary \
-				code/noseq_error_analysis.sh
 
-HMP_MOCK.v%.summary : code/noseq_error_analysis.sh
+$(MOCK_PERFECT_SOBS) : code/noseq_error_analysis.sh
 	bash code/noseq_error_analysis.sh
 
 
-
+otu_analysis : $(MOCK_PC_ERROR) $(FULL_SUMMARY) $(NO_CHIMERAS_SUMMARY) $(MOCK_PERFECT_SOBS)
 
 
 
@@ -590,4 +605,4 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 # * Generate Table S2
 
 
-write.paper: single_read_analysis deltaq_analysis
+write.paper: single_read_analysis deltaq_analysis otu_analysis
