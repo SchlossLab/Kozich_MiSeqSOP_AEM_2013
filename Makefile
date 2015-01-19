@@ -171,7 +171,7 @@ $(ERR_MATRIX) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 
 
 # Here we make sure we have the error rate for the first read along its length;
-# will be used in Figure 2
+# will be used in Figure 2
 .SECONDEXPANSION:
 $(ERR_FORWARD) : $(REFS)HMP_MOCK.align code/single_read_analysis.sh \
 					$$(subst .rc,,$$(subst filter.error.seq.forward,fasta,$$(subst process,raw, $$@))) \
@@ -271,12 +271,9 @@ FOR_MOCK_FQ = Mock1_S1_L001_R1_001.fastq Mock2_S2_L001_R1_001.fastq Mock3_S3_L00
 FILE_STUB = $(subst fastq,,$(FOR_MOCK_FQ))
 
 QDIFF_CONTIG_FA = $(addsuffix .contigs.fasta,$(foreach P, $(PROC_RUNSPATH), $(foreach F, $(FILE_STUB), $(foreach D, $(DIFFS), $(P)/$(F)$(D)))))
-QDIFF_CONTIG_REP = $(addsuffix .contigs.report,$(foreach P, $(PROC_RUNSPATH), $(foreach F, $(FILE_STUB), $(foreach D, $(DIFFS), $(P)/$(F)$(D)))))
 
 
-build_mock_contigs : $(QDIFF_CONTIG_FA) $(QDIFF_CONTIG_REP)
-
-#ugly
+# Assemble reads into contigs by altering the deltaQ parameter in make.contigs
 .SECONDEXPANSION:
 $(QDIFF_CONTIG_FA) : $$(addsuffix .fastq,$$(basename $$(subst .contigs.fasta,, $$(subst process,raw,$$@)))) \
 					$$(addsuffix .fastq,$$(subst R1,R2,$$(basename $$(subst .contigs.fasta,, $$(subst process,raw,$$@))))) \
@@ -286,22 +283,11 @@ $(QDIFF_CONTIG_FA) : $$(addsuffix .fastq,$$(basename $$(subst .contigs.fasta,, $
 	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.fasta, , $(subst process,raw,$@))))) \
 	bash code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
 
-.SECONDEXPANSION:
-$(QDIFF_CONTIG_REP) : $$(addsuffix .fastq,$$(basename $$(subst .contigs.report,, $$(subst process,raw,$$@)))) \
-					$$(addsuffix .fastq,$$(subst R1,R2,$$(basename $$(subst .contigs.report,, $$(subst process,raw,$$@))))) \
-					code/titrate_deltaq.sh
-	$(eval FFASTQ=$(basename $(subst .contigs.report, , $(subst process,raw,$@))).fastq) \
-	$(eval RFASTQ=$(subst R1,R2,$(basename $(subst .contigs.report, , $(subst process,raw,$@)))).fastq) \
-	$(eval QDEL=$(subst .,,$(suffix $(subst .contigs.report, , $(subst process,raw,$@))))) \
-	bash code/titrate_deltaq.sh $(FFASTQ) $(RFASTQ) $(QDEL)
-
 
 # Now we want to take those contigs and get their alignment positions in the
 # reference alignment space and quantify the error rate
 CONTIG_ALIGN_SUMMARY = $(subst fasta,summary,$(QDIFF_CONTIG_FA))
 CONTIG_ERROR_SUMMARY = $(subst fasta,filter.error.summary,$(QDIFF_CONTIG_FA))
-
-contig_error_rate : $(CONTIG_ALIGN_SUMMARY) $(CONTIG_ERROR_SUMMARY)
 
 .SECONDEXPANSION:
 $(CONTIG_ALIGN_SUMMARY) : $$(subst summary,fasta,$$@) code/contig_error_analysis.sh
@@ -310,7 +296,6 @@ $(CONTIG_ALIGN_SUMMARY) : $$(subst summary,fasta,$$@) code/contig_error_analysis
 .SECONDEXPANSION:
 $(CONTIG_ERROR_SUMMARY) : $$(subst error.summary,fasta,$$@) code/contig_error_analysis.sh
 	bash code/contig_error_analysis.sh $(subst filter.error.summary,fasta,$@)
-
 
 
 # Now we need to get the region that each contig belongs to...
@@ -332,35 +317,29 @@ $(CONTIG_ACCNOS) : code/split_error_summary.R $$(subst accnos,summary, $$@)
 	R -e 'source("code/split_error_summary.R"); contig_split("$(strip $(subst accnos,summary, $@))")'
 
 
+# Let's summarize the error rates and % of reads remaining for each deltaQ
+# value. These tables will be useful for synthesizing them together to make
+# Table 2 and Figure 3
+DELTAQ_ERROR = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
 
-# Let's build a copy of Figure 3 from each of the runs...
-TABS4_FIGURE3 = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
-TABS4_FIGURE3_ERROR = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.error.summary) \
-$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.error.summary) \
-$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.error.summary)
-TABS4_FIGURE3_REGION = $(foreach D, $(DIFFS), Mock1_S1_L001_R1_001.$D.contigs.filter.region) \
-$(foreach D, $(DIFFS), Mock2_S2_L001_R1_001.$D.contigs.filter.region) \
-$(foreach D, $(DIFFS), Mock3_S3_L001_R1_001.$D.contigs.filter.region)
+.SECONDEXPANSION:
+$(DELTAQ_ERROR) : code/summarize_error_deltaQ.R \
+					$(addsuffix /%,$$(filter $$(dir $$@)),$$(CONTIG_ERROR_SUMMARY)) \
+					$(addsuffix /%,$$(filter $$(dir $$@)),$$(CONTIG_REGION)) \
+	$(eval RUN=$(subst data/process/,,$(subst /deltaq.error.summary,,$@))) \
+	R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
 
 
-build_tabs4_figure3 : $(TABS4_FIGURE3)
-
-$(TABS4_FIGURE3) : code/summarize_error_deltaQ.R $(addprefix($(basename $@), $(TABS4_FIGURE3_ERROR) $(TABS4_FIGURE3_REGION))
-$(eval RUN=$(subst data/process/,,$(subst /deltaq.error.summary,,$@))) \
-R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
-
+# Let's build Figure 3...
 FIGURE3 = $(addsuffix .figure3.png,$(addprefix results/figures/, $(RUNS)))
 
-build_figure3 : $(FIGURE3)
-
-
 results/figures/%.figure3.png : code/paper_figure3.R data/process/%/deltaq.error.summary
-$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
-R -e "source('code/paper_figure3.R'); make.figure2($(RUN))";
+		$(eval RUN=$(patsubst results/figures/%.figure3.png,%,$@)) \
+		R -e "source('code/paper_figure3.R'); make.figure2($(RUN))";
 
 
-deltaq_analysis
 
+deltaq_analysis: $(FIGURE3)
 
 
 
@@ -611,4 +590,4 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 # * Generate Table S2
 
 
-write.paper: single_read_analysis
+write.paper: single_read_analysis deltaq_analysis
