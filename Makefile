@@ -577,12 +577,21 @@ results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.
 
 # finally, we'll get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
-				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary
+				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
+				data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.merge.groups.ave-std.summary \
+				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.merge.groups.ave-std.summary
 
 %.pick.pick.mock.error.summary : %.pick.pick.fasta %.uchime.pick.pick.count_table code/get_error_mice.sh
 	$(eval FASTA=$(patsubst %.pick.pick.mock.error.summary,%.pick.pick.fasta,$@)) \
 	$(eval COUNT=$(patsubst %.pick.pick.mock.error.summary,%.uchime.pick.pick.count_table,$@)) \
 	bash code/get_error_mice.sh $(FASTA) $(COUNT)
+
+%.pick.pick.mock.an.unique_list.merge.groups.ave-std.summary : %.pick.pick.fasta %.uchime.pick.pick.count_table code/get_error_mice.sh
+	$(eval FASTA=$(patsubst %.pick.pick.mock.an.unique_list.merge.groups.ave-std.summary,%.pick.pick.fasta,$@)) \
+	$(eval COUNT=$(patsubst %.pick.pick.mock.an.unique_list.merge.groups.ave-std.summary,%.uchime.pick.pick.count_table,$@)) \
+	bash code/get_error_mice.sh $(FASTA) $(COUNT)
+
+
 
 stability_analysis : get_figure4 get_mice_error
 
