@@ -347,7 +347,7 @@ get_errors <- function(run){
 	composite <- as.matrix(a + b + c + d + e + f)
 	composite <- composite[1:6,]
 	total <- sum(composite)
-	
+
 	diag(composite) <- 0
 	error.total <- sum(composite);
 	substitutions <- sum(composite[1:4,1:4]) / error.total
@@ -357,7 +357,7 @@ get_errors <- function(run){
 	overall.error <- sum(composite) / total
 
 	c(overall=overall.error, subs=substitutions, ambiguous=ambiguous,
-					deletions=deletions, insertions=insertions) 
+					deletions=deletions, insertions=insertions)
 }
 
 all_rates <- t(100*sapply(all_runs, get_errors))
@@ -368,7 +368,7 @@ combined <- cbind(run_data, all_rates)
 c.names <- c("RTA version", "MCS version", "[DNA] (pM)",
 	"Cluster density (K/mm<sup>2</sup>)", "% PhiX", "Correction", "%>= Q30",
 	"Reported machine error (%)", "16S rRNA pairs (10<sup>6</sup>)",
-	"Observed error (%)", "Substitutions (%)", "Ambiguous (%)", "Deletions (%)", 
+	"Observed error (%)", "Substitutions (%)", "Ambiguous (%)", "Deletions (%)",
 	"Insertions (%)")
 kable(combined, align='c', col.names=c.names)
 ```
@@ -508,7 +508,7 @@ expected, errors were associated with low quality scores and rarely had
 a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
-log<sub>10</sub>P) with slopes of **`r round(forward.slope, 1)`** and 
+log<sub>10</sub>P) with slopes of **`r round(forward.slope, 1)`** and
 **`r round(reverse.slope, digits=1)`** for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
@@ -590,6 +590,39 @@ regions using data from run 130403.**
 
 --------
 
+**Table 2. Summary of the error rates and number of observed OTUs for
+the sequencing runs described in Table 1.**
+
+
+```{r table_2, echo=FALSE}
+data <- read.table(file="results/tables/table_2.tsv", header=T)
+rownames(data) <- paste(data$region, data$run, sep=".")
+
+perfect <- aggregate(data$perfect, by=list(data$region), mean)
+data$region <- NULL
+data$perfect <- NULL
+
+r.names <- rep("", nrow(data))
+r.names[c(1,12,23)] <- c("V34", "V4", "V45")
+c.names <- c("Region", "Run", "Basic Error (%)", "DeltaQ=6 Error (%)",
+			"Pre-cluster Error (%)", "Remaining Seqs. (%)",
+			"#OTUs Mock^A^", "#OTUs Mock^B^", "#OTUs Soil", "#OTUs Mouse",
+			"#OTUs Human")
+
+kable(cbind(r.names, data), align='c', col.names=c.names, row.names=F)
+```
+
+A Number of OTUs in the mock community when all chimeras were removed;
+in the absence of chimeras and sequencing errors, there should be 20
+OTUs for all three regions.
+
+B The average number of OTUs is based on rarefaction of each sample to
+5,000 sequences per sample; cells labeled as ND reflect samples that did
+not have at least one replicate with more than 5,000 sequences. Chimeras were
+removed using UCHIME.
+
+--------
+
 ***Pre-clustering sequences.*** We previously showed that a
 pre-clustering step could further reduce the sequencing error and number
 of unique sequences ([9](#_ENREF_9)). Briefly, sequences are sorted in
@@ -599,9 +632,12 @@ bases different from the more abundant sequence, the rare sequence is
 removed from the dataset and its abundance is added to the more abundant
 sequence. We found that allowing a 1-nt difference per 100 nt of
 sequence was the most appropriate threshold. For the V4 data the error
-rate decreased to 0.01% for each of the four cluster densities and it
-was reduced to between 0.10 and 0.21 for the V34 dataset and to between
-0.36 and 0.64% for the V45 dataset (**Table 2**). Again, the error rates
+rate decreased to `r data["v4.130403", "pc_error"]`% for each of the four
+cluster densities and it was reduced to between
+`r paste(format(range(c(data["v34.130401", "pc_error"], data["v34.130403", "pc_error"], data["v34.130417", "pc_error"], data["v34.130422", "pc_error"])), nsmall=2), collapse=' to ')`%
+for the V34 dataset and to between
+`r paste(format(range(c(data["v45.130401", "pc_error"], data["v45.130403", "pc_error"], data["v45.130417", "pc_error"], data["v45.130422", "pc_error"])), nsmall=2), collapse=' to ')`%
+for the V45 dataset (**Table 2**). Again, the error rates
 for the V4 data were at least as good as what we have observed using
 these approaches with 454 data ([9](#_ENREF_9)).
 
@@ -660,7 +696,7 @@ analysis of the number of reads per index did not suggest a systematic
 positive or negative amplification biases that could be attributed to
 the indices. The combined error rate for the two mock communities was
 0.07% before pre-clustering and 0.01% after (n=14,094 sequences). When
-we used UCHIME to remove chimeras and rarefied to 5,000 sequences there
+we used UCHIME to remove chimeras and rarefied to 3,000 sequences there
 were an average of 30.4 OTUs (i.e. 10.4 spurious OTUs). Similar to our
 previous results, ordination of the mouse fecal samples again showed the
 separation between the early and late periods and increased
@@ -912,66 +948,17 @@ Appl Environ Microbiol **77:**3219-26.
 
 
 
-**Table 2. Summary of the error rates and number of observed OTUs for
-the sequencing runs described in Table 1.**
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Region**   **Run**   **Error rates (%)**   **% Reads**                **Average number of OTUs^A^**
-                                                                          
-                                               **remaining from Basic**   
-                                                                          
-  ------------ --------- --------------------- -------------------------- ------------------------------- ------ ------------- ------------- ---------- ----------- -----------
-                         **Basic **            **ΔQ=6**                   **Pre-**
-                                                                          
-                                                                          **cluster**
-                                                                          
-
-  **V34**      130401    2.14                  0.37                       0.21
-
-               130403    1.30                  0.26                       0.12
-
-               130417    1.12                  0.24                       0.10
-
-               130422    0.91                  0.29                       0.17
-
-  **V4**       130401    1.08                  0.06                       0.01
-
-               130403    0.67                  0.05                       0.01
-
-               130417    0.40                  0.05                       0.01
-
-               130422    0.28                  0.05                       0.01
-
-  **V45**      130401    4.60                  0.87                       0.64
-
-               130403    3.31                  0.79                       0.56
-
-               130417    2.38                  0.66                       0.43
-
-               130422    1.67                  0.58                       0.36
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-A The average number of OTUs is based on rarefaction of each sample to
-5,000 sequences per sample; cells labeled as ND reflect samples that did
-not have at least one replicate with more than 5,000 sequences.
-
-B Number of OTUs in the mock community when all chimeras were removed;
-in the absence of chimeras and sequencing errors, there should be 20
-OTUs for all three regions.
-
-C Number of OTUs in the mock community when chimeras were removed using
-UCHIME.
 
 **Table 3. Summary of assemblies using shotgun sequence data generated
 in parallel to 16S rRNA gene sequences.**
 
   --------------------------------------------------------------------------------------------------------------------------------------------------
   **Library**                        **Number of**   **Number of**     **Number of contigs (\>=500 bp)**   **N50^A^**        **Percentage of**
-                                                                                                                             
+
                                      **reads**       **bases**                                             **(x10^3^ bp)**   **reads that mapped**
-                                                                                                                             
+
                                      **(x10^6^)**    **(x10^6^ bp)**                                                         **to contigs**
-                                                                                                                             
+
   ---------------------------------- --------------- ----------------- ----------------------------------- ----------------- -----------------------
   *Clostridium clostridioforme* D4   1.44            360               317                                 37.88             97
 
@@ -991,4 +978,3 @@ more than 50% of the bases found across all contigs
 the community structures of the fecal microbiota from 12 mice collected
 in the days 0 through 9 (“Early”) and days 141 through 150 (“Late”)
 after weaning.**
-
