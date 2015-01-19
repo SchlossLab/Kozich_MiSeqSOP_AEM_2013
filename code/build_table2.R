@@ -129,6 +129,7 @@ folders <- list.dirs("data/process", recursive=FALSE)
 error_run <- grepl("data/process/1", folders)
 error_folders <- folders[error_run]
 runs <- gsub("data/process/", "", error_folders)
+regions <- c("v34", "v4", "v45")
 
 runs_regions <- expand.grid(runs=runs, regions=regions, stringsAsFactors=F)
 
@@ -171,7 +172,7 @@ typical_sobs_table <- cbind(runs_regions, t(typical_sobs)[,c(2,4,3,1)])
 
 #Merge table together
 table_3 <- cbind(region = runs_regions$regions,
-    perfect = perfect_sobs[runs_regions$regions]
+    perfect = perfect_sobs[runs_regions$regions],
     run = runs_regions$runs,
     delta0_error = round(100*delta_0_table$delta_0, 2),
     delta6_error = round(100*delta_6_table$delta_6, 2),
