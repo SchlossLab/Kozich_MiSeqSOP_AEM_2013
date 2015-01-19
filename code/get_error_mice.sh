@@ -34,9 +34,9 @@ mothur "#set.dir(output=$PROCESS_PATH);
     system(mv $PICK_FASTA $MOCK_FASTA);
     system(mv $PICK_COUNT $MOCK_COUNT);
     seq.error(fasta=$MOCK_FASTA, count=$MOCK_COUNT, reference=data/references/HMP_MOCK.fasta, aligned=F, processors=8);
-    dist.seqs($MOCK_FASTA, cutoff=0.10);
+    dist.seqs(fasta=$MOCK_FASTA, cutoff=0.10);
     cluster(count=$MOCK_COUNT);
-    summary.single(calc=sobs, subsample=5000)"
+    summary.single(rabund=current, calc=sobs, subsample=5000)"
 
 
 # Garbage collection
