@@ -36,12 +36,13 @@ mothur "#set.dir(output=$PROCESS_PATH);
     seq.error(fasta=$MOCK_FASTA, count=$MOCK_COUNT, reference=data/references/HMP_MOCK.fasta, aligned=F, processors=8);
     dist.seqs(fasta=$MOCK_FASTA, cutoff=0.10);
     cluster(count=$MOCK_COUNT);
-    summary.single(rabund=current, calc=sobs, subsample=5000)"
+    make.shared(label=0.03);
+    summary.single(calc=sobs, subsample=5000)"
 
 
 # Garbage collection
-rm $MOCK_FASTA
-rm $MOCK_COUNT
+#rm $MOCK_FASTA
+#rm $MOCK_COUNT
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.seq
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.chimera
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.seq.forward
