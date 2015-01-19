@@ -590,5 +590,6 @@ write.paper : single_read_analysis \
 				otu_analysis \
 				stability_analysis \
 				data/references/run_data.tsv \
+				results/pictures/figure1.png\
 				Kozich_AEM_2013.Rmd
 	R -e 'library("knitr");knit2html("Kozich_AEM_2013.Rmd")'
