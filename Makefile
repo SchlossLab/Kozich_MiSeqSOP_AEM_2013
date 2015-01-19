@@ -370,8 +370,6 @@ deltaq_analysis: $(FIGURE3)
 ################################################################################
 
 
-
-
 # Now we want to make sure we have all of the contigs for the 12 libraries using
 # a qdel of 6...
 DELTA_Q = 6
@@ -477,18 +475,24 @@ otu_analysis : $(MOCK_PC_ERROR) $(FULL_SUMMARY) $(NO_CHIMERAS_SUMMARY) $(MOCK_PE
 
 
 
+################################################################################
+#
+#	Part 6: Case study application to samples collected by Schloss et al.
+#
+#	Here we run the new MiSeq SOP on samples that were previously generated and
+#	published by Schloss et al. in Gut Microbes. This culminates in an
+#	ordination of the mouse data as well as a calculation of the observed error
+#	rate.
+#
+#	need to do:
+#		make stability_analysis
+#
+#
+################################################################################
 
 
-
-
-
-
-# Let's build ordinations for the two sequencing runs where we sequenced data
-# from the mouse data
 
 # Let's get the raw data
-get_mouse_fastqs : data/raw/no_metag/no_metag.files data/raw/w_metag/w_metag.files
-
 data/raw/no_metag/no_metag.files : code/get_contigsfile.R
 	wget -N -P data/raw/no_metag http://www.mothur.org/MiSeqDevelopmentData/StabilityNoMetaG.tar; \
 	tar xvf data/raw/no_metag/StabilityNoMetaG.tar -C data/raw/no_metag/; \
@@ -504,16 +508,8 @@ data/raw/w_metag/w_metag.files : code/get_contigsfile.R
 	R -e 'source("code/get_contigsfile.R");get_contigsfile("data/raw/w_metag")'
 
 
-# Now let's run mothur and generate our shared files
-
-# first we'll get the sequences...
-get_mice_seqs : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta \
-			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta \
-			data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table \
-			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table \
-			data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy \
-			data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy \
-
+# first we'll run hte sequences through the chimera checking, classification,
+# and contaminant removal...
 data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta : code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
 	bash code/get_good_seqs_mice.sh data/raw/no_metag/no_metag.files
 
@@ -534,12 +530,6 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 
 
 # now we'll get the shared and cons.taxonomy file
-get_mice_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
-					data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy \
-					data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.shared \
-					data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.0.03.cons.taxonomy
-
-
 %.pick.pick.pick.an.unique_list.shared : %.pick.pick.fasta %.uchime.pick.pick.count_table %.pick.pds.wang.pick.taxonomy code/get_shared_mice.sh
 	$(eval FASTA=$(patsubst %.pick.pick.pick.an.unique_list.shared,%.pick.pick.fasta,$@)) \
 	$(eval COUNT=$(patsubst %.pick.pick.pick.an.unique_list.shared,%.uchime.pick.pick.count_table,$@)) \
@@ -554,9 +544,6 @@ get_mice_shared : data/process/no_metag/no_metag.trim.contigs.good.unique.good.f
 
 
 # now we'll get the rarefied distance file
-get_mice_thetayc : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.dist \
-				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.dist
-
 %.thetayc.0.03.lt.ave.dist : %.shared
 	$(eval STUB=$(patsubst %.thetayc.0.03.lt.ave.dist,%,$@)) \
 	mothur "#dist.shared(shared=$(STUB).shared, calc=thetayc, subsample=3000, iters=100, processors=8);" \
@@ -564,10 +551,7 @@ get_mice_thetayc : data/process/no_metag/no_metag.trim.contigs.good.unique.good.
 	rm $(STUB).thetayc.0.03.lt.std.dist
 
 
-# now we'll get the nmds axes file
-get_mice_nmds : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes \
-				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes
-
+# now we'll get the nmds axes files
 %.nmds.axes : %.dist
 	$(eval STUB=$(patsubst %.nmds.axes,%,$@)) \
 	mothur "#nmds(phylip=$(STUB).dist, maxdim=2);" \
@@ -585,10 +569,7 @@ results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.
 	R -e 'source("code/plot_nmds.R"); plot_nmds("$<")'
 
 
-
-
-
-# now we'll get the error rate from the mock community samples
+# finally, we'll get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary
 
@@ -597,12 +578,11 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 	$(eval COUNT=$(patsubst %.pick.pick.mock.error.summary,%.uchime.pick.pick.count_table,$@)) \
 	bash code/get_error_mice.sh $(FASTA) $(COUNT)
 
-
-
+stability_analysis : get_figure4 get_mice_error
 
 
 # To do:
 # * Generate Table S2
 
 
-write.paper: single_read_analysis deltaq_analysis otu_analysis
+write.paper: single_read_analysis deltaq_analysis otu_analysis stability_analysis
