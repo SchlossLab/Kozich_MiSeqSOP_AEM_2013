@@ -324,8 +324,8 @@ DELTAQ_ERROR = $(addsuffix /deltaq.error.summary, $(PROC_RUNSPATH))
 
 .SECONDEXPANSION:
 $(DELTAQ_ERROR) : code/summarize_error_deltaQ.R \
-					$(addsuffix /%,$$(filter $$(dir $$@)),$$(CONTIG_ERROR_SUMMARY)) \
-					$(addsuffix /%,$$(filter $$(dir $$@)),$$(CONTIG_REGION)) \
+					$$(filter $$(addsuffix  /%, $$(dir $$@)),$$(CONTIG_ERROR_SUMMARY)) \
+					$$(filter $$(addsuffix  /%, $$(dir $$@)),$$(CONTIG_REGION))
 	$(eval RUN=$(subst data/process/,,$(subst /deltaq.error.summary,,$@))) \
 	R -e "source('code/summarize_error_deltaQ.R'); get.summary($(RUN))"
 
@@ -451,7 +451,6 @@ $(FULL_SUMMARY) : $$(subst .pick.an.ave-std.summary,.fasta,$$@) $$(subst .pick.a
 
 # Now we'll find the numbrer of OTUs that we'd get out if we were perfect in our
 # ability to remove chimeras using the Mock community data
-NO_CHIMERAS_SUMMARY = $(subst error.summary,perfect.an.summary, $(MOCK_PC_ERROR))
 NO_CHIMERAS_AVE_SUMMARY = $(subst error.summary,perfect.an.ave-std.summary, $(MOCK_PC_ERROR))
 
 .SECONDEXPANSION:
@@ -470,7 +469,7 @@ $(MOCK_PERFECT_SOBS) : code/noseq_error_analysis.sh
 	bash code/noseq_error_analysis.sh
 
 
-otu_analysis : $(MOCK_PC_ERROR) $(FULL_SUMMARY) $(NO_CHIMERAS_SUMMARY) $(MOCK_PERFECT_SOBS)
+otu_analysis : $(MOCK_PC_ERROR) $(FULL_SUMMARY) $(NO_CHIMERAS_AVE_SUMMARY) $(MOCK_PERFECT_SOBS)
 
 
 
