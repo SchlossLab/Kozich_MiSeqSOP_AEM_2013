@@ -1,26 +1,57 @@
+################################################################################
+#
+# build_table2.R
+#
+#
+# Here we build a table that summarizes the error rates and number of OTUs that
+# were seen for each region and sequencing run. This is presented as Table 2 in
+# the paper
+#
+# Dependencies...
+# * data/process/{run}/deltaq.error.summary - summary of errors/nseqs for each
+#   run, region, and deltaq value
+# * data/process/noseq_error/HMP_MOCK.{region}.summary - number of OTUs that
+#   would be seen if there was no sequencing or PCR error
+# * data/process/{run}/{mock}_L001_R1_001.6.contigs.{region}.filter.unique.precluster.error.summary -
+#   The error rate after running precluster on the Mock data with a deltaq=6
+# * data/process/{run}/{library}*.filter.unique.precluster.pick.an.ave-std.summary -
+#   Number of OTUs observed when datasets are rarefied to 5000 reads for each
+#   of the 12 libraries in each region and for each sequencing run
+# * data/process/{run}/{mock}_L001_R1_001.6.contigs.{region}.*filter.unique.precluster.perfect.an.ave-std.summary -
+#   Number of OTUs that would be observed if we did a perfect job of removing
+#   the chimeras.
+#
+# Produces results/tables/table_2.tsv
+#
+################################################################################
 
+
+# Given a region, extract the number of OTUs we'd expect if there were no
+# sequencing errors and no chimeras.
 
 get_ideal <- function(region){
-
     file_name <- paste0("data/process/noseq_error/HMP_MOCK.", region, ".summary")
     file <- read.table(file=file_name, header=T)
     file$sobs
-
 }
 
 
-get_delta_q_error <- function(run, region, dq){
 
+# Given the run number, region, and the deltaQ value, output the corresponding
+# sequencing error rate
+
+get_delta_q_error <- function(run, region, dq){
     file_name <- paste0("data/process/", run, "/deltaq.error.summary")
     file <- read.table(file=file_name, header=T)
-
     file[file$deltaQ == dq & file$region == region, "error.rate"]
 }
 
 
 
-get_pc_errors <- function(run, region){
+# Given the run number and the region output the corresponding sequencing error
+# rate for a deltaQ of 6 after running the data through pre.cluster
 
+get_pc_errors <- function(run, region){
     path <- paste0("data/process/", run, "/")
     mocks <- c("Mock1_S1", "Mock2_S2", "Mock3_S3")
 
@@ -42,6 +73,8 @@ get_pc_errors <- function(run, region){
 
 
 
+# Given the run number, the region, and two deltaQ values, calculate the
+# percentage of reads in the second deltaQ value relative to the first
 
 get_per_reads_remaining <- function(run, region, dq_a=0, dq_b=6){
 
@@ -55,34 +88,8 @@ get_per_reads_remaining <- function(run, region, dq_a=0, dq_b=6){
 }
 
 
-get_nochim_otus <- function(run, region){
 
-    path <- paste0("data/process/", run, "/")
-    mocks <- c("Mock1_S1", "Mock2_S2", "Mock3_S3")
-
-    ave_std_summary <- paste0("data/process/", run, "/", mocks,
-                                "_L001_R1_001.6.contigs.", region,
-                                ".filter.unique.precluster.perfect.an.ave-std.summary")
-
-    data_there <- file.info(ave_std_summary)$size != 0
-    n_files <- sum(data_there)
-
-    if(n_files != 0){
-        sobs <- vector()
-
-        sobs_summary <- lapply(ave_std_summary[data_there], read.table, header=T)
-
-        for(i in 1:n_files){
-            sobs[i] <- sobs_summary[[i]][1,"sobs"]
-        }
-    } else {
-        sobs <- NA
-    }
-
-    mean(sobs)
-}
-
-
+# Given an ave-std.summary file, extract the number of observed OTUs
 
 get_sobs <- function(summary_file){
 
@@ -96,6 +103,27 @@ get_sobs <- function(summary_file){
 
     return(sobs)
 }
+
+
+
+# Given the run number and the region, output the number of OTUs that would be
+# observed if we did a perfect job of removing the chimeras.
+
+get_nochim_otus <- function(run, region){
+
+    path <- paste0("data/process/", run, "/")
+    mocks <- c("Mock1_S1", "Mock2_S2", "Mock3_S3")
+
+    ave_std_summary <- paste0("data/process/", run, "/", mocks,
+                                "_L001_R1_001.6.contigs.", region,
+                                ".filter.unique.precluster.perfect.an.ave-std.summary")
+
+    sobs <- unlist(lapply(ave_std_summary, get_sobs))
+    ave_sobs <- mean(sobs, na.rm=T)
+
+    ifelse(is.nan(ave_sobs), NA, ave_sobs)
+}
+
 
 
 
