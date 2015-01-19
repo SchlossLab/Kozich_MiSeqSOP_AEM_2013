@@ -33,7 +33,10 @@ mothur "#set.dir(output=$PROCESS_PATH);
     get.groups(count=$COUNT, fasta=$FASTA, groups=Mock-Mock2);
     system(mv $PICK_FASTA $MOCK_FASTA);
     system(mv $PICK_COUNT $MOCK_COUNT);
-    seq.error(fasta=$MOCK_FASTA, count=$MOCK_COUNT, reference=data/references/HMP_MOCK.fasta, aligned=F, processors=8)"
+    seq.error(fasta=$MOCK_FASTA, count=$MOCK_COUNT, reference=data/references/HMP_MOCK.fasta, aligned=F, processors=8);
+    dist.seqs($MOCK_FASTA, cutoff=0.10);
+    cluster(count=$MOCK_COUNT);
+    summary.single(calc=sobs, subsample=5000)"
 
 
 # Garbage collection
