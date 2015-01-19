@@ -40,7 +40,7 @@ mothur "#set.dir(output=$PROCESS_PATH);
     dist.seqs(fasta=$MOCK_FASTA, cutoff=0.10);
     cluster(count=$MOCK_COUNT);
     make.shared(label=0.03);
-    merge.groups(design=mock.design)
+    merge.groups(design=mock.design);
     summary.single(calc=sobs, subsample=5000)"
 
 
@@ -54,6 +54,13 @@ rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.p
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.count
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.matrix
 rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.ref
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.dist
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.shared
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.Mock.rabund
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.Mock2.rabund
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.merge.shared
+rm $PROCESS_PATH/*.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.merge.groups.summary
+rm mock.design
 
 
 # Keeping...
