@@ -82,6 +82,22 @@ get_nochim_otus <- function(run, region){
 
 
 
+get_sobs <- function(summary_file){
+
+    if(file.info(summary_file)$size != 0){
+
+        data <- read.table(file=summary_file, header=T)
+        sobs <- data[data$method == "ave", "sobs"]
+    } else {
+        sobs <- NA
+    }
+
+    return(sobs)
+}
+
+
+
+
 get_typical_otus <- function(run, region){
 
     path <- paste0("data/process/", run, "/")
@@ -95,28 +111,12 @@ get_typical_otus <- function(run, region){
                                 "_L001_R1_001.6.contigs.", region,
                                 ".filter.unique.precluster.pick.an.ave-std.summary")
 
-    data_there <- file.info(ave_std_summary)$size != 0
-    n_files <- sum(data_there)
+    sobs <- unlist(lapply(ave_std_summary, get_sobs))
+    ave_sobs <- aggregate(sobs, by=list(type), mean, na.rm=T)
 
-###problems here when some of the files are empty and others are not
-###may need to break this up so that we pass it a set of libraries
-
-    if(n_files != 0){
-        sobs <- vector()
-
-        sobs_summary <- lapply(ave_std_summary[data_there], read.table, header=T)
-
-        for(i in 1:n_files){
-            sobs[i] <- sobs_summary[[i]][1,"sobs"]
-        }
-    } else {
-        sobs <- NA
-    }
-###problems here when some of the files are empty and others are not
-
-    ave_sobs <- aggregate(sobs, by=list(type), mean)
     return_sobs <- ave_sobs$x
     names(return_sobs) <- ave_sobs$Group.1
+    return_sobs[is.nan(return_sobs)] <- NA
     return_sobs
 }
 
@@ -131,7 +131,7 @@ get_typical_otus <- function(run, region){
 #runs <- gsub("data/process/", "", error_folders)
 runs <- c("121205", "121207")
 regions <- c("v34", "v4", "v45")
-runs_regions <- expand.grid(runs=runs, regions=regions)
+runs_regions <- expand.grid(runs=runs, regions=regions, stringsAsFactors=F)
 
 
 #Get Sobs for each region w/o errors or chimeras
@@ -164,5 +164,22 @@ perfect_sobs <- mapply(get_nochim_otus, run=runs_regions$runs, region=runs_regio
 perfect_sobs_table <- cbind(runs_regions, perfect_sobs)
 
 
+#Number of OTUs in the Mock, Soil, Mouse and Human samples
 typical_sobs <- mapply(get_typical_otus, run=runs_regions$runs, region=runs_regions$regions)
-typical_sobs_table <- cbind(runs_regions, perfect_sobs)
+typical_sobs_table <- cbind(runs_regions, t(typical_sobs)[,c(2,4,3,1)])
+
+
+
+#Merge table together
+table_3 <- cbind(region = runs_regions$regions,
+    run = runs_regions$runs,
+    delta0_error = round(100*delta_0_table$delta_0, 2),
+    delta6_error = round(100*delta_6_table$delta_6, 2),
+    pc_error = round(100*pc_table$pc_errors, 2),
+    perecent_remaining = round(per_reads_table$per_reads_remaining, 1),
+    no_chimeras = round(perfect_sobs_table$perfect_sobs, 1),
+    typical_mock = round(typical_sobs_table$Mock, 1),
+    typical_soil = round(typical_sobs_table$Soil, 1),
+    typical_mouse = round(typical_sobs_table$Mouse, 1),
+    typical_human = round(typical_sobs_table$Human, 1)
+)
