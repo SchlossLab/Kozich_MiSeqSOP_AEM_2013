@@ -643,9 +643,6 @@ is robust across numerous environments and that caution is necessary
 before comparing data collected from different regions.
 
 
-```
-## This is vegan 2.2-1
-```
 
 ***Scaling up.*** The advantage of the dual index approach is that a
 large number of samples can be sequenced using a number of primers equal

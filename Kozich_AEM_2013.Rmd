@@ -683,7 +683,7 @@ community were generally consistent. These data indicate that the method
 is robust across numerous environments and that caution is necessary
 before comparing data collected from different regions.
 
-```{r mice_analysis, echo=FALSE, results="hide"}
+```{r mice_analysis, echo=FALSE, message=FALSE}
 counts <- read.table(file="data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table", header=T, row.names=1)
 counts$total <- NULL
 nseqs <- apply(counts, 2, sum)
