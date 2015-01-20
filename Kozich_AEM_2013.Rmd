@@ -683,7 +683,7 @@ community were generally consistent. These data indicate that the method
 is robust across numerous environments and that caution is necessary
 before comparing data collected from different regions.
 
-```{r mice_analysis, echo=FALSE}
+```{r mice_analysis, echo=FALSE, results="hide"}
 counts <- read.table(file="data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.uchime.pick.pick.count_table", header=T, row.names=1)
 counts$total <- NULL
 nseqs <- apply(counts, 2, sum)
@@ -831,8 +831,8 @@ individual samples, database-dependent methods are limited because they
 will not have sufficient representation of many rare and novel
 populations that the extended coverage will likely detect. The OTU-based
 approach described here has been facilitated by reducing the sequencing
-error rate from **`r tab2_data[tab2_data$region=="v4" & tab2_data$run=="130410","delta0_error"]`**% to
-**`r tab2_data[tab2_data$region =="v4" & tab2_data$run=="130410","pc_error"]`**% resulting in a reduction of the number of
+error rate from **`r tab2_data["v4.130401","delta0_error"]`**% to
+**`r tab2_data["v4.130401","pc_error"]`**% resulting in a reduction of the number of
 unique sequences that need to be processed. As sequence lengths continue
 to increase it will become possible to reliably sequence longer regions
 of the 16S rRNA gene fragment; however, based on this analysis it is

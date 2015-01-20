@@ -764,8 +764,8 @@ individual samples, database-dependent methods are limited because they
 will not have sufficient representation of many rare and novel
 populations that the extended coverage will likely detect. The OTU-based
 approach described here has been facilitated by reducing the sequencing
-error rate from ****% to
-****% resulting in a reduction of the number of
+error rate from **1.12**% to
+**0.01**% resulting in a reduction of the number of
 unique sequences that need to be processed. As sequence lengths continue
 to increase it will become possible to reliably sequence longer regions
 of the 16S rRNA gene fragment; however, based on this analysis it is
