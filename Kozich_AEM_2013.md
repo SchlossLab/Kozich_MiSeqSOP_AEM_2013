@@ -643,6 +643,13 @@ community were generally consistent. These data indicate that the method
 is robust across numerous environments and that caution is necessary
 before comparing data collected from different regions.
 
+
+```
+## Loading required package: permute
+## Loading required package: lattice
+## This is vegan 2.2-1
+```
+
 ***Scaling up.*** The advantage of the dual index approach is that a
 large number of samples can be sequenced using a number of primers equal
 to only twice the square root of the number of samples. To fully
@@ -655,21 +662,34 @@ days after weaning and there was significantly less variation between
 the late samples compared to the early samples. In addition to the mouse
 fecal samples, we allocated 2 pairs of indices to re-sequence our mock
 community. We generated 4.3 million pairs of sequence reads from the 16S
-rRNA gene with an average coverage of 9,913 pairs of reads per sample
-(95% of the samples had more than 2,454 pairs of sequences) using a new
-collection of 8-nt indices (Supplemental Materials). Although individual
-samples were expected to have varying amplification efficiencies,
-analysis of the number of reads per index did not suggest a systematic
-positive or negative amplification biases that could be attributed to
-the indices. The combined error rate for the two mock communities was
-0.07% before pre-clustering and 0.01% after (n=14,094 sequences). When
-we used UCHIME to remove chimeras and rarefied to 3,000 sequences there
-were an average of 30.4 OTUs (i.e. 10.4 spurious OTUs). Similar to our
-previous results, ordination of the mouse fecal samples again showed the
-separation between the early and late periods and increased
-stabilization with age (**Figure 4**; Mantel Test Coefficient=0.81,
-p\<0.001). These results clearly indicate that our approach can be
-scaled to multiplex large numbers of samples.
+rRNA gene with an average coverage of 7851 pairs of reads
+per sample (95% of the samples had more than 2122
+pairs of sequences) using a new collection of 8-nt indices (Supplemental
+Materials). Although individual samples were expected to have varying
+amplification efficiencies, analysis of the number of reads per index did not
+suggest a systematic positive or negative amplification biases that could be
+attributed to the indices. The combined error rate for the two mock communities
+was 0.07% before pre-clustering and 0.02% after
+(n=13900 sequences). When we used UCHIME to remove chimeras and
+rarefied to 5,000 sequences there were an average of
+30.5 OTUs (i.e. 10.5
+spurious OTUs). Similar to our previous results, ordination of the mouse fecal
+samples again showed the separation between the early and late periods and
+increased stabilization with age (**Figure 4**; Mantel Test Coefficient=
+0.82,
+p\<0.001). These results clearly indicate that our approach can be scaled to
+multiplex large numbers of samples.
+
+--------
+
+![**Figure 4.**](results/figures/no_metag.figure4.png)
+
+**Figure 4. Principal coordinates ordination of Θ<sub>YC</sub> values relating
+the community structures of the fecal microbiota from 12 mice collected
+in the days 0 through 9 (“Early”) and days 141 through 150 (“Late”)
+after weaning.**
+
+--------
 
 ***Titrating the number of 16S rRNA sequence reads.*** With 384 samples
 there is the potential to obtain an average of more than 20,000
@@ -938,10 +958,3 @@ in parallel to 16S rRNA gene sequences.**
 
 A: The contig length where all contigs that length or longer contain
 more than 50% of the bases found across all contigs
-
-
-
-**Figure 4. Principal coordinates ordination of Θ<sub>YC</sub> values relating
-the community structures of the fecal microbiota from 12 mice collected
-in the days 0 through 9 (“Early”) and days 141 through 150 (“Late”)
-after weaning.**
