@@ -575,7 +575,7 @@ results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.
 	R -e 'source("code/plot_nmds.R"); plot_nmds("$<")'
 
 
-# finally, we'll get the error rate from the mock community samples
+# let's get the error rate from the mock community samples
 get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
 				data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.error.summary \
 				data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.mock.an.unique_list.merge.groups.ave-std.summary \
@@ -592,8 +592,14 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 	bash code/get_error_mice.sh $(FASTA) $(COUNT)
 
 
+# finally, let's get the distance matrix from the 454 data
+data/references/454.16s.merge.0.03.square.ave.dist : data/references/454.16s.merge.shared
+	mothur "#dist.shared(shared=data/references/454.16s.merge.shared, calc=thetayc, output=square, subsample=3000, iters=100)" \
+	rm data/references/454.16s.merge.thetayc.0.03.square.dist \
+	rm data/references/454.16s.merge.thetayc.0.03.square.std.dist
 
-stability_analysis : get_figure4 get_mice_error
+
+stability_analysis : get_figure4 get_mice_error data/references/454.16s.merge.0.03.square.ave.dist
 
 
 
