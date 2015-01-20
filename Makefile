@@ -550,11 +550,11 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 
 
 # now we'll get the rarefied distance file
-%.thetayc.0.03.lt.ave.dist : %.shared
-	$(eval STUB=$(patsubst %.thetayc.0.03.lt.ave.dist,%,$@)) \
-	mothur "#dist.shared(shared=$(STUB).shared, calc=thetayc, subsample=3000, iters=100, processors=8);" \
-	rm $(STUB).thetayc.0.03.lt.dist \
-	rm $(STUB).thetayc.0.03.lt.std.dist
+%.thetayc.0.03.square.ave.dist : %.shared
+	$(eval STUB=$(patsubst %.thetayc.0.03.square.ave.dist,%,$@)) \
+	mothur "#dist.shared(shared=$(STUB).shared, calc=thetayc, output=square, subsample=3000, iters=100, processors=8);" \
+	rm $(STUB).thetayc.0.03.square.dist \
+	rm $(STUB).thetayc.0.03.square.std.dist
 
 
 # now we'll get the nmds axes files
@@ -568,10 +568,10 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 # now we'll plot the nmds axes file
 get_figure4 : results/figures/no_metag.figure4.png results/figures/w_metag.figure4.png
 
-results/figures/no_metag.figure4.png : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes code/plot_nmds.R
+results/figures/no_metag.figure4.png : data/process/no_metag/no_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.square.ave.nmds.axes code/plot_nmds.R
 	R -e 'source("code/plot_nmds.R"); plot_nmds("$<")'
 
-results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.lt.ave.nmds.axes code/plot_nmds.R
+results/figures/w_metag.figure4.png : data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.an.unique_list.thetayc.0.03.square.ave.nmds.axes code/plot_nmds.R
 	R -e 'source("code/plot_nmds.R"); plot_nmds("$<")'
 
 

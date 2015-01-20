@@ -460,7 +460,7 @@ expected, errors were associated with low quality scores and rarely had
 a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
-log<sub>10</sub>P) with slopes of **11.8** and 
+log<sub>10</sub>P) with slopes of **11.8** and
 **14** for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
@@ -532,6 +532,58 @@ regions using data from run 130403.**
 
 --------
 
+**Table 2. Summary of the error rates and number of observed OTUs for
+the sequencing runs described in Table 1.**
+
+
+
+| Region |  Run   | Basic Error (%) | DeltaQ=6 Error (%) | Pre-cluster Error (%) | Remaining Seqs. (%) | #OTUs Mock^A^ | #OTUs Mock^B^ | #OTUs Soil | #OTUs Mouse | #OTUs Human |
+|:------:|:------:|:---------------:|:------------------:|:---------------------:|:-------------------:|:-------------:|:-------------:|:----------:|:-----------:|:-----------:|
+|  V34   | 121203 |      2.20       |        1.83        |         1.60          |         0.5         |      NA       |      NA       |     NA     |     NA      |     NA      |
+|        | 121205 |      2.01       |        0.60        |         0.45          |         1.7         |      NA       |      NA       |   1236.5   |     NA      |     NA      |
+|        | 121207 |      1.90       |        0.69        |         0.53          |         1.1         |      NA       |      NA       |     NA     |     NA      |     NA      |
+|        | 130125 |      0.34       |        0.14        |         0.05          |        67.1         |      NA       |      NA       |   1104.7   |     NA      |    146.0    |
+|        | 130211 |      0.58       |        0.28        |         0.13          |        59.3         |     44.0      |     56.3      |   1088.1   |    155.9    |    156.9    |
+|        | 130220 |      0.82       |        0.28        |         0.13          |        43.1         |     42.7      |     61.5      |   1065.5   |    161.6    |    170.1    |
+|        | 130306 |      1.00       |        0.31        |         0.15          |        42.4         |     44.3      |     60.1      |   1117.3   |    182.6    |    161.9    |
+|        | 130401 |      2.20       |        0.38        |         0.20          |        11.8         |     31.0      |     53.2      |   1126.7   |    177.3    |    196.8    |
+|        | 130403 |      1.37       |        0.30        |         0.13          |        30.1         |     36.0      |     52.6      |   1103.6   |    163.3    |    174.2    |
+|        | 130417 |      1.19       |        0.29        |         0.11          |        30.6         |     38.8      |     57.1      |   1050.4   |     NA      |    155.1    |
+|        | 130422 |      0.98       |        0.33        |         0.18          |        51.2         |     48.1      |     63.9      |   1064.2   |    162.8    |    152.7    |
+|   V4   | 121203 |      0.39       |        0.08        |         0.01          |        70.4         |     22.6      |     34.3      |   1277.1   |    135.6    |    122.1    |
+|        | 121205 |      0.30       |        0.05        |         0.01          |        77.7         |     22.1      |     33.3      |   1278.4   |    135.6    |    121.7    |
+|        | 121207 |      0.25       |        0.04        |         0.01          |        80.4         |     22.0      |     32.7      |   1273.1   |    135.7    |    121.9    |
+|        | 130125 |      0.07       |        0.03        |         0.01          |        97.3         |     22.8      |     29.5      |   1279.0   |    135.9    |    124.4    |
+|        | 130211 |      0.09       |        0.04        |         0.01          |        95.2         |     22.3      |     32.6      |   1274.5   |    134.7    |    122.1    |
+|        | 130220 |      0.20       |        0.04        |         0.01          |        86.6         |     21.8      |     33.8      |   1274.8   |    139.5    |    123.2    |
+|        | 130306 |      0.48       |        0.05        |         0.01          |        73.9         |     23.5      |     44.9      |   1253.1   |    141.1    |    121.0    |
+|        | 130401 |      1.12       |        0.07        |         0.01          |        45.5         |     23.8      |     43.7      |   1252.5   |    136.5    |    116.4    |
+|        | 130403 |      0.67       |        0.06        |         0.01          |        61.8         |     23.9      |     40.9      |   1262.6   |    134.2    |    118.5    |
+|        | 130417 |      0.41       |        0.05        |         0.01          |        70.8         |     23.1      |     37.7      |   1258.5   |    135.7    |    117.2    |
+|        | 130422 |      0.27       |        0.05        |         0.01          |        79.5         |     23.6      |     37.2      |   1257.5   |    133.0    |    118.3    |
+|  V45   | 121203 |      2.25       |        0.42        |         0.26          |        15.4         |     33.1      |     89.8      |   1246.5   |    137.1    |    159.7    |
+|        | 121205 |      2.05       |        0.56        |         0.42          |        34.5         |     124.5     |     232.7     |   1319.2   |    157.9    |    247.1    |
+|        | 121207 |      1.58       |        0.39        |         0.26          |        35.8         |     52.4      |     113.5     |   1223.4   |    143.1    |    182.7    |
+|        | 130125 |      0.29       |        0.19        |         0.12          |        94.7         |     42.2      |     65.6      |   1308.6   |    165.0    |    196.5    |
+|        | 130211 |      0.64       |        0.34        |         0.23          |        81.5         |     67.3      |     128.5     |   1394.4   |    178.4    |    199.1    |
+|        | 130220 |      1.57       |        0.61        |         0.48          |        60.3         |     150.2     |     256.5     |   1582.7   |    211.7    |    271.2    |
+|        | 130306 |      2.28       |        0.71        |         0.57          |        51.6         |     198.1     |     324.7     |   1618.6   |    273.0    |    356.5    |
+|        | 130401 |      4.41       |        0.76        |         0.61          |        16.2         |     197.2     |     332.5     |   1516.1   |    207.2    |    338.4    |
+|        | 130403 |      3.07       |        0.66        |         0.53          |        34.6         |     172.7     |     288.2     |   1563.2   |    222.3    |    340.2    |
+|        | 130417 |      2.19       |        0.52        |         0.39          |        38.2         |     100.9     |     187.6     |   1441.0   |    188.0    |    251.4    |
+|        | 130422 |      1.48       |        0.43        |         0.31          |        58.0         |     83.7      |     151.0     |   1427.1   |    190.9    |    230.3    |
+
+A Number of OTUs in the mock community when all chimeras were removed;
+in the absence of chimeras and sequencing errors, there should be 20
+OTUs for all three regions.
+
+B The average number of OTUs is based on rarefaction of each sample to
+5,000 sequences per sample; cells labeled as ND reflect samples that did
+not have at least one replicate with more than 5,000 sequences. Chimeras were
+removed using UCHIME.
+
+--------
+
 ***Pre-clustering sequences.*** We previously showed that a
 pre-clustering step could further reduce the sequencing error and number
 of unique sequences ([9](#_ENREF_9)). Briefly, sequences are sorted in
@@ -541,9 +593,12 @@ bases different from the more abundant sequence, the rare sequence is
 removed from the dataset and its abundance is added to the more abundant
 sequence. We found that allowing a 1-nt difference per 100 nt of
 sequence was the most appropriate threshold. For the V4 data the error
-rate decreased to 0.01% for each of the four cluster densities and it
-was reduced to between 0.10 and 0.21 for the V34 dataset and to between
-0.36 and 0.64% for the V45 dataset (**Table 2**). Again, the error rates
+rate decreased to 0.01% for each of the four
+cluster densities and it was reduced to between
+0.11 to 0.20%
+for the V34 dataset and to between
+0.31 to 0.61%
+for the V45 dataset (**Table 2**). Again, the error rates
 for the V4 data were at least as good as what we have observed using
 these approaches with 454 data ([9](#_ENREF_9)).
 
@@ -558,10 +613,16 @@ sequence reads being analyzed. Regardless, we performed two OTU-based
 analyses expecting 20 OTUs from each region in the absence of any
 sequencing errors or chimeras. In the first analysis, we rarefied the
 data to 5,000 sequences per sample and assumed perfect removal of all
-chimeras. Using the V4 dataset we observed between 22.8 and 23.5 OTUs
-(i.e. 2.8 to 3.5 spurious OTUs). In the second analysis, we used UCHIME
+chimeras. Using the V4 dataset we observed between
+23.1 and 23.9
+OTUs (i.e.
+3.1 and 3.9
+spurious OTUs). In the second analysis, we used UCHIME
 to identify chimeric sequences and rarefied the data to 5,000 sequences
-per sample. We observed between 37.2 and 43.4 OTUs (i.e. 17.2 to 23.4
+per sample. We observed between
+37.2 and 43.7
+OTUs (i.e.
+17.2 to 23.7
 spurious OTUs; **Table 2**). When we replicated this analysis for the
 V34 and V45 datasets, we observed significantly more OTUs (**Table 2**).
 In general, the number of spurious OTUs was correlated with the error
@@ -602,7 +663,7 @@ analysis of the number of reads per index did not suggest a systematic
 positive or negative amplification biases that could be attributed to
 the indices. The combined error rate for the two mock communities was
 0.07% before pre-clustering and 0.01% after (n=14,094 sequences). When
-we used UCHIME to remove chimeras and rarefied to 5,000 sequences there
+we used UCHIME to remove chimeras and rarefied to 3,000 sequences there
 were an average of 30.4 OTUs (i.e. 10.4 spurious OTUs). Similar to our
 previous results, ordination of the mouse fecal samples again showed the
 separation between the early and late periods and increased
@@ -854,66 +915,17 @@ Appl Environ Microbiol **77:**3219-26.
 
 
 
-**Table 2. Summary of the error rates and number of observed OTUs for
-the sequencing runs described in Table 1.**
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Region**   **Run**   **Error rates (%)**   **% Reads**                **Average number of OTUs^A^**
-                                                                          
-                                               **remaining from Basic**   
-                                                                          
-  ------------ --------- --------------------- -------------------------- ------------------------------- ------ ------------- ------------- ---------- ----------- -----------
-                         **Basic **            **ΔQ=6**                   **Pre-**
-                                                                          
-                                                                          **cluster**
-                                                                          
-
-  **V34**      130401    2.14                  0.37                       0.21
-
-               130403    1.30                  0.26                       0.12
-
-               130417    1.12                  0.24                       0.10
-
-               130422    0.91                  0.29                       0.17
-
-  **V4**       130401    1.08                  0.06                       0.01
-
-               130403    0.67                  0.05                       0.01
-
-               130417    0.40                  0.05                       0.01
-
-               130422    0.28                  0.05                       0.01
-
-  **V45**      130401    4.60                  0.87                       0.64
-
-               130403    3.31                  0.79                       0.56
-
-               130417    2.38                  0.66                       0.43
-
-               130422    1.67                  0.58                       0.36
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-A The average number of OTUs is based on rarefaction of each sample to
-5,000 sequences per sample; cells labeled as ND reflect samples that did
-not have at least one replicate with more than 5,000 sequences.
-
-B Number of OTUs in the mock community when all chimeras were removed;
-in the absence of chimeras and sequencing errors, there should be 20
-OTUs for all three regions.
-
-C Number of OTUs in the mock community when chimeras were removed using
-UCHIME.
 
 **Table 3. Summary of assemblies using shotgun sequence data generated
 in parallel to 16S rRNA gene sequences.**
 
   --------------------------------------------------------------------------------------------------------------------------------------------------
   **Library**                        **Number of**   **Number of**     **Number of contigs (\>=500 bp)**   **N50^A^**        **Percentage of**
-                                                                                                                             
+
                                      **reads**       **bases**                                             **(x10^3^ bp)**   **reads that mapped**
-                                                                                                                             
+
                                      **(x10^6^)**    **(x10^6^ bp)**                                                         **to contigs**
-                                                                                                                             
+
   ---------------------------------- --------------- ----------------- ----------------------------------- ----------------- -----------------------
   *Clostridium clostridioforme* D4   1.44            360               317                                 37.88             97
 
@@ -933,4 +945,3 @@ more than 50% of the bases found across all contigs
 the community structures of the fecal microbiota from 12 mice collected
 in the days 0 through 9 (“Early”) and days 141 through 150 (“Late”)
 after weaning.**
-
