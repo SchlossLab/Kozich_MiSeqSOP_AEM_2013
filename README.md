@@ -53,6 +53,7 @@ Repository overview
 	|- code/		# bash and R code
 	|
 	|- results		# all output from workflows and analyses
+	|  |- tables/		# text version of tables to be rendered with kable in R
 	|  |- figures/		# graphs, likely designated for manuscript figures
 	|  +- pictures/		# diagrams, images, and other non-graph graphics
 	|
