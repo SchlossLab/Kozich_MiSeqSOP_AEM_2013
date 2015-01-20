@@ -598,7 +598,7 @@ data/references/454.16s.merge.thetayc.0.03.square.ave.dist : data/references/454
 	rm data/references/454.16s.merge.thetayc.0.03.square.std.dist
 
 
-stability_analysis : get_figure4 get_mice_error data/references/454.16s.merge.0.03.square.ave.dist
+stability_analysis : get_figure4 get_mice_error data/references/454.16s.merge.thetayc.0.03.square.ave.dist
 
 
 
