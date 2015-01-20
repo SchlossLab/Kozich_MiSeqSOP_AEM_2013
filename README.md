@@ -23,7 +23,7 @@ Dependencies...
 * [mothur v.1.34.0](http://www.mothur.org) 
 * R packages:
   * knitr
-  * vegan* 
+  * vegan
 
 
 Repository overview
