@@ -596,9 +596,6 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 stability_analysis : get_figure4 get_mice_error
 
 
-# To do:
-# * Generate Table S2
-
 
 write.paper : single_read_analysis \
 	 			deltaq_analysis \
@@ -607,5 +604,6 @@ write.paper : single_read_analysis \
 				data/references/run_data.tsv \
 				results/pictures/figure1.png \
 				results/tables/table_2.tsv \
-				Kozich_AEM_2013.Rmd
+				Kozich_AEM_2013.Rmd \
+				Kozich_AEM_2013.md
 	R -e 'library("knitr");knit2html("Kozich_AEM_2013.Rmd")'
