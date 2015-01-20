@@ -556,7 +556,6 @@ data/process/w_metag/w_metag.trim.contigs.good.unique.good.filter.unique.preclus
 	rm $(STUB).thetayc.0.03.square.dist \
 	rm $(STUB).thetayc.0.03.square.std.dist
 
-
 # now we'll get the nmds axes files
 %.nmds.axes : %.dist
 	$(eval STUB=$(patsubst %.nmds.axes,%,$@)) \
@@ -593,7 +592,7 @@ get_mice_error : data/process/no_metag/no_metag.trim.contigs.good.unique.good.fi
 
 
 # finally, let's get the distance matrix from the 454 data
-data/references/454.16s.merge.0.03.square.ave.dist : data/references/454.16s.merge.shared
+data/references/454.16s.merge.thetayc.0.03.square.ave.dist : data/references/454.16s.merge.shared
 	mothur "#dist.shared(shared=data/references/454.16s.merge.shared, calc=thetayc, output=square, subsample=3000, iters=100)" \
 	rm data/references/454.16s.merge.thetayc.0.03.square.dist \
 	rm data/references/454.16s.merge.thetayc.0.03.square.std.dist
