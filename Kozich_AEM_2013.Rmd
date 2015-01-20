@@ -600,8 +600,8 @@ rownames(tab2_data) <- paste(tab2_data$region, tab2_data$run, sep=".")
 perfect <- aggregate(tab2_data$perfect, by=list(tab2_data$region), mean)
 perfect <- perfect[1,2]
 
-data$region <- NULL
-data$perfect <- NULL
+tab2_data$region <- NULL
+tab2_data$perfect <- NULL
 
 r.names <- rep("", nrow(tab2_data))
 r.names[c(1,12,23)] <- c("V34", "V4", "V45")
@@ -710,7 +710,7 @@ overlap <- intersect(rownames(fourfivefour), rownames(miseq))
 miseq <- miseq[overlap, overlap]
 fourfivefour <- fourfivefour[overlap, overlap]
 
-library(vegan)
+library(vegan, quietly=TRUE)
 m.test <- mantel(miseq, fourfivefour)
 ```
 
@@ -831,8 +831,8 @@ individual samples, database-dependent methods are limited because they
 will not have sufficient representation of many rare and novel
 populations that the extended coverage will likely detect. The OTU-based
 approach described here has been facilitated by reducing the sequencing
-error rate from **`r tab2_data["v4.130410","delta0_error"]`**% to
-**`r tab2_data["v4.130410","pc_error"]`**% resulting in a reduction of the number of
+error rate from **`r tab2_data[tab2_data$region=="v4" & tab2_data$run=="130410","delta0_error"]`**% to
+**`r tab2_data[tab2_data$region =="v4" & tab2_data$run=="130410","pc_error"]`**% resulting in a reduction of the number of
 unique sequences that need to be processed. As sequence lengths continue
 to increase it will become possible to reliably sequence longer regions
 of the 16S rRNA gene fragment; however, based on this analysis it is

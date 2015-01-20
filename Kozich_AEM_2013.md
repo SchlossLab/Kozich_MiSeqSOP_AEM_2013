@@ -536,17 +536,41 @@ the sequencing runs described in Table 1.**
 
 
 
-```
-## Error in data$region <- NULL: object of type 'closure' is not subsettable
-```
-
-```
-## Error in data$perfect <- NULL: object of type 'closure' is not subsettable
-```
-
-```
-## Error in `colnames<-`(`*tmp*`, value = c("Region", "Run", "Basic Error (%)", : length of 'dimnames' [2] not equal to array extent
-```
+| Region |  Run   | Basic Error (%) | DeltaQ=6 Error (%) | Pre-cluster Error (%) | Remaining Seqs. (%) | #OTUs Mock<sup>A</sup> | #OTUs Mock<sup>B</sup> | #OTUs Soil | #OTUs Mouse | #OTUs Human |
+|:------:|:------:|:---------------:|:------------------:|:---------------------:|:-------------------:|:----------------------:|:----------------------:|:----------:|:-----------:|:-----------:|
+|  V34   | 121203 |      2.20       |        1.83        |         1.60          |         0.5         |           NA           |           NA           |     NA     |     NA      |     NA      |
+|        | 121205 |      2.01       |        0.60        |         0.45          |         1.7         |           NA           |           NA           |   1236.5   |     NA      |     NA      |
+|        | 121207 |      1.90       |        0.69        |         0.53          |         1.1         |           NA           |           NA           |     NA     |     NA      |     NA      |
+|        | 130125 |      0.34       |        0.14        |         0.05          |        67.1         |           NA           |           NA           |   1104.7   |     NA      |    146.0    |
+|        | 130211 |      0.58       |        0.28        |         0.13          |        59.3         |          44.0          |          56.3          |   1088.1   |    155.9    |    156.9    |
+|        | 130220 |      0.82       |        0.28        |         0.13          |        43.1         |          42.7          |          61.5          |   1065.5   |    161.6    |    170.1    |
+|        | 130306 |      1.00       |        0.31        |         0.15          |        42.4         |          44.3          |          60.1          |   1117.3   |    182.6    |    161.9    |
+|        | 130401 |      2.20       |        0.38        |         0.20          |        11.8         |          31.0          |          53.2          |   1126.7   |    177.3    |    196.8    |
+|        | 130403 |      1.37       |        0.30        |         0.13          |        30.1         |          36.0          |          52.6          |   1103.6   |    163.3    |    174.2    |
+|        | 130417 |      1.19       |        0.29        |         0.11          |        30.6         |          38.8          |          57.1          |   1050.4   |     NA      |    155.1    |
+|        | 130422 |      0.98       |        0.33        |         0.18          |        51.2         |          48.1          |          63.9          |   1064.2   |    162.8    |    152.7    |
+|   V4   | 121203 |      0.39       |        0.08        |         0.01          |        70.4         |          22.6          |          34.3          |   1277.1   |    135.6    |    122.1    |
+|        | 121205 |      0.30       |        0.05        |         0.01          |        77.7         |          22.1          |          33.3          |   1278.4   |    135.6    |    121.7    |
+|        | 121207 |      0.25       |        0.04        |         0.01          |        80.4         |          22.0          |          32.7          |   1273.1   |    135.7    |    121.9    |
+|        | 130125 |      0.07       |        0.03        |         0.01          |        97.3         |          22.8          |          29.5          |   1279.0   |    135.9    |    124.4    |
+|        | 130211 |      0.09       |        0.04        |         0.01          |        95.2         |          22.3          |          32.6          |   1274.5   |    134.7    |    122.1    |
+|        | 130220 |      0.20       |        0.04        |         0.01          |        86.6         |          21.8          |          33.8          |   1274.8   |    139.5    |    123.2    |
+|        | 130306 |      0.48       |        0.05        |         0.01          |        73.9         |          23.5          |          44.9          |   1253.1   |    141.1    |    121.0    |
+|        | 130401 |      1.12       |        0.07        |         0.01          |        45.5         |          23.8          |          43.7          |   1252.5   |    136.5    |    116.4    |
+|        | 130403 |      0.67       |        0.06        |         0.01          |        61.8         |          23.9          |          40.9          |   1262.6   |    134.2    |    118.5    |
+|        | 130417 |      0.41       |        0.05        |         0.01          |        70.8         |          23.1          |          37.7          |   1258.5   |    135.7    |    117.2    |
+|        | 130422 |      0.27       |        0.05        |         0.01          |        79.5         |          23.6          |          37.2          |   1257.5   |    133.0    |    118.3    |
+|  V45   | 121203 |      2.25       |        0.42        |         0.26          |        15.4         |          33.1          |          89.8          |   1246.5   |    137.1    |    159.7    |
+|        | 121205 |      2.05       |        0.56        |         0.42          |        34.5         |         124.5          |         232.7          |   1319.2   |    157.9    |    247.1    |
+|        | 121207 |      1.58       |        0.39        |         0.26          |        35.8         |          52.4          |         113.5          |   1223.4   |    143.1    |    182.7    |
+|        | 130125 |      0.29       |        0.19        |         0.12          |        94.7         |          42.2          |          65.6          |   1308.6   |    165.0    |    196.5    |
+|        | 130211 |      0.64       |        0.34        |         0.23          |        81.5         |          67.3          |         128.5          |   1394.4   |    178.4    |    199.1    |
+|        | 130220 |      1.57       |        0.61        |         0.48          |        60.3         |         150.2          |         256.5          |   1582.7   |    211.7    |    271.2    |
+|        | 130306 |      2.28       |        0.71        |         0.57          |        51.6         |         198.1          |         324.7          |   1618.6   |    273.0    |    356.5    |
+|        | 130401 |      4.41       |        0.76        |         0.61          |        16.2         |         197.2          |         332.5          |   1516.1   |    207.2    |    338.4    |
+|        | 130403 |      3.07       |        0.66        |         0.53          |        34.6         |         172.7          |         288.2          |   1563.2   |    222.3    |    340.2    |
+|        | 130417 |      2.19       |        0.52        |         0.39          |        38.2         |         100.9          |         187.6          |   1441.0   |    188.0    |    251.4    |
+|        | 130422 |      1.48       |        0.43        |         0.31          |        58.0         |          83.7          |         151.0          |   1427.1   |    190.9    |    230.3    |
 
 A Number of OTUs in the mock community when all chimeras were removed;
 in the absence of chimeras and sequencing errors, there should be 20
@@ -620,8 +644,6 @@ before comparing data collected from different regions.
 
 
 ```
-## Loading required package: permute
-## Loading required package: lattice
 ## This is vegan 2.2-1
 ```
 
@@ -742,8 +764,8 @@ individual samples, database-dependent methods are limited because they
 will not have sufficient representation of many rare and novel
 populations that the extended coverage will likely detect. The OTU-based
 approach described here has been facilitated by reducing the sequencing
-error rate from **NA**% to
-**NA**% resulting in a reduction of the number of
+error rate from ****% to
+****% resulting in a reduction of the number of
 unique sequences that need to be processed. As sequence lengths continue
 to increase it will become possible to reliably sequence longer regions
 of the 16S rRNA gene fragment; however, based on this analysis it is
