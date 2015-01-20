@@ -819,7 +819,7 @@ expected, errors were associated with low quality scores and rarely had
 a quality score above 21. Finally, when we performed a regression of the
 sequencer-generated Phred quality scores (Q) against the observed error
 rate (P), we observed the expected log-linear relationship (i.e. Q=-10
-log<sub>10</sub>P) with slopes of <strong>11.8</strong> and 
+log<sub>10</sub>P) with slopes of <strong>11.8</strong> and
 <strong>14</strong> for the first and second read,
 respectively. The single read data indicated that without significantly
 trimming the length of the reads, it was not possible to obtain the
@@ -889,6 +889,466 @@ regions using data from run 130403.</strong></p>
 
 <hr/>
 
+<p><strong>Table 2. Summary of the error rates and number of observed OTUs for
+the sequencing runs described in Table 1.</strong></p>
+
+<table><thead>
+<tr>
+<th align="center">Region</th>
+<th align="center">Run</th>
+<th align="center">Basic Error (%)</th>
+<th align="center">DeltaQ=6 Error (%)</th>
+<th align="center">Pre-cluster Error (%)</th>
+<th align="center">Remaining Seqs. (%)</th>
+<th align="center">#OTUs Mock<sup>A^</sup></th>
+<th align="center">#OTUs Mock<sup>B^</sup></th>
+<th align="center">#OTUs Soil</th>
+<th align="center">#OTUs Mouse</th>
+<th align="center">#OTUs Human</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">V34</td>
+<td align="center">121203</td>
+<td align="center">2.20</td>
+<td align="center">1.83</td>
+<td align="center">1.60</td>
+<td align="center">0.5</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">121205</td>
+<td align="center">2.01</td>
+<td align="center">0.60</td>
+<td align="center">0.45</td>
+<td align="center">1.7</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1236.5</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">121207</td>
+<td align="center">1.90</td>
+<td align="center">0.69</td>
+<td align="center">0.53</td>
+<td align="center">1.1</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130125</td>
+<td align="center">0.34</td>
+<td align="center">0.14</td>
+<td align="center">0.05</td>
+<td align="center">67.1</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1104.7</td>
+<td align="center">NA</td>
+<td align="center">146.0</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130211</td>
+<td align="center">0.58</td>
+<td align="center">0.28</td>
+<td align="center">0.13</td>
+<td align="center">59.3</td>
+<td align="center">44.0</td>
+<td align="center">56.3</td>
+<td align="center">1088.1</td>
+<td align="center">155.9</td>
+<td align="center">156.9</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130220</td>
+<td align="center">0.82</td>
+<td align="center">0.28</td>
+<td align="center">0.13</td>
+<td align="center">43.1</td>
+<td align="center">42.7</td>
+<td align="center">61.5</td>
+<td align="center">1065.5</td>
+<td align="center">161.6</td>
+<td align="center">170.1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130306</td>
+<td align="center">1.00</td>
+<td align="center">0.31</td>
+<td align="center">0.15</td>
+<td align="center">42.4</td>
+<td align="center">44.3</td>
+<td align="center">60.1</td>
+<td align="center">1117.3</td>
+<td align="center">182.6</td>
+<td align="center">161.9</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130401</td>
+<td align="center">2.20</td>
+<td align="center">0.38</td>
+<td align="center">0.20</td>
+<td align="center">11.8</td>
+<td align="center">31.0</td>
+<td align="center">53.2</td>
+<td align="center">1126.7</td>
+<td align="center">177.3</td>
+<td align="center">196.8</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130403</td>
+<td align="center">1.37</td>
+<td align="center">0.30</td>
+<td align="center">0.13</td>
+<td align="center">30.1</td>
+<td align="center">36.0</td>
+<td align="center">52.6</td>
+<td align="center">1103.6</td>
+<td align="center">163.3</td>
+<td align="center">174.2</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130417</td>
+<td align="center">1.19</td>
+<td align="center">0.29</td>
+<td align="center">0.11</td>
+<td align="center">30.6</td>
+<td align="center">38.8</td>
+<td align="center">57.1</td>
+<td align="center">1050.4</td>
+<td align="center">NA</td>
+<td align="center">155.1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130422</td>
+<td align="center">0.98</td>
+<td align="center">0.33</td>
+<td align="center">0.18</td>
+<td align="center">51.2</td>
+<td align="center">48.1</td>
+<td align="center">63.9</td>
+<td align="center">1064.2</td>
+<td align="center">162.8</td>
+<td align="center">152.7</td>
+</tr>
+<tr>
+<td align="center">V4</td>
+<td align="center">121203</td>
+<td align="center">0.39</td>
+<td align="center">0.08</td>
+<td align="center">0.01</td>
+<td align="center">70.4</td>
+<td align="center">22.6</td>
+<td align="center">34.3</td>
+<td align="center">1277.1</td>
+<td align="center">135.6</td>
+<td align="center">122.1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">121205</td>
+<td align="center">0.30</td>
+<td align="center">0.05</td>
+<td align="center">0.01</td>
+<td align="center">77.7</td>
+<td align="center">22.1</td>
+<td align="center">33.3</td>
+<td align="center">1278.4</td>
+<td align="center">135.6</td>
+<td align="center">121.7</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">121207</td>
+<td align="center">0.25</td>
+<td align="center">0.04</td>
+<td align="center">0.01</td>
+<td align="center">80.4</td>
+<td align="center">22.0</td>
+<td align="center">32.7</td>
+<td align="center">1273.1</td>
+<td align="center">135.7</td>
+<td align="center">121.9</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130125</td>
+<td align="center">0.07</td>
+<td align="center">0.03</td>
+<td align="center">0.01</td>
+<td align="center">97.3</td>
+<td align="center">22.8</td>
+<td align="center">29.5</td>
+<td align="center">1279.0</td>
+<td align="center">135.9</td>
+<td align="center">124.4</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130211</td>
+<td align="center">0.09</td>
+<td align="center">0.04</td>
+<td align="center">0.01</td>
+<td align="center">95.2</td>
+<td align="center">22.3</td>
+<td align="center">32.6</td>
+<td align="center">1274.5</td>
+<td align="center">134.7</td>
+<td align="center">122.1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130220</td>
+<td align="center">0.20</td>
+<td align="center">0.04</td>
+<td align="center">0.01</td>
+<td align="center">86.6</td>
+<td align="center">21.8</td>
+<td align="center">33.8</td>
+<td align="center">1274.8</td>
+<td align="center">139.5</td>
+<td align="center">123.2</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130306</td>
+<td align="center">0.48</td>
+<td align="center">0.05</td>
+<td align="center">0.01</td>
+<td align="center">73.9</td>
+<td align="center">23.5</td>
+<td align="center">44.9</td>
+<td align="center">1253.1</td>
+<td align="center">141.1</td>
+<td align="center">121.0</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130401</td>
+<td align="center">1.12</td>
+<td align="center">0.07</td>
+<td align="center">0.01</td>
+<td align="center">45.5</td>
+<td align="center">23.8</td>
+<td align="center">43.7</td>
+<td align="center">1252.5</td>
+<td align="center">136.5</td>
+<td align="center">116.4</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130403</td>
+<td align="center">0.67</td>
+<td align="center">0.06</td>
+<td align="center">0.01</td>
+<td align="center">61.8</td>
+<td align="center">23.9</td>
+<td align="center">40.9</td>
+<td align="center">1262.6</td>
+<td align="center">134.2</td>
+<td align="center">118.5</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130417</td>
+<td align="center">0.41</td>
+<td align="center">0.05</td>
+<td align="center">0.01</td>
+<td align="center">70.8</td>
+<td align="center">23.1</td>
+<td align="center">37.7</td>
+<td align="center">1258.5</td>
+<td align="center">135.7</td>
+<td align="center">117.2</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130422</td>
+<td align="center">0.27</td>
+<td align="center">0.05</td>
+<td align="center">0.01</td>
+<td align="center">79.5</td>
+<td align="center">23.6</td>
+<td align="center">37.2</td>
+<td align="center">1257.5</td>
+<td align="center">133.0</td>
+<td align="center">118.3</td>
+</tr>
+<tr>
+<td align="center">V45</td>
+<td align="center">121203</td>
+<td align="center">2.25</td>
+<td align="center">0.42</td>
+<td align="center">0.26</td>
+<td align="center">15.4</td>
+<td align="center">33.1</td>
+<td align="center">89.8</td>
+<td align="center">1246.5</td>
+<td align="center">137.1</td>
+<td align="center">159.7</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">121205</td>
+<td align="center">2.05</td>
+<td align="center">0.56</td>
+<td align="center">0.42</td>
+<td align="center">34.5</td>
+<td align="center">124.5</td>
+<td align="center">232.7</td>
+<td align="center">1319.2</td>
+<td align="center">157.9</td>
+<td align="center">247.1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">121207</td>
+<td align="center">1.58</td>
+<td align="center">0.39</td>
+<td align="center">0.26</td>
+<td align="center">35.8</td>
+<td align="center">52.4</td>
+<td align="center">113.5</td>
+<td align="center">1223.4</td>
+<td align="center">143.1</td>
+<td align="center">182.7</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130125</td>
+<td align="center">0.29</td>
+<td align="center">0.19</td>
+<td align="center">0.12</td>
+<td align="center">94.7</td>
+<td align="center">42.2</td>
+<td align="center">65.6</td>
+<td align="center">1308.6</td>
+<td align="center">165.0</td>
+<td align="center">196.5</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130211</td>
+<td align="center">0.64</td>
+<td align="center">0.34</td>
+<td align="center">0.23</td>
+<td align="center">81.5</td>
+<td align="center">67.3</td>
+<td align="center">128.5</td>
+<td align="center">1394.4</td>
+<td align="center">178.4</td>
+<td align="center">199.1</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130220</td>
+<td align="center">1.57</td>
+<td align="center">0.61</td>
+<td align="center">0.48</td>
+<td align="center">60.3</td>
+<td align="center">150.2</td>
+<td align="center">256.5</td>
+<td align="center">1582.7</td>
+<td align="center">211.7</td>
+<td align="center">271.2</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130306</td>
+<td align="center">2.28</td>
+<td align="center">0.71</td>
+<td align="center">0.57</td>
+<td align="center">51.6</td>
+<td align="center">198.1</td>
+<td align="center">324.7</td>
+<td align="center">1618.6</td>
+<td align="center">273.0</td>
+<td align="center">356.5</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130401</td>
+<td align="center">4.41</td>
+<td align="center">0.76</td>
+<td align="center">0.61</td>
+<td align="center">16.2</td>
+<td align="center">197.2</td>
+<td align="center">332.5</td>
+<td align="center">1516.1</td>
+<td align="center">207.2</td>
+<td align="center">338.4</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130403</td>
+<td align="center">3.07</td>
+<td align="center">0.66</td>
+<td align="center">0.53</td>
+<td align="center">34.6</td>
+<td align="center">172.7</td>
+<td align="center">288.2</td>
+<td align="center">1563.2</td>
+<td align="center">222.3</td>
+<td align="center">340.2</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130417</td>
+<td align="center">2.19</td>
+<td align="center">0.52</td>
+<td align="center">0.39</td>
+<td align="center">38.2</td>
+<td align="center">100.9</td>
+<td align="center">187.6</td>
+<td align="center">1441.0</td>
+<td align="center">188.0</td>
+<td align="center">251.4</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">130422</td>
+<td align="center">1.48</td>
+<td align="center">0.43</td>
+<td align="center">0.31</td>
+<td align="center">58.0</td>
+<td align="center">83.7</td>
+<td align="center">151.0</td>
+<td align="center">1427.1</td>
+<td align="center">190.9</td>
+<td align="center">230.3</td>
+</tr>
+</tbody></table>
+
+<p>A Number of OTUs in the mock community when all chimeras were removed;
+in the absence of chimeras and sequencing errors, there should be 20
+OTUs for all three regions.</p>
+
+<p>B The average number of OTUs is based on rarefaction of each sample to
+5,000 sequences per sample; cells labeled as ND reflect samples that did
+not have at least one replicate with more than 5,000 sequences. Chimeras were
+removed using UCHIME.</p>
+
+<hr/>
+
 <p><strong><em>Pre-clustering sequences.</em></strong> We previously showed that a
 pre-clustering step could further reduce the sequencing error and number
 of unique sequences (<a href="#_ENREF_9">9</a>). Briefly, sequences are sorted in
@@ -898,9 +1358,12 @@ bases different from the more abundant sequence, the rare sequence is
 removed from the dataset and its abundance is added to the more abundant
 sequence. We found that allowing a 1-nt difference per 100 nt of
 sequence was the most appropriate threshold. For the V4 data the error
-rate decreased to 0.01% for each of the four cluster densities and it
-was reduced to between 0.10 and 0.21 for the V34 dataset and to between
-0.36 and 0.64% for the V45 dataset (<strong>Table 2</strong>). Again, the error rates
+rate decreased to 0.01% for each of the four
+cluster densities and it was reduced to between
+0.11 to 0.20%
+for the V34 dataset and to between
+0.31 to 0.61%
+for the V45 dataset (<strong>Table 2</strong>). Again, the error rates
 for the V4 data were at least as good as what we have observed using
 these approaches with 454 data (<a href="#_ENREF_9">9</a>).</p>
 
@@ -915,10 +1378,16 @@ sequence reads being analyzed. Regardless, we performed two OTU-based
 analyses expecting 20 OTUs from each region in the absence of any
 sequencing errors or chimeras. In the first analysis, we rarefied the
 data to 5,000 sequences per sample and assumed perfect removal of all
-chimeras. Using the V4 dataset we observed between 22.8 and 23.5 OTUs
-(i.e. 2.8 to 3.5 spurious OTUs). In the second analysis, we used UCHIME
+chimeras. Using the V4 dataset we observed between
+23.1 and 23.9
+OTUs (i.e.
+3.1 and 3.9
+spurious OTUs). In the second analysis, we used UCHIME
 to identify chimeric sequences and rarefied the data to 5,000 sequences
-per sample. We observed between 37.2 and 43.4 OTUs (i.e. 17.2 to 23.4
+per sample. We observed between
+37.2 and 43.7
+OTUs (i.e.
+17.2 to 23.7
 spurious OTUs; <strong>Table 2</strong>). When we replicated this analysis for the
 V34 and V45 datasets, we observed significantly more OTUs (<strong>Table 2</strong>).
 In general, the number of spurious OTUs was correlated with the error
@@ -959,7 +1428,7 @@ analysis of the number of reads per index did not suggest a systematic
 positive or negative amplification biases that could be attributed to
 the indices. The combined error rate for the two mock communities was
 0.07% before pre-clustering and 0.01% after (n=14,094 sequences). When
-we used UCHIME to remove chimeras and rarefied to 5,000 sequences there
+we used UCHIME to remove chimeras and rarefied to 3,000 sequences there
 were an average of 30.4 OTUs (i.e. 10.4 spurious OTUs). Similar to our
 previous results, ordination of the mouse fecal samples again showed the
 separation between the early and late periods and increased
@@ -1204,63 +1673,6 @@ sensitivity and speed of chimera detection. Bioinformatics
 L. Westcott.</strong> 2011. Assessing and improving methods used in operational
 taxonomic unit-based approaches for 16S rRNA gene sequence analysis.
 Appl Environ Microbiol <strong>77:</strong>3219-26.</p>
-
-<p><strong>Table 2. Summary of the error rates and number of observed OTUs for
-the sequencing runs described in Table 1.</strong></p>
-
-<hr/>
-
-<p><strong>Region</strong>   <strong>Run</strong>   <strong>Error rates (%)</strong>   <strong>% Reads</strong>                <strong>Average number of OTUs<sup>A^</sup></strong></p>
-
-<pre><code>                                           **remaining from Basic**   
-</code></pre>
-
-<hr/>
-
-<pre><code>                     **Basic **            **ΔQ=6**                   **Pre-**
-
-                                                                      **cluster**
-</code></pre>
-
-<p><strong>V34</strong>      130401    2.14                  0.37                       0.21</p>
-
-<pre><code>           130403    1.30                  0.26                       0.12
-
-           130417    1.12                  0.24                       0.10
-
-           130422    0.91                  0.29                       0.17
-</code></pre>
-
-<p><strong>V4</strong>       130401    1.08                  0.06                       0.01</p>
-
-<pre><code>           130403    0.67                  0.05                       0.01
-
-           130417    0.40                  0.05                       0.01
-
-           130422    0.28                  0.05                       0.01
-</code></pre>
-
-<p><strong>V45</strong>      130401    4.60                  0.87                       0.64</p>
-
-<pre><code>           130403    3.31                  0.79                       0.56
-
-           130417    2.38                  0.66                       0.43
-
-           130422    1.67                  0.58                       0.36
-</code></pre>
-
-<hr/>
-
-<p>A The average number of OTUs is based on rarefaction of each sample to
-5,000 sequences per sample; cells labeled as ND reflect samples that did
-not have at least one replicate with more than 5,000 sequences.</p>
-
-<p>B Number of OTUs in the mock community when all chimeras were removed;
-in the absence of chimeras and sequencing errors, there should be 20
-OTUs for all three regions.</p>
-
-<p>C Number of OTUs in the mock community when chimeras were removed using
-UCHIME.</p>
 
 <p><strong>Table 3. Summary of assemblies using shotgun sequence data generated
 in parallel to 16S rRNA gene sequences.</strong></p>
