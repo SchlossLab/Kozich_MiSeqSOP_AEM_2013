@@ -10,9 +10,7 @@
 > updated the 16S rRNA gene sequence data; we have not attempted to replicate
 > the analysis of the metagenomic data.
 
-## Development of a dual-index sequencing strategy and curation pipeline
-## for analyzing amplicon sequence data on the MiSeq Illumina sequencing
-## platform
+## Development of a dual-index sequencing strategy and curation pipeline for analyzing amplicon sequence data on the MiSeq Illumina sequencing platform
 
 **Running title:** Sequencing 16S rRNA genes on a MiSeq
 
@@ -123,9 +121,9 @@ Because the HiSeq requires one to fill 16 sequencing lanes with the same
 reagents, logistically, it is more difficult for an individual to fill a
 complete run with a 300-cycle kit when the 200-cycle kit is more
 commonly used within the genomics field. Reagents for the HiSeq (300
-cycle) are approximately \$1,500 (US) and for the MiSeq they are
-approximately \$1,000 (US) per lane. The HiSeq 2500 and MiSeq
-instruments currently retail for \$740,000 and \$125,000. The HiSeq
+cycle) are approximately $1,500 (US) and for the MiSeq they are
+approximately $1,000 (US) per lane. The HiSeq 2500 and MiSeq
+instruments currently retail for $740,000 and $125,000. The HiSeq
 platform has become the standard approach for shotgun metagenomic
 sequencing because of its increased read depth; however, the MiSeq has
 greater potential for use with 16S rRNA gene sequence studies because it
@@ -253,6 +251,20 @@ primers to amplify the V34, V4, and V45 regions from the bacterial 16S
 rRNA gene that have been described elsewhere ([14](#_ENREF_14),
 [20](#_ENREF_20)). The complete primers were each 63-68 bp long.
 
+--------
+
+![**Figure 1.**](results/pictures/figure1.png)
+
+**Figure 1. Design of dual index sequencing strategy and schematic    
+describing the four sequencing reads.** The primers specific to the 16S
+rRNA gene are shown in bolded black text while the linkers are in blue,
+pads are in green, the index region in red, and the adapters are
+underlined. This schematic is demonstrated using the V4-specific primer
+sequences and linkers. The PCR and sequencing primers for each of the
+three regions are provided in the Supplementary Materials.
+
+--------
+
 Two sequence reads, two index reads, and three sequence primers were
 necessary to sequence each DNA fragment. The first sequence read
 (250-nt) was obtained using the Read 1 primer, which was the same as the
@@ -330,19 +342,19 @@ runs, machine reported quality metrics, and observed error rates.** The types
 of errors are reported as percentages of the total error rates.
 
 
-|       | RTA version | MCS version | [DNA] (pM) | Cluster density (K/mm<sup>2</sup>) | % PhiX | Correction | %>= Q30 | Reported machine error (%) | 16S rRNA pairs (10<sup>6</sup>) | Observed error (%) | Substitutions (%) | Ambiguous (%) | Deletions (%) | Insertions (%) |
-|:------|:-----------:|:-----------:|:----------:|:----------------------------------:|:------:|:----------:|:-------:|:--------------------------:|:-------------------------------:|:------------------:|:-----------------:|:-------------:|:-------------:|:--------------:|
-|121203 |   1.16.18   |    2.0.5    |    9.0     |                743                 |  49.6  |  Adaptive  |  57.0   |            2.94            |               5.6               |        4.4         |       98.6        |      0.6      |      0.7      |      0.2       |
-|121205 |   1.16.18   |    2.0.5    |    8.0     |                607                 |  59.9  |  Adaptive  |  64.5   |            1.37            |               3.9               |        3.3         |       98.0        |      1.7      |      0.2      |      0.1       |
-|121207 |   1.16.18   |    2.0.5    |    6.0     |                567                 |  59.2  |  Adaptive  |  63.3   |            1.50            |               3.7               |        3.0         |       99.3        |      0.4      |      0.2      |      0.1       |
-|130125 |   1.17.22   |   2.1.13    |    4.0     |                192                 |  82.8  |  Adaptive  |  94.4   |            0.61            |               0.4               |        0.5         |       95.6        |      4.0      |      0.3      |      0.1       |
-|130211 |   1.17.22   |   2.1.13    |    4.0     |                387                 |  68.9  | Hardcoded  |  92.0   |            0.59            |               1.9               |        1.0         |       97.0        |      2.8      |      0.2      |      0.1       |
-|130220 |   1.17.22   |   2.1.13    |    10.0    |                702                 |  58.8  | Hardcoded  |  93.9   |            0.87            |               4.5               |        1.7         |       99.3        |      0.3      |      0.2      |      0.2       |
-|130306 |   1.17.22   |   2.1.13    |    10.0    |                781                 |  42.3  | Hardcoded  |  78.9   |            0.96            |               4.6               |        2.6         |       89.2        |     10.5      |      0.2      |      0.2       |
-|130401 |   1.17.28   |    2.2.0    |    10.0    |                1313                |  3.8   |  Adaptive  |  63.7   |            1.31            |              12.6               |        4.7         |       98.8        |      0.7      |      0.3      |      0.2       |
-|130403 |   1.17.28   |    2.2.0    |    5.0     |                1094                |  3.2   |  Adaptive  |  70.5   |            0.89            |              12.4               |        3.3         |       99.0        |      0.6      |      0.2      |      0.2       |
-|130417 |   1.17.28   |    2.2.0    |    3.0     |                839                 |  6.2   |  Adaptive  |  74.6   |            0.92            |              10.5               |        2.8         |       98.2        |      1.4      |      0.2      |      0.2       |
-|130422 |   1.17.28   |    2.2.0    |    1.8     |                690                 |  8.0   |  Adaptive  |  80.1   |            0.65            |               9.0               |        1.8         |       97.8        |      1.8      |      0.2      |      0.1       |
+|       | RTA version | MCS version | \[DNA\] (pM) | Cluster density (K/mm<sup>2</sup>) | % PhiX | Correction | %>= Q30 | Reported machine error (%) | 16S rRNA pairs (10<sup>6</sup>) | Observed error (%) | Substitutions (%) | Ambiguous (%) | Deletions (%) | Insertions (%) |
+|:------|:-----------:|:-----------:|:------------:|:----------------------------------:|:------:|:----------:|:-------:|:--------------------------:|:-------------------------------:|:------------------:|:-----------------:|:-------------:|:-------------:|:--------------:|
+|121203 |   1.16.18   |    2.0.5    |     9.0      |                743                 |  49.6  |  Adaptive  |  57.0   |            2.94            |               5.6               |        4.4         |       98.6        |      0.6      |      0.7      |      0.2       |
+|121205 |   1.16.18   |    2.0.5    |     8.0      |                607                 |  59.9  |  Adaptive  |  64.5   |            1.37            |               3.9               |        3.3         |       98.0        |      1.7      |      0.2      |      0.1       |
+|121207 |   1.16.18   |    2.0.5    |     6.0      |                567                 |  59.2  |  Adaptive  |  63.3   |            1.50            |               3.7               |        3.0         |       99.3        |      0.4      |      0.2      |      0.1       |
+|130125 |   1.17.22   |   2.1.13    |     4.0      |                192                 |  82.8  |  Adaptive  |  94.4   |            0.61            |               0.4               |        0.5         |       95.6        |      4.0      |      0.3      |      0.1       |
+|130211 |   1.17.22   |   2.1.13    |     4.0      |                387                 |  68.9  | Hardcoded  |  92.0   |            0.59            |               1.9               |        1.0         |       97.0        |      2.8      |      0.2      |      0.1       |
+|130220 |   1.17.22   |   2.1.13    |     10.0     |                702                 |  58.8  | Hardcoded  |  93.9   |            0.87            |               4.5               |        1.7         |       99.3        |      0.3      |      0.2      |      0.2       |
+|130306 |   1.17.22   |   2.1.13    |     10.0     |                781                 |  42.3  | Hardcoded  |  78.9   |            0.96            |               4.6               |        2.6         |       89.2        |     10.5      |      0.2      |      0.2       |
+|130401 |   1.17.28   |    2.2.0    |     10.0     |                1313                |  3.8   |  Adaptive  |  63.7   |            1.31            |              12.6               |        4.7         |       98.8        |      0.7      |      0.3      |      0.2       |
+|130403 |   1.17.28   |    2.2.0    |     5.0      |                1094                |  3.2   |  Adaptive  |  70.5   |            0.89            |              12.4               |        3.3         |       99.0        |      0.6      |      0.2      |      0.2       |
+|130417 |   1.17.28   |    2.2.0    |     3.0      |                839                 |  6.2   |  Adaptive  |  74.6   |            0.92            |              10.5               |        2.8         |       98.2        |      1.4      |      0.2      |      0.2       |
+|130422 |   1.17.28   |    2.2.0    |     1.8      |                690                 |  8.0   |  Adaptive  |  80.1   |            0.65            |               9.0               |        1.8         |       97.8        |      1.8      |      0.2      |      0.1       |
 
 -----
 
@@ -426,19 +438,6 @@ sequence each of the four DNA samples in triplicate to evaluate the
 effects of different cluster densities on error rates and develop a
 sequence curation pipeline.
 
---------
-
-![**Figure 1.**](results/pictures/figure1.png)
-
-**Figure 1. Design of dual index sequencing strategy and schematic
-describing the four sequencing reads.** The primers specific to the 16S
-rRNA gene are shown in bolded black text while the linkers are in blue,
-pads are in green, the index region in red, and the adapters are
-underlined. This schematic is demonstrated using the V4-specific primer
-sequences and linkers. The PCR and sequencing primers for each of the
-three regions are provided in the Supplementary Materials.
-
---------
 
 
 
@@ -537,41 +536,17 @@ the sequencing runs described in Table 1.**
 
 
 
-| Region |  Run   | Basic Error (%) | DeltaQ=6 Error (%) | Pre-cluster Error (%) | Remaining Seqs. (%) | #OTUs Mock^A^ | #OTUs Mock^B^ | #OTUs Soil | #OTUs Mouse | #OTUs Human |
-|:------:|:------:|:---------------:|:------------------:|:---------------------:|:-------------------:|:-------------:|:-------------:|:----------:|:-----------:|:-----------:|
-|  V34   | 121203 |      2.20       |        1.83        |         1.60          |         0.5         |      NA       |      NA       |     NA     |     NA      |     NA      |
-|        | 121205 |      2.01       |        0.60        |         0.45          |         1.7         |      NA       |      NA       |   1236.5   |     NA      |     NA      |
-|        | 121207 |      1.90       |        0.69        |         0.53          |         1.1         |      NA       |      NA       |     NA     |     NA      |     NA      |
-|        | 130125 |      0.34       |        0.14        |         0.05          |        67.1         |      NA       |      NA       |   1104.7   |     NA      |    146.0    |
-|        | 130211 |      0.58       |        0.28        |         0.13          |        59.3         |     44.0      |     56.3      |   1088.1   |    155.9    |    156.9    |
-|        | 130220 |      0.82       |        0.28        |         0.13          |        43.1         |     42.7      |     61.5      |   1065.5   |    161.6    |    170.1    |
-|        | 130306 |      1.00       |        0.31        |         0.15          |        42.4         |     44.3      |     60.1      |   1117.3   |    182.6    |    161.9    |
-|        | 130401 |      2.20       |        0.38        |         0.20          |        11.8         |     31.0      |     53.2      |   1126.7   |    177.3    |    196.8    |
-|        | 130403 |      1.37       |        0.30        |         0.13          |        30.1         |     36.0      |     52.6      |   1103.6   |    163.3    |    174.2    |
-|        | 130417 |      1.19       |        0.29        |         0.11          |        30.6         |     38.8      |     57.1      |   1050.4   |     NA      |    155.1    |
-|        | 130422 |      0.98       |        0.33        |         0.18          |        51.2         |     48.1      |     63.9      |   1064.2   |    162.8    |    152.7    |
-|   V4   | 121203 |      0.39       |        0.08        |         0.01          |        70.4         |     22.6      |     34.3      |   1277.1   |    135.6    |    122.1    |
-|        | 121205 |      0.30       |        0.05        |         0.01          |        77.7         |     22.1      |     33.3      |   1278.4   |    135.6    |    121.7    |
-|        | 121207 |      0.25       |        0.04        |         0.01          |        80.4         |     22.0      |     32.7      |   1273.1   |    135.7    |    121.9    |
-|        | 130125 |      0.07       |        0.03        |         0.01          |        97.3         |     22.8      |     29.5      |   1279.0   |    135.9    |    124.4    |
-|        | 130211 |      0.09       |        0.04        |         0.01          |        95.2         |     22.3      |     32.6      |   1274.5   |    134.7    |    122.1    |
-|        | 130220 |      0.20       |        0.04        |         0.01          |        86.6         |     21.8      |     33.8      |   1274.8   |    139.5    |    123.2    |
-|        | 130306 |      0.48       |        0.05        |         0.01          |        73.9         |     23.5      |     44.9      |   1253.1   |    141.1    |    121.0    |
-|        | 130401 |      1.12       |        0.07        |         0.01          |        45.5         |     23.8      |     43.7      |   1252.5   |    136.5    |    116.4    |
-|        | 130403 |      0.67       |        0.06        |         0.01          |        61.8         |     23.9      |     40.9      |   1262.6   |    134.2    |    118.5    |
-|        | 130417 |      0.41       |        0.05        |         0.01          |        70.8         |     23.1      |     37.7      |   1258.5   |    135.7    |    117.2    |
-|        | 130422 |      0.27       |        0.05        |         0.01          |        79.5         |     23.6      |     37.2      |   1257.5   |    133.0    |    118.3    |
-|  V45   | 121203 |      2.25       |        0.42        |         0.26          |        15.4         |     33.1      |     89.8      |   1246.5   |    137.1    |    159.7    |
-|        | 121205 |      2.05       |        0.56        |         0.42          |        34.5         |     124.5     |     232.7     |   1319.2   |    157.9    |    247.1    |
-|        | 121207 |      1.58       |        0.39        |         0.26          |        35.8         |     52.4      |     113.5     |   1223.4   |    143.1    |    182.7    |
-|        | 130125 |      0.29       |        0.19        |         0.12          |        94.7         |     42.2      |     65.6      |   1308.6   |    165.0    |    196.5    |
-|        | 130211 |      0.64       |        0.34        |         0.23          |        81.5         |     67.3      |     128.5     |   1394.4   |    178.4    |    199.1    |
-|        | 130220 |      1.57       |        0.61        |         0.48          |        60.3         |     150.2     |     256.5     |   1582.7   |    211.7    |    271.2    |
-|        | 130306 |      2.28       |        0.71        |         0.57          |        51.6         |     198.1     |     324.7     |   1618.6   |    273.0    |    356.5    |
-|        | 130401 |      4.41       |        0.76        |         0.61          |        16.2         |     197.2     |     332.5     |   1516.1   |    207.2    |    338.4    |
-|        | 130403 |      3.07       |        0.66        |         0.53          |        34.6         |     172.7     |     288.2     |   1563.2   |    222.3    |    340.2    |
-|        | 130417 |      2.19       |        0.52        |         0.39          |        38.2         |     100.9     |     187.6     |   1441.0   |    188.0    |    251.4    |
-|        | 130422 |      1.48       |        0.43        |         0.31          |        58.0         |     83.7      |     151.0     |   1427.1   |    190.9    |    230.3    |
+```
+## Error in data$region <- NULL: object of type 'closure' is not subsettable
+```
+
+```
+## Error in data$perfect <- NULL: object of type 'closure' is not subsettable
+```
+
+```
+## Error in `colnames<-`(`*tmp*`, value = c("Region", "Run", "Basic Error (%)", : length of 'dimnames' [2] not equal to array extent
+```
 
 A Number of OTUs in the mock community when all chimeras were removed;
 in the absence of chimeras and sequencing errors, there should be 20
@@ -593,11 +568,11 @@ bases different from the more abundant sequence, the rare sequence is
 removed from the dataset and its abundance is added to the more abundant
 sequence. We found that allowing a 1-nt difference per 100 nt of
 sequence was the most appropriate threshold. For the V4 data the error
-rate decreased to 0.01% for each of the four
+rate decreased to **0.01**% for each of the four
 cluster densities and it was reduced to between
-0.11 to 0.20%
+**0.11 to 0.20**%
 for the V34 dataset and to between
-0.31 to 0.61%
+**0.31 to 0.61**%
 for the V45 dataset (**Table 2**). Again, the error rates
 for the V4 data were at least as good as what we have observed using
 these approaches with 454 data ([9](#_ENREF_9)).
@@ -610,19 +585,19 @@ perfect sequences ([7](#_ENREF_7), [8](#_ENREF_8)). Application of this
 approach is generally flawed because the number of spurious OTUs is a
 product of the complexity of the mock community and the number of
 sequence reads being analyzed. Regardless, we performed two OTU-based
-analyses expecting 20 OTUs from each region in the absence of any
+analyses expecting **20** OTUs from each region in the absence of any
 sequencing errors or chimeras. In the first analysis, we rarefied the
 data to 5,000 sequences per sample and assumed perfect removal of all
 chimeras. Using the V4 dataset we observed between
-23.1 and 23.9
+**23.1 and 23.9**
 OTUs (i.e.
-3.1 and 3.9
+**3.1 and 3.9**
 spurious OTUs). In the second analysis, we used UCHIME
 to identify chimeric sequences and rarefied the data to 5,000 sequences
 per sample. We observed between
-37.2 and 43.7
+**37.2 and 43.7**
 OTUs (i.e.
-17.2 to 23.7
+**17.2 to 23.7**
 spurious OTUs; **Table 2**). When we replicated this analysis for the
 V34 and V45 datasets, we observed significantly more OTUs (**Table 2**).
 In general, the number of spurious OTUs was correlated with the error
@@ -662,23 +637,23 @@ days after weaning and there was significantly less variation between
 the late samples compared to the early samples. In addition to the mouse
 fecal samples, we allocated 2 pairs of indices to re-sequence our mock
 community. We generated 4.3 million pairs of sequence reads from the 16S
-rRNA gene with an average coverage of 7851 pairs of reads
-per sample (95% of the samples had more than 2122
+rRNA gene with an average coverage of **7851** pairs of reads
+per sample (95% of the samples had more than **2122**
 pairs of sequences) using a new collection of 8-nt indices (Supplemental
 Materials). Although individual samples were expected to have varying
 amplification efficiencies, analysis of the number of reads per index did not
 suggest a systematic positive or negative amplification biases that could be
 attributed to the indices. The combined error rate for the two mock communities
-was 0.07% before pre-clustering and 0.02% after
-(n=13900 sequences). When we used UCHIME to remove chimeras and
+was 0.07% before pre-clustering and **0.02**% after
+(n=**13900** sequences). When we used UCHIME to remove chimeras and
 rarefied to 5,000 sequences there were an average of
-30.5 OTUs (i.e. 10.5
+**30.5** OTUs (i.e. **10.5**
 spurious OTUs). Similar to our previous results, ordination of the mouse fecal
 samples again showed the separation between the early and late periods and
 increased stabilization with age (**Figure 4**; Mantel Test Coefficient=
-0.82,
-p\<0.001). These results clearly indicate that our approach can be scaled to
-multiplex large numbers of samples.
+**0.82**,
+p\<**0.001**). These results clearly
+indicate that our approach can be scaled to multiplex large numbers of samples.
 
 --------
 
@@ -767,7 +742,8 @@ individual samples, database-dependent methods are limited because they
 will not have sufficient representation of many rare and novel
 populations that the extended coverage will likely detect. The OTU-based
 approach described here has been facilitated by reducing the sequencing
-error rate from 1.08% to 0.01% resulting in a reduction of the number of
+error rate from **NA**% to
+**NA**% resulting in a reduction of the number of
 unique sequences that need to be processed. As sequence lengths continue
 to increase it will become possible to reliably sequence longer regions
 of the 16S rRNA gene fragment; however, based on this analysis it is

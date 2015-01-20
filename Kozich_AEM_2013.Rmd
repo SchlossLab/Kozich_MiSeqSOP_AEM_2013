@@ -10,9 +10,7 @@
 > updated the 16S rRNA gene sequence data; we have not attempted to replicate
 > the analysis of the metagenomic data.
 
-## Development of a dual-index sequencing strategy and curation pipeline
-## for analyzing amplicon sequence data on the MiSeq Illumina sequencing
-## platform
+## Development of a dual-index sequencing strategy and curation pipeline for analyzing amplicon sequence data on the MiSeq Illumina sequencing platform
 
 **Running title:** Sequencing 16S rRNA genes on a MiSeq
 
@@ -123,9 +121,9 @@ Because the HiSeq requires one to fill 16 sequencing lanes with the same
 reagents, logistically, it is more difficult for an individual to fill a
 complete run with a 300-cycle kit when the 200-cycle kit is more
 commonly used within the genomics field. Reagents for the HiSeq (300
-cycle) are approximately \$1,500 (US) and for the MiSeq they are
-approximately \$1,000 (US) per lane. The HiSeq 2500 and MiSeq
-instruments currently retail for \$740,000 and \$125,000. The HiSeq
+cycle) are approximately $1,500 (US) and for the MiSeq they are
+approximately $1,000 (US) per lane. The HiSeq 2500 and MiSeq
+instruments currently retail for $740,000 and $125,000. The HiSeq
 platform has become the standard approach for shotgun metagenomic
 sequencing because of its increased read depth; however, the MiSeq has
 greater potential for use with 16S rRNA gene sequence studies because it
@@ -253,6 +251,20 @@ primers to amplify the V34, V4, and V45 regions from the bacterial 16S
 rRNA gene that have been described elsewhere ([14](#_ENREF_14),
 [20](#_ENREF_20)). The complete primers were each 63-68 bp long.
 
+--------
+
+![**Figure 1.**](results/pictures/figure1.png)
+
+**Figure 1. Design of dual index sequencing strategy and schematic    
+describing the four sequencing reads.** The primers specific to the 16S
+rRNA gene are shown in bolded black text while the linkers are in blue,
+pads are in green, the index region in red, and the adapters are
+underlined. This schematic is demonstrated using the V4-specific primer
+sequences and linkers. The PCR and sequencing primers for each of the
+three regions are provided in the Supplementary Materials.
+
+--------
+
 Two sequence reads, two index reads, and three sequence primers were
 necessary to sequence each DNA fragment. The first sequence read
 (250-nt) was obtained using the Read 1 primer, which was the same as the
@@ -365,7 +377,7 @@ all_rates <- round(all_rates, 1)
 run_data <- read.table(file="data/references/run_data.tsv", header=T, row.names=1)
 
 combined <- cbind(run_data, all_rates)
-c.names <- c("RTA version", "MCS version", "[DNA] (pM)",
+c.names <- c("RTA version", "MCS version", "\\[DNA\\] (pM)",
 	"Cluster density (K/mm<sup>2</sup>)", "% PhiX", "Correction", "%>= Q30",
 	"Reported machine error (%)", "16S rRNA pairs (10<sup>6</sup>)",
 	"Observed error (%)", "Substitutions (%)", "Ambiguous (%)", "Deletions (%)",
@@ -455,19 +467,6 @@ sequence each of the four DNA samples in triplicate to evaluate the
 effects of different cluster densities on error rates and develop a
 sequence curation pipeline.
 
---------
-
-![**Figure 1.**](results/pictures/figure1.png)
-
-**Figure 1. Design of dual index sequencing strategy and schematic
-describing the four sequencing reads.** The primers specific to the 16S
-rRNA gene are shown in bolded black text while the linkers are in blue,
-pads are in green, the index region in red, and the adapters are
-underlined. This schematic is demonstrated using the V4-specific primer
-sequences and linkers. The PCR and sequencing primers for each of the
-three regions are provided in the Supplementary Materials.
-
---------
 
 ```{r error_profile, echo=FALSE}
 get_slope <- function(x, y, z){
@@ -595,23 +594,23 @@ the sequencing runs described in Table 1.**
 
 
 ```{r table_2, echo=FALSE}
-data <- read.table(file="results/tables/table_2.tsv", header=T)
-rownames(data) <- paste(data$region, data$run, sep=".")
+tab2_data <- read.table(file="results/tables/table_2.tsv", header=T)
+rownames(tab2_data) <- paste(tab2_data$region, tab2_data$run, sep=".")
 
-perfect <- aggregate(data$perfect, by=list(data$region), mean)
+perfect <- aggregate(tab2_data$perfect, by=list(tab2_data$region), mean)
 perfect <- perfect[1,2]
 
 data$region <- NULL
 data$perfect <- NULL
 
-r.names <- rep("", nrow(data))
+r.names <- rep("", nrow(tab2_data))
 r.names[c(1,12,23)] <- c("V34", "V4", "V45")
 c.names <- c("Region", "Run", "Basic Error (%)", "DeltaQ=6 Error (%)",
 			"Pre-cluster Error (%)", "Remaining Seqs. (%)",
-			"#OTUs Mock^A^", "#OTUs Mock^B^", "#OTUs Soil", "#OTUs Mouse",
+			"#OTUs Mock<sup>A</sup>", "#OTUs Mock<sup>B</sup>", "#OTUs Soil", "#OTUs Mouse",
 			"#OTUs Human")
 
-kable(cbind(r.names, data), align='c', col.names=c.names, row.names=F)
+kable(cbind(r.names, tab2_data), align='c', col.names=c.names, row.names=F)
 ```
 
 A Number of OTUs in the mock community when all chimeras were removed;
@@ -634,11 +633,11 @@ bases different from the more abundant sequence, the rare sequence is
 removed from the dataset and its abundance is added to the more abundant
 sequence. We found that allowing a 1-nt difference per 100 nt of
 sequence was the most appropriate threshold. For the V4 data the error
-rate decreased to `r data["v4.130403", "pc_error"]`% for each of the four
+rate decreased to **`r tab2_data["v4.130403", "pc_error"]`**% for each of the four
 cluster densities and it was reduced to between
-`r paste(format(range(c(data["v34.130401", "pc_error"], data["v34.130403", "pc_error"], data["v34.130417", "pc_error"], data["v34.130422", "pc_error"])), nsmall=2), collapse=' to ')`%
+**`r paste(format(range(c(tab2_data["v34.130401", "pc_error"], tab2_data["v34.130403", "pc_error"], tab2_data["v34.130417", "pc_error"], tab2_data["v34.130422", "pc_error"])), nsmall=2), collapse=' to ')`**%
 for the V34 dataset and to between
-`r paste(format(range(c(data["v45.130401", "pc_error"], data["v45.130403", "pc_error"], data["v45.130417", "pc_error"], data["v45.130422", "pc_error"])), nsmall=2), collapse=' to ')`%
+**`r paste(format(range(c(tab2_data["v45.130401", "pc_error"], tab2_data["v45.130403", "pc_error"], tab2_data["v45.130417", "pc_error"], tab2_data["v45.130422", "pc_error"])), nsmall=2), collapse=' to ')`**%
 for the V45 dataset (**Table 2**). Again, the error rates
 for the V4 data were at least as good as what we have observed using
 these approaches with 454 data ([9](#_ENREF_9)).
@@ -651,19 +650,19 @@ perfect sequences ([7](#_ENREF_7), [8](#_ENREF_8)). Application of this
 approach is generally flawed because the number of spurious OTUs is a
 product of the complexity of the mock community and the number of
 sequence reads being analyzed. Regardless, we performed two OTU-based
-analyses expecting `r perfect` OTUs from each region in the absence of any
+analyses expecting **`r perfect`** OTUs from each region in the absence of any
 sequencing errors or chimeras. In the first analysis, we rarefied the
 data to 5,000 sequences per sample and assumed perfect removal of all
 chimeras. Using the V4 dataset we observed between
-`r paste(format(range(c(data["v4.130401", "no_chimeras"], data["v4.130403", "no_chimeras"], data["v4.130417", "no_chimeras"], data["v4.130422", "no_chimeras"])), nsmall=1), collapse=' and ')`
+**`r paste(format(range(c(tab2_data["v4.130401", "no_chimeras"], tab2_data["v4.130403", "no_chimeras"], tab2_data["v4.130417", "no_chimeras"], tab2_data["v4.130422", "no_chimeras"])), nsmall=1), collapse=' and ')`**
 OTUs (i.e.
-`r paste(format(range(c(data["v4.130401", "no_chimeras"], data["v4.130403", "no_chimeras"], data["v4.130417", "no_chimeras"], data["v4.130422", "no_chimeras"])-perfect), nsmall=1), collapse=' and ')`
+**`r paste(format(range(c(tab2_data["v4.130401", "no_chimeras"], tab2_data["v4.130403", "no_chimeras"], tab2_data["v4.130417", "no_chimeras"], tab2_data["v4.130422", "no_chimeras"])-perfect), nsmall=1), collapse=' and ')`**
 spurious OTUs). In the second analysis, we used UCHIME
 to identify chimeric sequences and rarefied the data to 5,000 sequences
 per sample. We observed between
-`r paste(format(range(c(data["v4.130401", "typical_mock"], data["v4.130403", "typical_mock"], data["v4.130417", "typical_mock"], data["v4.130422", "typical_mock"])), nsmall=1), collapse=' and ')`
+**`r paste(format(range(c(tab2_data["v4.130401", "typical_mock"], tab2_data["v4.130403", "typical_mock"], tab2_data["v4.130417", "typical_mock"], tab2_data["v4.130422", "typical_mock"])), nsmall=1), collapse=' and ')`**
 OTUs (i.e.
-`r paste(format(range(c(data["v4.130401", "typical_mock"], data["v4.130403", "typical_mock"], data["v4.130417", "typical_mock"], data["v4.130422", "typical_mock"])-perfect), nsmall=1), collapse=' to ')`
+**`r paste(format(range(c(tab2_data["v4.130401", "typical_mock"], tab2_data["v4.130403", "typical_mock"], tab2_data["v4.130417", "typical_mock"], tab2_data["v4.130422", "typical_mock"])-perfect), nsmall=1), collapse=' to ')`**
 spurious OTUs; **Table 2**). When we replicated this analysis for the
 V34 and V45 datasets, we observed significantly more OTUs (**Table 2**).
 In general, the number of spurious OTUs was correlated with the error
@@ -727,23 +726,23 @@ days after weaning and there was significantly less variation between
 the late samples compared to the early samples. In addition to the mouse
 fecal samples, we allocated 2 pairs of indices to re-sequence our mock
 community. We generated 4.3 million pairs of sequence reads from the 16S
-rRNA gene with an average coverage of `r round(mean(nseqs), 0)` pairs of reads
-per sample (95% of the samples had more than `r round(quantile(nseqs, 0.05), 0)`
+rRNA gene with an average coverage of **`r round(mean(nseqs), 0)`** pairs of reads
+per sample (95% of the samples had more than **`r round(quantile(nseqs, 0.05), 0)`**
 pairs of sequences) using a new collection of 8-nt indices (Supplemental
 Materials). Although individual samples were expected to have varying
 amplification efficiencies, analysis of the number of reads per index did not
 suggest a systematic positive or negative amplification biases that could be
 attributed to the indices. The combined error rate for the two mock communities
-was 0.07% before pre-clustering and `r format(pc_error_rate, nsmall=2)`% after
-(n=`r pc_error_nseqs` sequences). When we used UCHIME to remove chimeras and
+was 0.07% before pre-clustering and **`r format(pc_error_rate, nsmall=2)`**% after
+(n=**`r pc_error_nseqs`** sequences). When we used UCHIME to remove chimeras and
 rarefied to 5,000 sequences there were an average of
-`r format(n_otus, nsmall=1)` OTUs (i.e. `r format(n_otus-perfect, nsmall=1)`
+**`r format(n_otus, nsmall=1)`** OTUs (i.e. **`r format(n_otus-perfect, nsmall=1)`**
 spurious OTUs). Similar to our previous results, ordination of the mouse fecal
 samples again showed the separation between the early and late periods and
 increased stabilization with age (**Figure 4**; Mantel Test Coefficient=
-`r format(round(m.test$statistic, digits=2), nsmall=2)`,
-p\<`r format(round(m.test$signif, digits=3), nsmall=3)`). These results clearly indicate that our approach can be scaled to
-multiplex large numbers of samples.
+**`r format(round(m.test$statistic, digits=2), nsmall=2)`**,
+p\<**`r format(round(m.test$signif, digits=3), nsmall=3)`**). These results clearly
+indicate that our approach can be scaled to multiplex large numbers of samples.
 
 --------
 
@@ -832,7 +831,8 @@ individual samples, database-dependent methods are limited because they
 will not have sufficient representation of many rare and novel
 populations that the extended coverage will likely detect. The OTU-based
 approach described here has been facilitated by reducing the sequencing
-error rate from 1.08% to 0.01% resulting in a reduction of the number of
+error rate from **`r tab2_data["v4.130410","delta0_error"]`**% to
+**`r tab2_data["v4.130410","pc_error"]`**% resulting in a reduction of the number of
 unique sequences that need to be processed. As sequence lengths continue
 to increase it will become possible to reliably sequence longer regions
 of the 16S rRNA gene fragment; however, based on this analysis it is
