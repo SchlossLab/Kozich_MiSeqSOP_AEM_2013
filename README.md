@@ -63,5 +63,6 @@ Repository overview
 	|			# AEM 2013 manuscript
 	|- Kozich_AEM_2013.md	# Markdown (GitHub) version of the *Rmd file
 	|- Kozich_AEM_2013.html	# HTML version of *.Rmd file
+	|- MiSeq_WetLab_SOP_v4.rmd # Rmarkdown for the MiSeq Wet Lab SOP
 	|
 	+- Makefile		# executable Makefile for this study
