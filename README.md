@@ -1,4 +1,4 @@
-Reproduction and exploration of data from Kozich et al (2013)
+Reproduction and exploration of data from [Kozich et al (2013)](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3753973/)
 =======
 
 write.paper
